@@ -1,13 +1,57 @@
 {
-  "pages":[
+  "entryPagePath": "pages/bill/bills",
+  "pages": [
     "pages/index/index",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/bill/bills",
+    "pages/my/my",
+    "pages/billCount/count",
+    "pages/add/add",
+    "pages/manage/manage"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "Weixin",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "color": "#6e6d6b",
+    "selectedColor": "#e64340",
+    "borderStyle": "white",
+    "backgroundColor": "#fff",
+    "list": [
+      {
+        "pagePath": "pages/bill/bills",
+        "iconPath": "images/tabBar/bill.png",
+        "selectedIconPath": "images/tabBar/bill_select.png",
+        "text": "单据"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "iconPath": "images/tabBar/my.png",
+        "selectedIconPath": "images/tabBar/my_select.png",
+        "text": "我的"
+      },
+      {
+        "pagePath": "pages/billCount/count",
+        "iconPath": "images/tabBar/billcount.png",
+        "selectedIconPath": "images/tabBar/billcount_select.png",
+        "text": "单据汇总"
+      },
+      {
+        "pagePath": "pages/add/add",
+        "iconPath": "images/tabBar/add.png",
+        "selectedIconPath": "images/tabBar/add_select.png",
+        "text": "添加"
+      },
+      {
+        "pagePath": "pages/manage/manage",
+        "iconPath": "images/tabBar/manage.png",
+        "selectedIconPath": "images/tabBar/manage_select.png",
+        "text": "管理"
+      }
+    ]
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json"
