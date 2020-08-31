@@ -1,2 +1,6 @@
 <!--pages/bill/bills.wxml-->
+<import src="/template/login/index.wxml" />
+
 <text>pages/bill/bills.wxml</text>
+
+<template is="apifmLogin" data="{{hasUserInfo}}" />

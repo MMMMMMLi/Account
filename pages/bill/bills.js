@@ -1,13 +1,29 @@
 // pages/bill/bills.js
+const app = getApp();
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    userInfo: {},
+    hasUserInfo: false,
+    canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
-
+  processLogin(info) {
+    console.log(info)
+    app.globalData.userInfo = info.detail.userInfo
+    this.setData({
+      userInfo: info.detail.userInfo,
+      hasUserInfo: true
+    })
+  },
+  cancelLogin() {
+    this.setData({
+      hasUserInfo: true
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
