@@ -1,4 +1,4 @@
-// pages/bill/bills.js
+// 获取当前程序APP
 const app = getApp();
 
 Page({
@@ -7,10 +7,33 @@ Page({
    * 页面的初始数据
    */
   data: {
+    // 用户信息相关
     userInfo: {},
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    hasUserInfo: true,
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    // tab
+    tabs: [],
+    activeTab: 0,
   },
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad() {
+    const titles = ['当日', '三天', '七天', '全部']
+    const tabs = titles.map(item => ({title: item}))
+    this.setData({tabs})
+  },onTabCLick(e) {
+    const index = e.detail.index
+    this.setData({activeTab: index})
+  },
+
+  onChange(e) {
+    const index = e.detail.index
+    this.setData({activeTab: index})
+  },
+  /**
+   * 获取用户信息的回调函数
+   */
   processLogin(info) {
     console.log(info)
     app.globalData.userInfo = info.detail.userInfo
@@ -19,64 +42,12 @@ Page({
       hasUserInfo: true
     })
   },
+  /**
+   * 暂不登录
+   */
   cancelLogin() {
     this.setData({
       hasUserInfo: true
     })
-  },
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
   }
 })

@@ -1,6 +1,62 @@
 <!--pages/bill/bills.wxml-->
 <import src="/template/login/index.wxml" />
 
-<text>pages/bill/bills.wxml</text>
+<mp-tabs tabs="{{tabs}}" activeTab="{{activeTab}}" swiperClass="weui-tabs-swiper" bindtabclick="onTabCLick" bindchange="onChange" activeClass="tab-bar-title__selected">
+	<block wx:for="{{tabs}}" wx:key="title">
+		<view class="block-view" slot="tab-content-{{index}}">
+			<view class="tab-content" slot="tab-content-{{index}}">
+				<view class="tab-time">2020-09-01 16:02:24</view>
+				<view>未支付</view>
+			</view>
+			<view class="divLine" slot="tab-content-{{index}}"></view>
+		</view>
+    <view class="block-view" slot="tab-content-{{index}}">
+			<view class="tab-content" slot="tab-content-{{index}}">
+				<view class="tab-time">2020-09-01 16:02:24</view>
+				<view>未支付</view>
+			</view>
+			<view class="divLine" slot="tab-content-{{index}}"></view>
+		</view>
+    <view class="block-view" slot="tab-content-{{index}}">
+			<view class="tab-content" slot="tab-content-{{index}}">
+				<view class="tab-time">2020-09-01 16:02:24</view>
+				<view>未支付</view>
+			</view>
+			<view class="divLine" slot="tab-content-{{index}}"></view>
+		</view>
+    <view class="block-view" slot="tab-content-{{index}}">
+			<view class="tab-content" slot="tab-content-{{index}}">
+				<view class="tab-time">2020-09-01 16:02:24</view>
+				<view>未支付</view>
+			</view>
+			<view class="divLine" slot="tab-content-{{index}}"></view>
+		</view>
+	</block>
+</mp-tabs>
+
+
 
 <template is="apifmLogin" data="{{hasUserInfo}}" />
+
+
+	<view class="orderListDetails" slot="tab-content-{{index}}">
+				<view class="productImg">大 型 号</view>
+				<view class="productInfo">
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">毛重: 100Kg</text>
+						<text class="order-test">皮重: 50KG</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">毛重: 100Kg</text>
+						<text class="order-test">皮重: 50KG</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">毛重: 100Kg</text>
+						<text class="order-test">皮重: 50KG</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">毛重: 100Kg</text>
+						<text class="order-test">皮重: 50KG</text>
+					</view>
+				</view>
+			</view>
