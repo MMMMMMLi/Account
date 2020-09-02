@@ -114,7 +114,6 @@ Page({
   },
   onShow: function () {
     AUTH.checkHasLogined().then(isLogined => {
-      console.log(isLogined)
       if (isLogined) {
         this.doneShow();
       } else {
@@ -154,7 +153,13 @@ Page({
     }
     this.getOrderStatistics();
     that.setData({
-      orderList: null,
+      orderList: [{
+          "id": 5298,
+          "index": 1,
+          "orderNumber": 2000000,
+          "statusStr": "未支付",
+        }
+      ],
       logisticsMap: {},
       goodsMap: {}
     });

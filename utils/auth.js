@@ -26,12 +26,10 @@ async function checkHasLogined() {
   // }
 
   const code = wx.getStorageSync('code');
-  console.log("auth checkHasLogined code : ",code)
   if (!code) {
     return false
   }
   const userInfo = wx.getStorageSync('userInfo');
-  console.log("auth checkHasLogined userInfo : ",userInfo)
   if (!userInfo) {
     return false
   }
@@ -87,7 +85,6 @@ async function login(page) {
         console.log(res);
         if (res.authSetting['scope.userInfo']) {
           // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-         console.log(this.getUserInfo());
          this.getUserInfo().then(res => {
           console.log(res);
          })

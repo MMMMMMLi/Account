@@ -1,42 +1,168 @@
 <view class="container">
-  <view wx:if='{{!hasRefund}}' class="status-box">
-    <view bindtap="statusTap" class="status-label {{item.status == status ? 'active' : ''}}" wx:for="{{statusType}}" wx:key="index" data-status="{{item.status}}">
-      {{item.label}}
-      <view wx:if="{{badges[index]}}" class="weui-badge" style="position: absolute;top: 5rpx;right: 5rpx;">{{badges[index]}}</view>
-    </view>
-  </view>
-  <view class="no-order" hidden="{{orderList ? true : false}}">
-    <image src="/images/no-order.png" class="no-order-img"></image>
-    <view class="text">暂无订单</view>
-  </view>
-  <view class="order-list" hidden="{{orderList ? false : true}}">
-    <view class="a-order" wx:for="{{orderList}}" wx:key="index">
-      <navigator url="/pages/order-details/index?id={{item.id}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-        <view class="weui-cell__bd">{{item.orderNumber}}</view>
-        <view class="weui-cell__ft weui-cell__ft_in-access">{{item.statusStr}}</view>
-      </navigator>
-      <scroll-view class="goods-img-container" scroll-x="true">
-        <view class="img-box" wx:for="{{goodsMap[item.id]}}" wx:key="index">
-          <navigator url="/pages/goods-details/index?id={{item.goodsId}}"><image src="{{item.pic}}" class="goods-img"></image></navigator>
-        </view>
-      </scroll-view>
-      <view class="goods-price">
-        共 {{item.goodsNumber}} 件商品 合计：
-        <text class="p" wx:if="{{item.score <= 0}}">¥ {{item.amountReal}}</text>
-        <text class="p" wx:if="{{item.score > 0}}">¥ {{item.amountReal}} + {{item.score}} 积分</text>
-      </view>
-      <view class="goods-info">
-        <view class="goods-des">
-          <view class="remark" wx:if="{{item.remark && item.remark != ''}}">{{item.remark}}</view>
-          <view>{{item.dateAdd}} </view>
-        </view>
-      </view>
-      <view class="price-box">
-        <view class="btn" hidden="{{item.status==0? false : true}}" bindtap="cancelOrderTap" data-id="{{item.id}}">取消订单</view>
-        <view class="btn active" hidden="{{item.status==0? false : true}}" bindtap="toPayTap" data-id="{{item.id}}" data-money="{{item.amountReal}}" data-score="{{item.score}}">马上付款</view>
-        <view class="btn active" hidden="{{(item.status==0 || item.status==-1) ? true : false}}" bindtap="refundApply" data-id="{{item.id}}" data-amount='{{item.amountReal}}'>退换货</view>
-      </view>
-    </view>
-  </view>
-  <view class="safeAreaOldMarginBttom safeAreaNewMarginBttom"></view>
+	<!-- 顶部Tab栏 -->
+	<view wx:if='{{!hasRefund}}' class="status-box">
+		<view bindtap="statusTap" class="status-label {{item.status == status ? 'active' : ''}}" wx:for="{{statusType}}" wx:key="index" data-status="{{item.status}}">
+			{{item.label}}
+			<view wx:if="{{badges[index]}}" class="weui-badge" style="position: absolute;top: 5rpx;right: 5rpx;">{{badges[index]}}</view>
+		</view>
+	</view>
+	<!-- 没有订单的时候显示 -->
+	<view class="no-order" hidden="{{orderList.length > 0 ? true : false}}">
+		<image src="/images/no-order.png" class="no-order-img"></image>
+		<view class="text">暂无订单</view>
+	</view>
+	<!-- 订单列表 -->
+	<view class="order-list" hidden="{{orderList.length > 0 ? false : true}}">
+		<!-- 这个位置应该是for循环来生成的,后续补充 -->
+		<view class="a-order">
+			<view class="tab-content">
+				<view class="tab-time">2020-09-01 16:02:24</view>
+				<view>未支付</view>
+			</view>
+			<view class="divLine" />
+			<!-- 这个位置应该是for循环来生成的,后续补充 -->
+			<view class="orderList">
+				<image src="/images/big.png" class="goods-img"></image>
+				<view class="productInfo" >
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">毛重: 100Kg</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">用框: 3 个</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">品种: 西瓜红</text>
+					</view>
+				</view>
+				<view class="productInfo">
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">实重: 90Kg</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">退框: 2 个</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">单价: 1.2</text>
+					</view>
+				</view>
+			</view>
+			<view class="divLine" />
+			<!-- 这个位置应该是for循环来生成的,后续补充 -->
+			<view class="orderList">
+				<image src="/images/middle.png" class="goods-img"></image>
+							<view class="productInfo" >
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">毛重: 100Kg</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">用框: 3 个</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">品种: 西瓜红</text>
+					</view>
+				</view>
+				<view class="productInfo">
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">实重: 90Kg</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">退框: 2 个</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">单价: 1.2</text>
+					</view>
+				</view>
+			</view>
+			<view class="divLine" />
+			<!-- 这个位置应该是for循环来生成的,后续补充 -->
+			<view class="orderList">
+				<image src="/images/small.png" class="goods-img"></image>
+								<view class="productInfo" >
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">毛重: 100Kg</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">用框: 3 个</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">品种: 西瓜红</text>
+					</view>
+				</view>
+				<view class="productInfo">
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">实重: 90Kg</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">退框: 2 个</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">单价: 1.2</text>
+					</view>
+				</view>
+			</view>
+		</view>
+
+		<view class="a-order">
+			<view class="tab-content">
+				<view class="tab-time">2020-09-01 16:02:24</view>
+				<view>未支付</view>
+			</view>
+			<view class="divLine" />
+				<view class="orderList">
+				<image src="/images/big.png" class="goods-img"></image>
+							<view class="productInfo" >
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">毛重: 100Kg</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">用框: 3 个</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">品种: 西瓜红</text>
+					</view>
+				</view>
+				<view class="productInfo">
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">实重: 90Kg</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">退框: 2 个</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">单价: 1.2</text>
+					</view>
+				</view>
+
+			</view>
+			<view class="divLine" />
+			<!-- 这个位置应该是for循环来生成的,后续补充 -->
+			<view class="orderList">
+				<image src="/images/middle.png" class="goods-img"></image>
+								<view class="productInfo" >
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">毛重: 100Kg</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">用框: 3 个</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">品种: 西瓜红</text>
+					</view>
+				</view>
+				<view class="productInfo">
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">实重: 90Kg</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">退框: 2 个</text>
+					</view>
+					<view style="margin-bottom: 10rpx;">
+						<text class="order-test">单价: 1.2</text>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+
+	<view class="safeAreaOldMarginBttom safeAreaNewMarginBttom"></view>
 </view>
