@@ -1,2 +1,5 @@
 <!--pages/billCount/count.wxml-->
-<text>pages/billCount/count.wxml</text>
+
+<my-tabs items= "{{items}}" >
+
+</my-tabs>
