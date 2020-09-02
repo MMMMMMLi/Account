@@ -1,7 +1,7 @@
 <!--pages/bill/bills.wxml-->
 <import src="/template/login/index.wxml" />
 
-<mp-tabs items="{{items}}" tabs="{{tabs}}" activeTab="{{activeTab}}" swiperClass="weui-tabs-swiper" bindtabclick="onTabCLick" bindchange="onChange" activeClass="tab-bar-title__selected">
+<mp-tabs tabs="{{tabs}}" activeTab="{{activeTab}}" swiperClass="weui-tabs-swiper" bindtabclick="onTabCLick" bindchange="onChange" activeClass="tab-bar-title__selected">
 	<block wx:for="{{tabs}}" wx:key="title">
 		<view class="block-view" slot="tab-content-{{index}}">
 			<view class="tab-content" slot="tab-content-{{index}}">

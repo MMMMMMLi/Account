@@ -1,5 +1,5 @@
 {
-  "entryPagePath": "pages/billCount/count",
+  "entryPagePath": "pages/order/index",
   "pages": [
     "pages/index/index",
     "pages/logs/logs",
@@ -7,7 +7,8 @@
     "pages/my/my",
     "pages/billCount/count",
     "pages/add/add",
-    "pages/manage/manage"
+    "pages/manage/manage",
+    "pages/order/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
@@ -28,7 +29,7 @@
         "text": "单据"
       },
       {
-        "pagePath": "pages/my/my",
+        "pagePath": "pages/order/index",
         "iconPath": "images/tabBar/my.png",
         "selectedIconPath": "images/tabBar/my_select.png",
         "text": "我的"
@@ -46,7 +47,7 @@
         "text": "添加"
       },
       {
-        "pagePath": "pages/manage/manage",
+        "pagePath": "pages/index/index",
         "iconPath": "images/tabBar/manage.png",
         "selectedIconPath": "images/tabBar/manage_select.png",
         "text": "管理"
