@@ -1,11 +1,3 @@
-<view class="container">
-	<!-- 顶部Tab栏 -->
-	<view wx:if='{{!hasRefund}}' class="status-box">
-		<view bindtap="statusTap" class="status-label {{item.status == status ? 'active' : ''}}" wx:for="{{statusType}}" wx:key="index" data-status="{{item.status}}">
-			{{item.label}}
-			<view wx:if="{{badges[index]}}" class="weui-badge" style="position: absolute;top: 5rpx;right: 5rpx;">{{badges[index]}}</view>
-		</view>
-	</view>
 	<!-- 没有订单的时候显示 -->
 	<view class="no-order" hidden="{{orderList.length > 0 ? true : false}}">
 		<image src="/images/no-order.png" class="no-order-img"></image>
@@ -25,7 +17,6 @@
 				<view class="orderList">
 					<image src="{{item.imgUrl}}" class="goods-img" />
 					<view class="skill-sequence-panel-content-wrapper">
-
 						<!--横向滚动-->
 						<scroll-view class="skill-sequence-panel-content" scroll-x>
 							<view class="productInfo skill-sequence-skill-wrapper" wx:for="{{item.goods}}" wx:key="index">
@@ -45,14 +36,10 @@
 				<view class="divLine" />
 			</view>
 			<view class="goods-price">
-				<view style="padding-bottom: 10px;">
+				<view style="padding-bottom: 10px">
 					共 {{item.totalWeight *2 }}斤 商品，退框 {{item.backFrame}} 个，装框 {{item.useFrame}} 个。 合计：
 					<text class="p" >¥ {{item.totalPrice}}</text>
 				</view>
 			</view>
-
 		</view>
 	</view>
-
-	<view class="safeAreaOldMarginBttom safeAreaNewMarginBttom"></view>
-</view>

@@ -82,7 +82,63 @@ Component({
     windowWidth: 375,
     domData: [],
     textDomData: [],
-    mDataCus: []
+    mDataCus: [],
+    orderList: [{
+      "id": 5298,
+      "index": 1,
+      "orderTime": " 2020-09-03 11:15:17",
+      "orderState": "未支付",
+      "goodsNumber": 3,
+      "backFrame": 3,
+      "useFrame": 18,
+      "totalWeight": 570,
+      "totalPrice": 8000,
+    }],
+    goodsList: {
+      "5298": [{
+          "imgUrl": "/images/big.png",
+          "goods": [{
+              "name": "西 瓜 红",
+              "mao": 200,
+              "shi": 50
+            },
+            {
+              "name": "济 薯 26",
+              "mao": 300,
+              "shi": 150
+            }
+          ]
+        },
+        {
+          "imgUrl": "/images/middle.png",
+          "goods": [{
+              "name": "西 瓜 红",
+              "mao": 180,
+              "shi": 20
+            },
+            {
+              "name": "济 薯 26",
+              "mao": 200,
+              "shi": 50
+            }
+          ]
+        },
+        {
+          "imgUrl": "/images/small.png",
+          "goods": [{
+              "name": "西 瓜 红",
+              "mao": 400,
+              "shi": 250
+            },
+            {
+              "name": "济 薯 26",
+              "mao": 200,
+              "shi": 50
+            }
+          ]
+        }
+      ]
+    }
   },
 
   externalClasses: ['cus'],
@@ -91,7 +147,7 @@ Component({
    * 组件的方法列表
    */
   methods: {
-    barLeft: function(index, dom) {
+    barLeft: function (index, dom) {
       let that = this;
       this.setData({
         left: dom[index].left
@@ -103,7 +159,7 @@ Component({
         right: that.data.windowWidth - dom[index].right,
       })
     },
-    onItemTap: function(e) {
+    onItemTap: function (e) {
       const index = e.currentTarget.dataset.index;
       let str = this.data.lastIndex < index ? 'left 0.5s, right 0.2s' : 'left 0.2s, right 0.5s';
       this.setData({
@@ -118,7 +174,9 @@ Component({
         this.barLeft(index, this.data.domData);
         this.barRight(index, this.data.domData);
       }
-      this.triggerEvent('itemtap', e, { bubbles: true });
+      this.triggerEvent('itemtap', e, {
+        bubbles: true
+      });
     }
   },
 

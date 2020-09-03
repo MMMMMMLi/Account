@@ -80,12 +80,13 @@
   font-size: 26rpx;
   width: 720rpx;
   text-align: right;
-  margin-bottom: 30rpx;
+  margin-bottom: 0rpx;
 }
 
 .goods-price .p {
   font-size: 36rpx;
   color: #e64340;
+  margin-bottom: 10px;
 }
 
 .goods-info .img-box {
@@ -204,7 +205,7 @@
 }
 
 .productInfo {
-  width: 33%;
+  /* width: 33%; */
   margin-left: 20rpx;
 }
 
@@ -261,7 +262,7 @@
 }
 /*scroll-view内层*/
 .skill-sequence-skill-wrapper{
-  margin-left: 2px;
+  /* margin-left: 2px; */
   display: inline-block;
 }
 /*设置空白以保持美观*/
