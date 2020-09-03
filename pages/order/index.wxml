@@ -21,28 +21,28 @@
 			</view>
 			<view class="divLine" />
 			<!-- 这个位置应该是for循环来生成的,后续补充 -->
-			<view class="orderList">
+			<view class="orderList" scroll-x="true">
 				<image src="/images/big.png" class="goods-img"></image>
-				<view class="productInfo" >
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">毛重: 100Kg</text>
+				<view class="productInfo">
+					<view style="margin-bottom: 10rpx; margin-top: 10px;">
+						<text class="order-title">西 瓜 红</text>
 					</view>
 					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">用框: 3 个</text>
+						<text class="order-test">毛：200KG</text>
 					</view>
 					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">品种: 西瓜红</text>
+						<text class="order-test">实：100KG</text>
 					</view>
 				</view>
 				<view class="productInfo">
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">实重: 90Kg</text>
+					<view style="margin-bottom: 10rpx; margin-top: 10px;">
+						<text class="order-title">济 薯 26</text>
 					</view>
 					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">退框: 2 个</text>
+						<text class="order-test">毛：150KG</text>
 					</view>
 					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">单价: 1.2</text>
+						<text class="order-test">实：50KG</text>
 					</view>
 				</view>
 			</view>
@@ -50,26 +50,26 @@
 			<!-- 这个位置应该是for循环来生成的,后续补充 -->
 			<view class="orderList">
 				<image src="/images/middle.png" class="goods-img"></image>
-							<view class="productInfo" >
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">毛重: 100Kg</text>
+				<view class="productInfo">
+					<view style="margin-bottom: 10rpx; margin-top: 10px;">
+						<text class="order-title">西 瓜 红</text>
 					</view>
 					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">用框: 3 个</text>
+						<text class="order-test">毛：200KG</text>
 					</view>
 					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">品种: 西瓜红</text>
+						<text class="order-test">实：100KG</text>
 					</view>
 				</view>
 				<view class="productInfo">
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">实重: 90Kg</text>
+					<view style="margin-bottom: 10rpx; margin-top: 10px;">
+						<text class="order-title">济 薯 26</text>
 					</view>
 					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">退框: 2 个</text>
+						<text class="order-test">毛：150KG</text>
 					</view>
 					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">单价: 1.2</text>
+						<text class="order-test">实：50KG</text>
 					</view>
 				</view>
 			</view>
@@ -77,89 +77,54 @@
 			<!-- 这个位置应该是for循环来生成的,后续补充 -->
 			<view class="orderList">
 				<image src="/images/small.png" class="goods-img"></image>
-								<view class="productInfo" >
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">毛重: 100Kg</text>
-					</view>
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">用框: 3 个</text>
-					</view>
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">品种: 西瓜红</text>
-					</view>
-				</view>
-				<view class="productInfo">
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">实重: 90Kg</text>
-					</view>
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">退框: 2 个</text>
-					</view>
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">单价: 1.2</text>
-					</view>
-				</view>
-			</view>
-		</view>
+				<view class="skill-sequence-panel-content-wrapper">
+					<!--左边虚化-->
+					<view class="hide-content-box hide-content-box-left"></view>
+					<!--右边虚化-->
+					<view class="hide-content-box hide-content-box-right"></view>
+					<!--横向滚动-->
+					<scroll-view class="skill-sequence-panel-content" scroll-x>
+						<view class="productInfo skill-sequence-skill-wrapper">
+							<view style="margin-bottom: 10rpx; margin-top: 10px;">
+								<text class="order-title">西 瓜 红</text>
+							</view>
+							<view style="margin-bottom: 10rpx;">
+								<text class="order-test">毛：200KG</text>
+							</view>
+							<view style="margin-bottom: 10rpx;">
+								<text class="order-test">实：100KG</text>
+							</view>
+						</view>
+					
+						<view class="productInfo skill-sequence-skill-wrapper">
+							<view style="margin-bottom: 10rpx; margin-top: 10px;">
+								<text class="order-title">济 薯 26</text>
+							</view>
+							<view style="margin-bottom: 10rpx;">
+								<text class="order-test">毛：150KG</text>
+							</view>
+							<view style="margin-bottom: 10rpx;">
+								<text class="order-test">实：50KG</text>
+							</view>
+						</view>
+			
+						<view class="productInfo skill-sequence-skill-wrapper">
+							<view style="margin-bottom: 10rpx; margin-top: 10px;">
+								<text class="order-title">济 薯 26</text>
+							</view>
+							<view style="margin-bottom: 10rpx;">
+								<text class="order-test">毛：150KG</text>
+							</view>
+							<view style="margin-bottom: 10rpx;">
+								<text class="order-test">实：50KG</text>
+							</view>
+						</view>
+					
+					
 
-		<view class="a-order">
-			<view class="tab-content">
-				<view class="tab-time">2020-09-01 16:02:24</view>
-				<view>未支付</view>
-			</view>
-			<view class="divLine" />
-				<view class="orderList">
-				<image src="/images/big.png" class="goods-img"></image>
-							<view class="productInfo" >
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">毛重: 100Kg</text>
-					</view>
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">用框: 3 个</text>
-					</view>
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">品种: 西瓜红</text>
-					</view>
-				</view>
-				<view class="productInfo">
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">实重: 90Kg</text>
-					</view>
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">退框: 2 个</text>
-					</view>
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">单价: 1.2</text>
-					</view>
+					</scroll-view>
 				</view>
 
-			</view>
-			<view class="divLine" />
-			<!-- 这个位置应该是for循环来生成的,后续补充 -->
-			<view class="orderList">
-				<image src="/images/middle.png" class="goods-img"></image>
-								<view class="productInfo" >
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">毛重: 100Kg</text>
-					</view>
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">用框: 3 个</text>
-					</view>
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">品种: 西瓜红</text>
-					</view>
-				</view>
-				<view class="productInfo">
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">实重: 90Kg</text>
-					</view>
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">退框: 2 个</text>
-					</view>
-					<view style="margin-bottom: 10rpx;">
-						<text class="order-test">单价: 1.2</text>
-					</view>
-				</view>
 			</view>
 		</view>
 	</view>

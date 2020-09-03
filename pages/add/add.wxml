@@ -1,2 +1,12 @@
-<!--pages/add/add.wxml-->
-<text>pages/add/add.wxml</text>
+<view class="skill-sequence-panel-content-wrapper"> 
+    <!--左边虚化-->
+    <view class="hide-content-box hide-content-box-left"></view>
+    <!--右边虚化-->
+    <view class="hide-content-box hide-content-box-right"></view>
+    <!--横向滚动-->
+    <scroll-view class="skill-sequence-panel-content" scroll-x>
+        <view class="skill-sequence-skill-wrapper">
+            hhhhhhhhhhhhhhhhhhhhhh
+        </view>
+    </scroll-view>
+</view>
