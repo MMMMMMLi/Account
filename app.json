@@ -26,19 +26,19 @@
         "pagePath": "pages/bill/bills",
         "iconPath": "images/tabBar/bill.png",
         "selectedIconPath": "images/tabBar/bill_select.png",
-        "text": "单据"
+        "text": "订单列表A"
       },
       {
         "pagePath": "pages/order/index",
         "iconPath": "images/tabBar/my.png",
         "selectedIconPath": "images/tabBar/my_select.png",
-        "text": "我的"
+        "text": "订单列表B"
       },
       {
         "pagePath": "pages/billCount/count",
         "iconPath": "images/tabBar/billcount.png",
         "selectedIconPath": "images/tabBar/billcount_select.png",
-        "text": "单据汇总"
+        "text": "订单列表C"
       },
       {
         "pagePath": "pages/add/add",

@@ -2,6 +2,7 @@ const themes = {
   smallBar: 'smallBar'
 }
 
+
 Component({
   /**
    * 组件的属性列表
