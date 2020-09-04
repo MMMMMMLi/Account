@@ -1,9 +1,8 @@
 {
-  "entryPagePath": "pages/bill/bills",
+  "entryPagePath": "pages/order/index",
   "pages": [
     "pages/index/index",
     "pages/logs/logs",
-    "pages/bill/bills",
     "pages/my/my",
     "pages/billCount/count",
     "pages/add/add",
@@ -23,22 +22,22 @@
     "backgroundColor": "#fff",
     "list": [
       {
-        "pagePath": "pages/bill/bills",
+        "pagePath": "pages/order/index",
         "iconPath": "images/tabBar/bill.png",
         "selectedIconPath": "images/tabBar/bill_select.png",
-        "text": "订单列表A"
+        "text": "订单列表"
       },
       {
-        "pagePath": "pages/order/index",
+        "pagePath": "pages/my/my",
         "iconPath": "images/tabBar/my.png",
         "selectedIconPath": "images/tabBar/my_select.png",
-        "text": "订单列表B"
+        "text": "我的"
       },
       {
         "pagePath": "pages/billCount/count",
         "iconPath": "images/tabBar/billcount.png",
         "selectedIconPath": "images/tabBar/billcount_select.png",
-        "text": "订单列表C"
+        "text": "订单汇总"
       },
       {
         "pagePath": "pages/add/add",

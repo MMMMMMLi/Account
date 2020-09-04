@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "订单列表",
-  "usingComponents": {
-    "mp-tabs": "../../components/tab/index",
-    "pazi-order":"/components/orderList/index"
-  }
-}

@@ -1,6 +1,0 @@
-<mp-tabs tabs="{{tabs}}" activeTab="{{activeTab}}" swiperClass="weui-tabs-swiper" bindtabclick="onTabCLick" bindchange="onChange" activeClass="tab-bar-title__selected">
-	<block wx:for="{{tabs}}" wx:key="title">
-		<pazi-order orderList="{{orderList}}" goodsList="{{goodsList}}" slot="tab-content-{{index}}">
-		</pazi-order>
-	</block>
-</mp-tabs>

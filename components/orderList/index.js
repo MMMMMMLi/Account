@@ -5,7 +5,8 @@ Component({
    */
   properties: {
     orderList:{type:Array,value:''},
-    goodsList:{type:Map,value:''}
+    goodsList:{type:Map,value:''},
+    windowHeight:{type:Number,value:'1000'}
   },
 
   /**

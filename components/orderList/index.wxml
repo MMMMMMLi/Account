@@ -5,41 +5,42 @@
 	</view>
 	<!-- 订单列表 -->
 	<view class="order-list" hidden="{{orderList.length > 0 ? false : true}}">
-		<!-- 这个位置应该是for循环来生成的,后续补充 -->
-		<view class="a-order" wx:for="{{orderList}}" wx:key="index">
-			<view class="tab-content">
-				<view class="tab-time">{{item.orderTime}}</view>
-				<view>{{item.orderState}}</view>
-			</view>
-			<view class="divLine" />
-			<!-- 这个位置应该是for循环来生成的,后续补充 -->
-			<view wx:for="{{goodsList[item.id]}}" wx:key="index">
-				<view class="orderList">
-					<image src="{{item.imgUrl}}" class="goods-img" />
-					<view class="skill-sequence-panel-content-wrapper">
-						<!--横向滚动-->
-						<scroll-view class="skill-sequence-panel-content" scroll-x>
-							<view class="productInfo skill-sequence-skill-wrapper" wx:for="{{item.goods}}" wx:key="index">
-								<view style="margin-bottom: 10rpx; margin-top: 5px;">
-									<text class="order-title">{{item.name}}</text>
-								</view>
-								<view style="margin-bottom: 10rpx;">
-									<text class="order-test">毛：{{item.mao}}KG</text>
-								</view>
-								<view style="margin-bottom: 10rpx;">
-									<text class="order-test">实：{{item.shi}}KG</text>
-								</view>
+		<view class="page-section-spacing">
+				<view class="a-order" wx:for="{{orderList}}" wx:key="index">
+					<view class="tab-content">
+						<view class="tab-time">{{item.orderTime}}</view>
+						<view>{{item.orderState}}</view>
+					</view>
+					<view class="divLine" />
+					<!-- 这个位置应该是for循环来生成的,后续补充 -->
+					<view wx:for="{{goodsList[item.id]}}" wx:key="index">
+						<view class="orderList">
+							<image src="{{item.imgUrl}}" class="goods-img" />
+							<view class="skill-sequence-panel-content-wrapper">
+								<!--横向滚动-->
+								<scroll-view class="skill-sequence-panel-content" scroll-x>
+									<view class="productInfo skill-sequence-skill-wrapper" wx:for="{{item.goods}}" wx:key="index">
+										<view style="margin-bottom: 10rpx; margin-top: 5px;">
+											<text class="order-title">{{item.name}}</text>
+										</view>
+										<view style="margin-bottom: 10rpx;">
+											<text class="order-test">毛：{{item.mao}}KG</text>
+										</view>
+										<view style="margin-bottom: 10rpx;">
+											<text class="order-test">实：{{item.shi}}KG</text>
+										</view>
+									</view>
+								</scroll-view>
 							</view>
-						</scroll-view>
+						</view>
+						<view class="divLine" />
+					</view>
+					<view class="goods-price">
+						<view style="padding-bottom: 10px">
+							共 {{item.totalWeight *2 }}斤 商品，退框 {{item.backFrame}} 个，装框 {{item.useFrame}} 个。 合计：
+							<text class="p" >¥ {{item.totalPrice}}</text>
+						</view>
 					</view>
 				</view>
-				<view class="divLine" />
-			</view>
-			<view class="goods-price">
-				<view style="padding-bottom: 10px">
-					共 {{item.totalWeight *2 }}斤 商品，退框 {{item.backFrame}} 个，装框 {{item.useFrame}} 个。 合计：
-					<text class="p" >¥ {{item.totalPrice}}</text>
-				</view>
-			</view>
 		</view>
 	</view>

@@ -1,6 +1,6 @@
 {
   "navigationBarTitleText":"订单列表",
   "usingComponents": {
-    "my-tabs" : "../../components/tabs/index"
+   
   }
 }

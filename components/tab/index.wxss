@@ -6,7 +6,7 @@
 
 .weui-tabs-bar__wrp {
   width: 100%;
-  background: #fff
+  background: #fff;
 }
 
 .weui-tabs-bar__content {
