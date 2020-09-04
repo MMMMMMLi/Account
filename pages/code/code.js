@@ -17,3 +17,14 @@ if (isLogined) {
     }
   })
 }
+
+
+
+// 防止连续点击--开始
+// if (this.data.payButtonClicked) {
+//   wx.showToast({
+//     title: '休息一下~',
+//     icon: 'none'
+//   })
+//   return
+// }

@@ -6,24 +6,42 @@ Page({
   data: {
     statusType: [{
         status: 0,
-        label: '今日订单'
+        label: '今日'
       },
       {
         status: 1,
-        label: '三天内订单'
+        label: '三天'
       },
       {
         status: 2,
-        label: '一周内订单'
+        label: '一周'
       },
       {
         status: 9999,
-        label: '全部订单'
+        label: '全部'
       },
     ],
     status: 0,
-    hasRefund: false,
-    badges: [0, 0, 0, 0, 0]
+    currentTab: 0,
+    goodsList: {},
+    orderList: []
+  },
+  swichNav: function (e) {
+    console.log(e);
+    var that = this;
+    if (this.data.currentTab === e.target.dataset.current) {
+      return false;
+    } else {
+      that.setData({
+        currentTab: e.target.dataset.current,
+      })
+    }
+  },
+  swiperChange: function (e) {
+    console.log(e);
+    this.setData({
+      currentTab: e.detail.current,
+    })
   },
   statusTap: function (e) {
     const status = e.currentTarget.dataset.status;
@@ -45,73 +63,17 @@ Page({
       }
     })
   },
-  refundApply(e) {
-    // 申请售后
-    const orderId = e.currentTarget.dataset.id;
-    const amount = e.currentTarget.dataset.amount;
-    wx.navigateTo({
-      url: "/pages/order/refundApply?id=" + orderId + "&amount=" + amount
-    })
-  },
-  toPayTap: function (e) {
-    // 防止连续点击--开始
-    if (this.data.payButtonClicked) {
-      wx.showToast({
-        title: '休息一下~',
-        icon: 'none'
+  onLoad: function () {
+    mock.mockData().then(mockData => {
+      this.setData({
+        orderList: mockData.orderList,
+        goodsList: mockData.goodsList
       })
-      return
-    }
-    this.data.payButtonClicked = true
-    setTimeout(() => {
-      this.data.payButtonClicked = false
-    }, 3000) // 可自行修改时间间隔（目前是3秒内只能点击一次支付按钮）
-    // 防止连续点击--结束
-    const that = this;
-    const orderId = e.currentTarget.dataset.id;
-    let money = e.currentTarget.dataset.money;
-    const needScore = e.currentTarget.dataset.score;
-    wx.showToast({
-      title: '您的积分不足，无法支付',
-      icon: 'none'
-    })
-    return;
-
-  },
-  _toPayTap: function (orderId, money) {
-    const _this = this
-
-  },
-  onLoad: function (options) {
-    if (options && options.type) {
-      if (options.type == 99) {
-        this.setData({
-          hasRefund: true
-        });
-      } else {
-        this.setData({
-          status: options.type
-        });
-      }
-    }
+    });
   },
   onReady: function () {
     // 生命周期函数--监听页面初次渲染完成
 
-  },
-  getOrderStatistics() {
-    // WXAPI.orderStatistics(wx.getStorageSync('token')).then(res => {
-    if (0 == 0) {
-      const badges = this.data.badges;
-      // badges[1] = res.data.count_id_no_pay
-      // badges[2] = res.data.count_id_no_transfer
-      // badges[3] = res.data.count_id_no_confirm
-      // badges[4] = res.data.count_id_no_reputation
-      this.setData({
-        badges
-      })
-    }
-    // })
   },
   onShow: function () {
     AUTH.checkHasLogined().then(isLogined => {
@@ -145,20 +107,10 @@ Page({
     var postData = {
       token: wx.getStorageSync('token')
     };
-    if (this.data.hasRefund) {
-      postData.hasRefund = true
-    }
-    if (!postData.hasRefund) {
-      postData.status = that.data.status;
-    }
-    if (postData.status == 9999) {
-      postData.status = ''
-    }
-    this.getOrderStatistics();
     mock.mockData().then(mockData => {
       that.setData({
-        orderList : mockData.orderList,
-        goodsList : mockData.goodsList
+        orderList: mockData.orderList,
+        goodsList: mockData.goodsList
       })
     });
   },

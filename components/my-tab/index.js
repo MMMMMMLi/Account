@@ -1,19 +1,17 @@
-// components/orderList/index.js
+// components/my-tab/index.js
 Component({
   /**
    * 组件的属性列表
    */
   properties: {
-    orderList:{type:Array,value:''},
-    goodsList:{type:Map,value:''},
+
   },
 
   /**
    * 组件的初始数据
    */
   data: {
-    orderList:[],
-    goodsList:{}
+
   },
 
   /**

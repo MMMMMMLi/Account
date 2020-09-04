@@ -1,58 +1,41 @@
+<view class="swiper-tab">
+	<view class="tab-item {{currentTab == item.status ? 'on' : ''}}" wx:for="{{statusType}}" wx:key="index" data-current="{{item.status}}" bindtap="swichNav">
+		{{item.label}}
+	</view>
+</view>
+
+<swiper class="swiper" style="height:{{orderList.length * 425}}px" current="{{currentTab}}" duration="200" bindchange="swiperChange">
+	<swiper-item>
+		<my-orderList orderList="{{orderList}}" goodsList="{{goodsList}}">
+		</my-orderList>
+	</swiper-item>
+	<swiper-item >
+		<my-orderList orderList="{{orderList}}" goodsList="{{goodsList}}">
+		</my-orderList>
+	</swiper-item>
+	<swiper-item >
+		<my-orderList orderList="{{orderList}}" goodsList="{{goodsList}}">
+		</my-orderList>
+	</swiper-item>
+	<swiper-item>
+		<my-orderList orderList="{{orderList}}" goodsList="{{goodsList}}">
+		</my-orderList>
+	</swiper-item>
+</swiper>
+
+
+
+
+
+
 <view class="container">
 	<!-- 顶部Tab栏 -->
-	<view wx:if='{{!hasRefund}}' class="status-box">
+	<view class="status-box">
 		<view bindtap="statusTap" class="status-label {{item.status == status ? 'active' : ''}}" wx:for="{{statusType}}" wx:key="index" data-status="{{item.status}}">
 			{{item.label}}
-			<view wx:if="{{badges[index]}}" class="weui-badge" style="position: absolute;top: 5rpx;right: 5rpx;">{{badges[index]}}</view>
 		</view>
-	</view>
-	<!-- 没有订单的时候显示 -->
-	<view class="no-order" hidden="{{orderList.length > 0 ? true : false}}">
-		<image src="/images/no-order.png" class="no-order-img"></image>
-		<view class="text">暂无订单</view>
 	</view>
 	<!-- 订单列表 -->
-	<view class="order-list" hidden="{{orderList.length > 0 ? false : true}}">
-		<!-- 这个位置应该是for循环来生成的,后续补充 -->
-		<view class="a-order" wx:for="{{orderList}}" wx:key="index">
-			<view class="tab-content">
-				<view class="tab-time">{{item.orderTime}}</view>
-				<view>{{item.orderState}}</view>
-			</view>
-			<view class="divLine" />
-			<!-- 这个位置应该是for循环来生成的,后续补充 -->
-			<view wx:for="{{goodsList[item.id]}}" wx:key="index">
-				<view class="orderList">
-					<image src="{{item.imgUrl}}" class="goods-img" />
-					<view class="skill-sequence-panel-content-wrapper">
-
-						<!--横向滚动-->
-						<scroll-view class="skill-sequence-panel-content" scroll-x>
-							<view class="productInfo skill-sequence-skill-wrapper" wx:for="{{item.goods}}" wx:key="index">
-								<view style="margin-bottom: 10rpx; margin-top: 5px;">
-									<text class="order-title">{{item.name}}</text>
-								</view>
-								<view style="margin-bottom: 10rpx;">
-									<text class="order-test">毛：{{item.mao}}KG</text>
-								</view>
-								<view style="margin-bottom: 10rpx;">
-									<text class="order-test">实：{{item.shi}}KG</text>
-								</view>
-							</view>
-						</scroll-view>
-					</view>
-				</view>
-				<view class="divLine" />
-			</view>
-			<view class="goods-price">
-				<view style="padding-bottom: 10px;">
-					共 {{item.totalWeight *2 }}斤 商品，退框 {{item.backFrame}} 个，装框 {{item.useFrame}} 个。 合计：
-					<text class="p" >¥ {{item.totalPrice}}</text>
-				</view>
-			</view>
-
-		</view>
-	</view>
-
-	<view class="safeAreaOldMarginBttom safeAreaNewMarginBttom"></view>
+	<my-orderList orderList="{{orderList}}" goodsList="{{goodsList}}">
+	</my-orderList>
 </view>

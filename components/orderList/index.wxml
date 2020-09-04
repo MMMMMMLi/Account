@@ -9,7 +9,7 @@
 				<view class="a-order" wx:for="{{orderList}}" wx:key="index">
 					<view class="tab-content">
 						<view class="tab-time">{{item.orderTime}}</view>
-						<view>{{item.orderState}}</view>
+						<view class="tab-status" >{{item.orderState}}</view>
 					</view>
 					<view class="divLine" />
 					<!-- 这个位置应该是for循环来生成的,后续补充 -->
