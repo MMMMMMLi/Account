@@ -49,9 +49,9 @@ Page({
   },
 
   onLoad: function () {
-    AUTH.getOrderList().then(res => {
-      console.log(res)
-    })
+    // AUTH.getOrderList().then(res => {
+    //   console.log(res)
+    // })
   },
   onReady: function () {
     // 生命周期函数--监听页面初次渲染完成
