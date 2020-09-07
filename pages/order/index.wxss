@@ -2,6 +2,7 @@
   width: 100%;
   background-color: #F2f2f2;
   padding: 0px;
+  /* display: none; */
 }
 
 .status-box {
@@ -62,3 +63,10 @@
   color: #e64340;
   border-bottom: 6rpx solid #e64340;
 }
+
+.load-more-wrap .load-content{
+  text-align: center;
+  margin:30px auto 30px;
+  color:#ccc;
+  font-size: 15px;
+ }

@@ -20,8 +20,7 @@
     "selectedColor": "#1296db",
     "borderStyle": "white",
     "backgroundColor": "#fff",
-    "list": [
-      {
+    "list": [{
         "pagePath": "pages/order/index",
         "iconPath": "images/tabBar/bill.png",
         "selectedIconPath": "images/tabBar/bill_select.png",

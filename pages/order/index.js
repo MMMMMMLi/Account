@@ -24,7 +24,9 @@ Page({
     status: 0,
     currentTab: 0,
     goodsList: {},
-    orderList: []
+    orderList: [],
+    hasMore:true,
+    total:0
   },
   swichNav: function (e) {
     console.log(e);
@@ -35,45 +37,22 @@ Page({
       that.setData({
         currentTab: e.target.dataset.current,
       })
+      // 此处改成动态获取数据
+      mock.mockData().then(mockData => {
+        this.setData({
+          orderList: mockData.orderList,
+          goodsList: mockData.goodsList
+        })
+      });
+
     }
   },
-  swiperChange: function (e) {
-    console.log(e);
-    this.setData({
-      currentTab: e.detail.current,
-    })
-  },
-  statusTap: function (e) {
-    const status = e.currentTarget.dataset.status;
-    this.setData({
-      status
-    });
-    this.onShow();
-  },
-  cancelOrderTap: function (e) {
-    const that = this;
-    const orderId = e.currentTarget.dataset.id;
-    wx.showModal({
-      title: '确定要取消该订单吗？',
-      content: '',
-      success: function (res) {
-        if (res.confirm) {
-          console.log("cancelOrderTap....")
-        }
-      }
-    })
-  },
+
   onLoad: function () {
-    mock.mockData().then(mockData => {
-      this.setData({
-        orderList: mockData.orderList,
-        goodsList: mockData.goodsList
-      })
-    });
+
   },
   onReady: function () {
     // 生命周期函数--监听页面初次渲染完成
-
   },
   onShow: function () {
     AUTH.checkHasLogined().then(isLogined => {
@@ -107,6 +86,7 @@ Page({
     var postData = {
       token: wx.getStorageSync('token')
     };
+    // 动态获取数据
     mock.mockData().then(mockData => {
       that.setData({
         orderList: mockData.orderList,
@@ -127,7 +107,69 @@ Page({
 
   },
   onReachBottom: function () {
-    // 页面上拉触底事件的处理函数
-
+     // 页面上拉触底事件的处理函数
+    console.log(".................到底了......")
+    //加载提示
+    wx.showLoading({
+      title: '加载中',
+    })
+    let that = this;
+    let total = that.data.total + 1;
+    if(total > 3) {
+      this.setData({
+        hasMore: false,
+        total:total
+      })
+      wx.hideLoading();
+      return;
+    }
+    // 动态获取数据
+    mock.mockThreeData().then(mockData => {
+      wx.hideLoading();
+      that.setData({
+        orderList: that.data.orderList.concat(mockData.orderList),
+        goodsList: Object.assign(that.data.goodsList, mockData.goodsList),
+        total:total
+      })
+    });
   }
 })
+
+// 滑动详情页相关方法
+// swiperChange: function (e) {
+//   console.log(e);
+//   this.setData({
+//     currentTab: e.detail.current,
+//   })
+//   this.setData({
+//     goodsList: {},
+//     orderList: []
+//   })
+//   mock.mockData().then(mockData => {
+//     this.setData({
+//       orderList: mockData.orderList,
+//       goodsList: mockData.goodsList
+//     })
+//   });
+
+// },
+// statusTap: function (e) {
+//   const status = e.currentTarget.dataset.status;
+//   this.setData({
+//     status
+//   });
+//   this.onShow();
+// },
+// cancelOrderTap: function (e) {
+//   const that = this;
+//   const orderId = e.currentTarget.dataset.id;
+//   wx.showModal({
+//     title: '确定要取消该订单吗？',
+//     content: '',
+//     success: function (res) {
+//       if (res.confirm) {
+//         console.log("cancelOrderTap....")
+//       }
+//     }
+//   })
+// },

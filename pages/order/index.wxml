@@ -1,41 +1,61 @@
+<!-- 顶部Tab栏 -->
 <view class="swiper-tab">
 	<view class="tab-item {{currentTab == item.status ? 'on' : ''}}" wx:for="{{statusType}}" wx:key="index" data-current="{{item.status}}" bindtap="swichNav">
 		{{item.label}}
 	</view>
 </view>
-
-<swiper class="swiper" style="height:{{orderList.length * 425}}px" current="{{currentTab}}" duration="200" bindchange="swiperChange">
-	<swiper-item>
-		<my-orderList orderList="{{orderList}}" goodsList="{{goodsList}}">
-		</my-orderList>
-	</swiper-item>
-	<swiper-item >
-		<my-orderList orderList="{{orderList}}" goodsList="{{goodsList}}">
-		</my-orderList>
-	</swiper-item>
-	<swiper-item >
-		<my-orderList orderList="{{orderList}}" goodsList="{{goodsList}}">
-		</my-orderList>
-	</swiper-item>
-	<swiper-item>
-		<my-orderList orderList="{{orderList}}" goodsList="{{goodsList}}">
-		</my-orderList>
-	</swiper-item>
-</swiper>
-
-
-
-
-
-
 <view class="container">
-	<!-- 顶部Tab栏 -->
-	<view class="status-box">
-		<view bindtap="statusTap" class="status-label {{item.status == status ? 'active' : ''}}" wx:for="{{statusType}}" wx:key="index" data-status="{{item.status}}">
-			{{item.label}}
-		</view>
-	</view>
 	<!-- 订单列表 -->
 	<my-orderList orderList="{{orderList}}" goodsList="{{goodsList}}">
 	</my-orderList>
+	<view class="load-more-wrap">
+		<block wx:if="{{hasMore}}">
+			<view class="load-content">
+				<text class="weui-loading"/><text class="loading-text">玩命加载中</text>
+			</view>
+		</block>
+		<!-- 否则显示没有更多内容了 -->
+		<block wx:else>
+			<view class="load-content">
+				<text>没有更多内容了</text>
+			</view>
+		</block>
+	</view>
 </view>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 滑动组件,没有搞定. -->
+<!-- <swiper class="swiper" style="height:{{orderList.length * 430}}px" current="{{currentTab}}" duration="500" bindchange="swiperChange">
+	<swiper-item>
+		<my-orderList orderList="{{orderList}}" goodsList="{{goodsList}}">
+		</my-orderList>
+	</swiper-item>
+	<swiper-item>
+		<my-orderList orderList="{{orderList}}" goodsList="{{goodsList}}">
+		</my-orderList>
+	</swiper-item>
+	<swiper-item>
+		<my-orderList orderList="{{orderList}}" goodsList="{{goodsList}}">
+		</my-orderList>
+	</swiper-item>
+	<swiper-item>
+		<my-orderList orderList="{{orderList}}" goodsList="{{goodsList}}">
+		</my-orderList>
+	</swiper-item>
+</swiper> -->
