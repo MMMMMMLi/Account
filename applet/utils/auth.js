@@ -91,5 +91,5 @@ module.exports = {
   checkHasLogined: checkHasLogined,
   getUserInfo: getUserInfo,
   login: login,
-  getOrderList:getOrderList
+  // getOrderList:getOrderList
 }
