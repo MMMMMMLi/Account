@@ -36,6 +36,20 @@ public class UserEntity {
         this.openId = openId;
     }
 
+    public UserEntity(String openId, Long lastLoginTimeStamp, Long sessionKeyTimeStamp) {
+        this.openId = openId;
+        this.lastLoginTimeStamp = lastLoginTimeStamp;
+        this.sessionKeyTimeStamp = sessionKeyTimeStamp;
+    }
+
+    public UserEntity(String openId, String unionId, Long lastLoginTimeStamp, String sessionKey, Long sessionKeyTimeStamp) {
+        this.openId = openId;
+        this.unionId = unionId;
+        this.lastLoginTimeStamp = lastLoginTimeStamp;
+        this.sessionKey = sessionKey;
+        this.sessionKeyTimeStamp = sessionKeyTimeStamp;
+    }
+
     public String getOpenId() {
         return openId;
     }

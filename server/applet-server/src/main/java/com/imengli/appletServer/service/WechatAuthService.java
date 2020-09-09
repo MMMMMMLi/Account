@@ -28,9 +28,6 @@ public class WechatAuthService {
     @Value("${applet.wechatAuthUri}")
     private String wechatAuthUri;
 
-    // 存储OpenId
-    // public static final InheritableThreadLocal<String> inheritableThreadLocal = new InheritableThreadLocal<>();
-
     @Autowired
     private UserRepostory userRepostory;
 
@@ -55,7 +52,6 @@ public class WechatAuthService {
         }
         // 格式化为User对象
         WechatAuthEntity wechatAuthEntity = JSON.parseObject(openid, WechatAuthEntity.class);
-        LOG.info(" >>>>>> wechatAuthEntity : {}", wechatAuthEntity);
         // 判断是否获取正常
         if (StringUtils.isAllEmpty(wechatAuthEntity.getErrcode(), wechatAuthEntity.getErrmsg())
                 && StringUtils.isNoneEmpty(wechatAuthEntity.getOpenId(), wechatAuthEntity.getSessionKey())) {
@@ -65,29 +61,20 @@ public class WechatAuthService {
             userEntity = userRepostory.getUserEntityByOpenId(openId);
             if (userEntity == null) {
                 // 用户之前没有登陆过,则添加用户并继续获取用户详情信息
-                userEntity = new UserEntity();
-                userEntity.setOpenId(openId);
-                userEntity.setUnionId(wechatAuthEntity.getUnionId());
-                userEntity.setLastLoginTimeStamp(lastLoginTimeStamp);
-                userEntity.setSessionKey(wechatAuthEntity.getSessionKey());
-                userEntity.setSessionKeyTimeStamp(lastLoginTimeStamp);
+                userEntity = new UserEntity(
+                        openId, wechatAuthEntity.getUnionId(), lastLoginTimeStamp, wechatAuthEntity.getSessionKey(), lastLoginTimeStamp);
                 // 保存一下基本信息
                 userRepostory.saveUserEntity(userEntity);
-                // inheritableThreadLocal.set(openId);
-                // new Thread(() -> {
-                //    String openiD = inheritableThreadLocal.get();
-                // }).start();
             } else {
                 // 用户之前登陆过,则更新一下登陆时间
-                UserEntity updateEntity = new UserEntity(userEntity.getOpenId());
-                updateEntity.setLastLoginTimeStamp(lastLoginTimeStamp);
+                UserEntity updateEntity = new UserEntity(userEntity.getOpenId(), lastLoginTimeStamp, lastLoginTimeStamp);
                 // 如果Session_key相同,则不用更新
                 if (!wechatAuthEntity.getSessionKey().equals(userEntity.getSessionKey())) {
                     // 如果不同,则更新一下
                     updateEntity.setSessionKey(wechatAuthEntity.getSessionKey());
-                    updateEntity.setSessionKeyTimeStamp(lastLoginTimeStamp);
                 }
                 userRepostory.updateUserEntity(updateEntity);
+                userEntity = userRepostory.getUserEntityByOpenId(openId);
             }
         }
         return userEntity;
