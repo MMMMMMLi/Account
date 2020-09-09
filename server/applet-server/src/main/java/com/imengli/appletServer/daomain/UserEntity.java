@@ -23,11 +23,6 @@ public class UserEntity {
     // 最后一次登陆时间
     private Long lastLoginTimeStamp;
 
-    // 用户SessionKey
-    private String sessionKey;
-
-    // SessionKey保存的时间
-    private Long sessionKeyTimeStamp;
 
     public UserEntity() {
     }
@@ -36,18 +31,15 @@ public class UserEntity {
         this.openId = openId;
     }
 
-    public UserEntity(String openId, Long lastLoginTimeStamp, Long sessionKeyTimeStamp) {
+    public UserEntity(String openId, Long lastLoginTimeStamp) {
         this.openId = openId;
         this.lastLoginTimeStamp = lastLoginTimeStamp;
-        this.sessionKeyTimeStamp = sessionKeyTimeStamp;
     }
 
-    public UserEntity(String openId, String unionId, Long lastLoginTimeStamp, String sessionKey, Long sessionKeyTimeStamp) {
+    public UserEntity(String openId, String unionId, Long lastLoginTimeStamp) {
         this.openId = openId;
         this.unionId = unionId;
         this.lastLoginTimeStamp = lastLoginTimeStamp;
-        this.sessionKey = sessionKey;
-        this.sessionKeyTimeStamp = sessionKeyTimeStamp;
     }
 
     public String getOpenId() {
@@ -98,19 +90,4 @@ public class UserEntity {
         this.lastLoginTimeStamp = lastLoginTimeStamp;
     }
 
-    public String getSessionKey() {
-        return sessionKey;
-    }
-
-    public void setSessionKey(String sessionKey) {
-        this.sessionKey = sessionKey;
-    }
-
-    public Long getSessionKeyTimeStamp() {
-        return sessionKeyTimeStamp;
-    }
-
-    public void setSessionKeyTimeStamp(Long sessionKeyTimeStamp) {
-        this.sessionKeyTimeStamp = sessionKeyTimeStamp;
-    }
 }

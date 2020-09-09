@@ -62,17 +62,12 @@ public class WechatAuthService {
             if (userEntity == null) {
                 // 用户之前没有登陆过,则添加用户并继续获取用户详情信息
                 userEntity = new UserEntity(
-                        openId, wechatAuthEntity.getUnionId(), lastLoginTimeStamp, wechatAuthEntity.getSessionKey(), lastLoginTimeStamp);
+                        openId, wechatAuthEntity.getUnionId(), lastLoginTimeStamp);
                 // 保存一下基本信息
                 userRepostory.saveUserEntity(userEntity);
             } else {
                 // 用户之前登陆过,则更新一下登陆时间
-                UserEntity updateEntity = new UserEntity(userEntity.getOpenId(), lastLoginTimeStamp, lastLoginTimeStamp);
-                // 如果Session_key相同,则不用更新
-                if (!wechatAuthEntity.getSessionKey().equals(userEntity.getSessionKey())) {
-                    // 如果不同,则更新一下
-                    updateEntity.setSessionKey(wechatAuthEntity.getSessionKey());
-                }
+                UserEntity updateEntity = new UserEntity(userEntity.getOpenId(), lastLoginTimeStamp);
                 userRepostory.updateUserEntity(updateEntity);
                 userEntity = userRepostory.getUserEntityByOpenId(openId);
             }
