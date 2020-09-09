@@ -25,12 +25,6 @@ public class MineUpdateProvider extends SQL {
             if (userEntity.getLastLoginTimeStamp() != null) {
                 SET("lastLoginTimeStamp= #{userEntity.lastLoginTimeStamp}");
             }
-            if (userEntity.getSessionKey() != null) {
-                SET("sessionKey= #{userEntity.sessionKey}");
-            }
-            if (userEntity.getSessionKeyTimeStamp() != null) {
-                SET("sessionKeyTimeStamp= #{userEntity.sessionKeyTimeStamp}");
-            }
             WHERE("openId = #{userEntity.openId}");
         }}.toString();
     }
