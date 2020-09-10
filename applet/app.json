@@ -1,6 +1,7 @@
 {
-  "entryPagePath": "pages/order/index",
+  "entryPagePath": "pages/start/start",
   "pages": [
+    "pages/start/start",
     "pages/index/index",
     "pages/logs/logs",
     "pages/my/my",

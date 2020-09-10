@@ -4,9 +4,15 @@ public class BannerEntity {
 
     private int id;
 
+    private String picUrlPre;
+
+    private String picName;
+
     private String picUrl;
 
     private String status;
+
+    private int orderType;
 
     public int getId() {
         return id;
@@ -30,5 +36,29 @@ public class BannerEntity {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getPicUrlPre() {
+        return picUrlPre;
+    }
+
+    public void setPicUrlPre(String picUrlPre) {
+        this.picUrlPre = picUrlPre;
+    }
+
+    public String getPicName() {
+        return picName;
+    }
+
+    public void setPicName(String picName) {
+        this.picName = picName;
+    }
+
+    public int getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(int orderType) {
+        this.orderType = orderType;
     }
 }

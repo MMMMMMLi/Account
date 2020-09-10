@@ -1,6 +1,6 @@
 package com.imengli.appletServer.controller;
 
-import com.imengli.appletServer.daomain.UserEntity;
+import com.imengli.appletServer.dto.ResultDTO;
 import com.imengli.appletServer.service.WechatAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,14 +13,20 @@ import org.springframework.web.bind.annotation.RestController;
  * Author: Weijia Jiang
  */
 @RestController
+@RequestMapping("/auth")
 public class WechatAuthController {
 
     @Autowired
     private WechatAuthService wechatAuthService;
 
     @RequestMapping("/code2Session")
-    public UserEntity codeToSession(@RequestParam String code) {
-        return  wechatAuthService.codeToSession(code);
+    public ResultDTO<String> codeToSession(@RequestParam String code,@RequestParam String token) {
+        return wechatAuthService.codeToSession(code,token);
+    }
+
+    @RequestMapping("/checkToken")
+    public ResultDTO<String> checkToken(@RequestParam String token) {
+        return wechatAuthService.checkToken(token);
     }
 
 

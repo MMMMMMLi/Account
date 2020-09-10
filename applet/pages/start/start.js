@@ -1,5 +1,7 @@
 // 获取静态配置文件
-const CONFIG = require('../../config.js')
+const CONFIG = require('../../config');
+const REQUEST = require('../../utils/request');
+
 //获取应用实例
 var app = getApp();
 
@@ -18,27 +20,21 @@ Page({
         url: '/pages/order/index',
       });
     } else {
-      // 展示启动页
-      // if (res.code == 700) {
-      // wx.switchTab({
-      // url: '/pages/order/index',
-      // });
-      // } else {
-      const haha = [{
-        id: 1,
-        picUrl: "/images/start/xiong.jpg"
-      },{
-        id: 2,
-        picUrl: "/images/start/qiaoba.jpg"
-      },{
-        id: 3,
-        picUrl: "/images/start/lufei.jpg"
-      }]
-      _this.setData({
-        banners: haha,
-        swiperMaxNumber: haha.length
-      });
-      // }
+      REQUEST.request('applet/getBanners', 'POST', '').then(res => {
+        if(res.data.code == 40000) {
+          return;
+        }
+        if (res.data.code == 20001) {
+          wx.switchTab({
+            url: '/pages/order/index',
+          });
+        } else {
+          _this.setData({
+            banners: res.data.data,
+            swiperMaxNumber: res.data.data.length
+          });
+        }
+      })
     }
   },
   // 图片切换触发的操作
@@ -56,7 +52,7 @@ Page({
         data: CONFIG.version
       })
       wx.switchTab({
-        url: '/pages/index/index',
+        url: '/pages/order/index',
       });
     } else {
       wx.showToast({

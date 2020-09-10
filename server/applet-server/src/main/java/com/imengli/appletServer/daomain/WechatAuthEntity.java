@@ -1,9 +1,11 @@
 package com.imengli.appletServer.daomain;
 
+import java.io.Serializable;
+
 /**
  * 微信接口返回的对象信息
  */
-public class WechatAuthEntity {
+public class WechatAuthEntity implements Serializable {
 
     // 用户唯一ID
     private String openId;
@@ -20,17 +22,6 @@ public class WechatAuthEntity {
     // 出错信息
     private String errmsg;
 
-    public WechatAuthEntity() {
-    }
-
-    public WechatAuthEntity(String openId, String sessionKey, String unionId, String errcode, String errmsg) {
-        this.openId = openId;
-        this.session_key = sessionKey;
-        this.unionId = unionId;
-        this.errcode = errcode;
-        this.errmsg = errmsg;
-    }
-
     public String getOpenId() {
         return openId;
     }
@@ -39,12 +30,12 @@ public class WechatAuthEntity {
         this.openId = openId;
     }
 
-    public String getSessionKey() {
+    public String getSession_key() {
         return session_key;
     }
 
-    public void setSessionKey(String sessionKey) {
-        this.session_key = sessionKey;
+    public void setSession_key(String session_key) {
+        this.session_key = session_key;
     }
 
     public String getUnionId() {
@@ -75,7 +66,7 @@ public class WechatAuthEntity {
     public String toString() {
         return "WechatAuthEntity{" +
                 "openId='" + openId + '\'' +
-                ", sessionKey='" + session_key + '\'' +
+                ", session_key='" + session_key + '\'' +
                 ", unionId='" + unionId + '\'' +
                 ", errcode='" + errcode + '\'' +
                 ", errmsg='" + errmsg + '\'' +

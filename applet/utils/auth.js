@@ -1,3 +1,5 @@
+const REQUEST = require('./request');
+
 // 检测登录状态，返回 true / false
 async function checkHasLogined() {
   const token = wx.getStorageSync('token')
@@ -9,15 +11,18 @@ async function checkHasLogined() {
     wx.removeStorageSync('token')
     return false
   }
-  const checkTokenRes = await WXAPI.checkToken(token)
-  if (checkTokenRes.code != 0) {
-    wx.removeStorageSync('token')
-    return false
-  }
-  return true
+  REQUEST.request('applet/auth/checkToken', 'POST', {
+    token: token
+  }).then(res => {
+    if (res.data.code != 20003) {
+      wx.removeStorageSync('token')
+      return false
+    }
+  })
+  return true;
 }
 
-async function checkSession(){
+async function checkSession() {
   return new Promise((resolve, reject) => {
     wx.checkSession({
       success() {
@@ -30,7 +35,7 @@ async function checkSession(){
   })
 }
 
-async function wxaCode(){
+async function wxaCode() {
   return new Promise((resolve, reject) => {
     wx.login({
       success(res) {
@@ -61,27 +66,25 @@ async function getUserInfo() {
   })
 }
 
-async function login(page){
-  const _this = this
+async function login(page) {
+  const token = wx.getStorageSync('token')
   wx.login({
     success: function (res) {
-      WXAPI.login_wx(res.code).then(function (res) {        
-        if (res.code == 10000) {
-      
-          return;
-        }
-        if (res.code != 0) {
+      REQUEST.request('applet/auth/code2Session', 'POST', {
+        code: res.code,
+        token: token
+      }).then(res => {
+        if (res.data.code != 20004) {
           // 登录错误
           wx.showModal({
             title: '无法登录',
-            content: res.msg,
+            content: res.data.msg,
             showCancel: false
           })
           return;
         }
-        wx.setStorageSync('token', res.data.token)
-        wx.setStorageSync('uid', res.data.uid)
-        if ( page ) {
+        wx.setStorageSync('token', res.data.data);
+        if (page) {
           page.onShow()
         }
       })
@@ -89,12 +92,11 @@ async function login(page){
   })
 }
 
-function loginOut(){
+function loginOut() {
   wx.removeStorageSync('token')
-  wx.removeStorageSync('uid')
 }
 
-async function checkAndAuthorize (scope) {
+async function checkAndAuthorize(scope) {
   return new Promise((resolve, reject) => {
     wx.getSetting({
       success(res) {
@@ -104,7 +106,7 @@ async function checkAndAuthorize (scope) {
             success() {
               resolve() // 无返回参数
             },
-            fail(e){
+            fail(e) {
               console.error(e)
               // if (e.errMsg.indexof('auth deny') != -1) {
               //   wx.showToast({
@@ -121,7 +123,7 @@ async function checkAndAuthorize (scope) {
                 success(res) {
                   wx.openSetting();
                 },
-                fail(e){
+                fail(e) {
                   console.error(e)
                   reject(e)
                 },
@@ -132,12 +134,12 @@ async function checkAndAuthorize (scope) {
           resolve() // 无返回参数
         }
       },
-      fail(e){
+      fail(e) {
         console.error(e)
         reject(e)
       }
     })
-  })  
+  })
 }
 
 

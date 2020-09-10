@@ -4,15 +4,19 @@ import com.alibaba.fastjson.JSON;
 import com.imengli.appletServer.dao.UserRepostory;
 import com.imengli.appletServer.daomain.UserEntity;
 import com.imengli.appletServer.daomain.WechatAuthEntity;
+import com.imengli.appletServer.dto.ResultDTO;
+import com.imengli.appletServer.dto.ResultStatus;
 import com.imengli.appletServer.utils.HttpUtil;
+import com.imengli.appletServer.utils.RedisUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.UUID;
 
 @Service
 public class WechatAuthService {
@@ -28,16 +32,28 @@ public class WechatAuthService {
     @Value("${applet.wechatAuthUri}")
     private String wechatAuthUri;
 
-    @Autowired
+    @Resource
     private UserRepostory userRepostory;
+
+    @Resource
+    private RedisUtil redisUtil;
 
     /**
      * 根据用户Code获取当前登陆用户信息
      *
      * @param code 用户登陆时候,微信给返回的唯一code码
-     * @return 用户信息
+     * @return 结果集
      */
-    public UserEntity codeToSession(String code) {
+    public ResultDTO codeToSession(String code,String token) {
+        // 每次登陆之前，需要先判断之前是否存在登陆token
+        if(StringUtils.isNotBlank(token)){
+            // 查看是否存在此token
+            if(redisUtil.containsWechat(token)) {
+                // 存在，则需要先删除。
+                redisUtil.deleteWechat(token);
+            }
+        }
+
         UserEntity userEntity = new UserEntity();
         long lastLoginTimeStamp = System.currentTimeMillis();
         // 拼接url
@@ -48,13 +64,13 @@ public class WechatAuthService {
             openid = HttpUtil.getOpenid(authUrl);
         } catch (IOException e) {
             LOG.error(e.getMessage());
-            return userEntity;
+            return new ResultDTO(ResultStatus.ERROR_GET_OPEN_ID);
         }
         // 格式化为User对象
         WechatAuthEntity wechatAuthEntity = JSON.parseObject(openid, WechatAuthEntity.class);
         // 判断是否获取正常
         if (StringUtils.isAllEmpty(wechatAuthEntity.getErrcode(), wechatAuthEntity.getErrmsg())
-                && StringUtils.isNoneEmpty(wechatAuthEntity.getOpenId(), wechatAuthEntity.getSessionKey())) {
+                && StringUtils.isNoneEmpty(wechatAuthEntity.getOpenId(), wechatAuthEntity.getSession_key())) {
             // 获取openId
             String openId = wechatAuthEntity.getOpenId();
             // 如果获取正常,先判断当前用户是否登陆过
@@ -69,9 +85,23 @@ public class WechatAuthService {
                 // 用户之前登陆过,则更新一下登陆时间
                 UserEntity updateEntity = new UserEntity(userEntity.getOpenId(), lastLoginTimeStamp);
                 userRepostory.updateUserEntity(updateEntity);
-                userEntity = userRepostory.getUserEntityByOpenId(openId);
+            }
+            // 更新好用户信息之后,返回保存Token值到Redis然后返回给微信小程序。
+            String uuidToken = UUID.randomUUID().toString();
+            redisUtil.setWechat(uuidToken, wechatAuthEntity);
+            return new ResultDTO(ResultStatus.SUCCESS_LOGIN, uuidToken);
+        } else {
+            return new ResultDTO(Integer.valueOf(wechatAuthEntity.getErrcode()), wechatAuthEntity.getErrmsg());
+        }
+    }
+
+    public ResultDTO<String> checkToken(String token) {
+        if (StringUtils.isNotBlank(token)) {
+            WechatAuthEntity entity = redisUtil.getWechat(token);
+            if (entity != null) {
+                return new ResultDTO(ResultStatus.SUCCESS_AUTH_TOKEN);
             }
         }
-        return userEntity;
+        return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }
 }

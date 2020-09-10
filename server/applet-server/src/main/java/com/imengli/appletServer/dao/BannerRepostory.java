@@ -9,6 +9,6 @@ import java.util.List;
 @Mapper
 public interface BannerRepostory {
 
-    @Select("SELECT id,CONCAT(picUrlPre,'/',picName) AS picUrl,`status` FROM sys_banners where status = 1")
+    @Select("SELECT *,CONCAT(picUrlPre,'/',picName) AS picUrl FROM sys_banners where status = 1 order by orderType")
     List<BannerEntity> getBanners();
 }
