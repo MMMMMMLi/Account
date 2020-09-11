@@ -10,10 +10,16 @@ wx.getStorage({
     header.token = e.data
   }
 })
-
-wx.getStorageSync('token')
 // 主要执行方法
 function request(url, method, data) {
+  if (!header.token) {
+    wx.getStorage({
+      key: 'token',
+      success(e) {
+        header.token = e.data;
+      }
+    })
+  }
   let promise = new Promise((resolve, reject) => {
     wx.showLoading({
       title: '加载中'
@@ -25,7 +31,7 @@ function request(url, method, data) {
       header: header,
       success: (res => {
         wx.hideLoading();
-          resolve(res);
+        resolve(res);
       }),
       fail: (res => {
         wx.hideLoading();

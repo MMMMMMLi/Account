@@ -1,9 +1,9 @@
 package com.imengli.appletServer.service;
 
 import com.alibaba.fastjson.JSON;
-import com.imengli.appletServer.dao.UserRepostory;
-import com.imengli.appletServer.daomain.UserEntity;
+import com.imengli.appletServer.dao.WechatUserRepostory;
 import com.imengli.appletServer.daomain.WechatAuthEntity;
+import com.imengli.appletServer.daomain.WechatUserEntity;
 import com.imengli.appletServer.dto.ResultDTO;
 import com.imengli.appletServer.dto.ResultStatus;
 import com.imengli.appletServer.remote.RedisWechatRemote;
@@ -34,7 +34,7 @@ public class WechatAuthService {
     private String wechatAuthUri;
 
     @Resource
-    private UserRepostory userRepostory;
+    private WechatUserRepostory wechatUserRepostory;
 
     @Autowired
     private RedisWechatRemote redisWechatRemote;
@@ -55,7 +55,7 @@ public class WechatAuthService {
             }
         }
 
-        UserEntity userEntity = new UserEntity();
+        WechatUserEntity wechatUserEntity = new WechatUserEntity();
         long lastLoginTimeStamp = System.currentTimeMillis();
         // 拼接url
         String authUrl = String.format(wechatAuthUri, appID, appSecret, code);
@@ -75,19 +75,15 @@ public class WechatAuthService {
             // 获取openId
             String openId = wechatAuthEntity.getOpenId();
             // 如果获取正常,先判断当前用户是否登陆过
-            userEntity = userRepostory.getUserEntityByOpenId(openId);
-            if (userEntity == null) {
+            wechatUserEntity = wechatUserRepostory.getUserEntityByOpenId(openId);
+            if (wechatUserEntity == null) {
                 // 用户之前没有登陆过,则添加用户并继续获取用户详情信息
-                userEntity = new UserEntity(
-                        openId, wechatAuthEntity.getUnionId(), lastLoginTimeStamp);
+                wechatUserEntity = new WechatUserEntity(openId, wechatAuthEntity.getUnionId());
                 // 保存一下基本信息
-                userRepostory.saveUserEntity(userEntity);
-            } else {
-                // 用户之前登陆过,则更新一下登陆时间
-                UserEntity updateEntity = new UserEntity(userEntity.getOpenId(), lastLoginTimeStamp);
-                userRepostory.updateUserEntity(updateEntity);
+                wechatUserRepostory.saveUserEntity(wechatUserEntity);
             }
             // 更新好用户信息之后,返回保存Token值到Redis然后返回给微信小程序。
+            // TODO: 此处生成Token的方法过于简单，后续升级一下。
             String uuidToken = UUID.randomUUID().toString();
             redisWechatRemote.setWechat(uuidToken, wechatAuthEntity);
             return new ResultDTO(ResultStatus.SUCCESS_LOGIN, uuidToken);

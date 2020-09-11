@@ -1,4 +1,4 @@
-package com.imengli.appletServer.utils;
+package com.imengli.userServer.utils;
 
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;

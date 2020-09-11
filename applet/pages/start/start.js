@@ -20,8 +20,9 @@ Page({
         url: '/pages/order/index',
       });
     } else {
+
       REQUEST.request('applet/getBanners', 'POST', '').then(res => {
-        if(res.data.code == 40000) {
+        if (res.data.code == 40000) {
           return;
         }
         if (res.data.code == 20001) {
@@ -47,13 +48,49 @@ Page({
   goToIndex: function (e) {
     // 校验网络是否正常
     if (app.globalData.isConnected) {
+      const token = wx.getStorageSync('token');
+      if (!token) {
+        // 如果Token为空,则等待1S之后执行。
+        wx.showLoading({
+          title: '加载中...',
+        })
+        setTimeout(function () {
+          wx.hideLoading()
+        }, 1000)
+      }
       wx.setStorage({
         key: 'app_show_pic_version',
         data: CONFIG.version
       })
-      wx.switchTab({
-        url: '/pages/order/index',
-      });
+      // 校验用户是否授权和完善过信息
+      REQUEST.request('user/authUserInfo', 'POST', {
+        token: token
+      }).then(res => {
+        if (res.data.code == 20005) {
+          // 如果用户信息全换 ，则直接跳转订单页面即可。
+          wx.switchTab({
+            url: '/pages/order/index',
+          });
+        } else if (res.data.code == 40003) {
+          // 假如当前用户是第一次使用小程序，则用户信息应该不完善，则跳转到个人信息页
+          wx.switchTab({
+            url: 'pages/my/my',
+          });
+        } else if (res.data.code == 40002) {
+          // 如果校验失败，则重新login一下
+          AUTH.login();
+          // 随后跳转到个人信息页面
+          wx.switchTab({
+            url: 'pages/my/my',
+          });
+        } else {
+          wx.showToast({
+            title: '服务器错误，请重启！',
+            icon: 'none',
+          })
+          return;
+        }
+      })
     } else {
       wx.showToast({
         title: '当前无网络',

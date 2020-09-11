@@ -1,7 +1,5 @@
 package com.imengli.appletServer.dto;
 
-import com.github.pagehelper.PageInfo;
-
 import java.io.Serializable;
 
 public class ResultDTO<T> implements Serializable {
@@ -12,64 +10,38 @@ public class ResultDTO<T> implements Serializable {
 
     private String msg;
 
-    private PageInfo page;
-
     private T data;
 
-    public ResultDTO() {}
+    public ResultDTO() {
+    }
 
     /**
      * @param resultStatus 通用状态
      */
     public ResultDTO(ResultStatus resultStatus) {
-        this(resultStatus.code(), resultStatus.msg(), null, null);
+        this(resultStatus.code(), resultStatus.msg(), null);
     }
 
     /**
      * @param code 提示状态码
-     * @param msg 提示内容
+     * @param msg  提示内容
      */
     public ResultDTO(int code, String msg) {
-        this(code, msg, null, null);
+        this(code, msg, null);
     }
 
     /**
      * @param resultStatus 通用状态
-     * @param data 数据内容
+     * @param data         数据内容
      */
     public ResultDTO(ResultStatus resultStatus, T data) {
-        this(resultStatus.code(), resultStatus.msg(), null, data);
+        this(resultStatus.code(), resultStatus.msg(), data);
     }
 
-    /**
-     * @param code 提示状态码
-     * @param msg 提示内容
-     * @param data 数据内容
-     */
     public ResultDTO(int code, String msg, T data) {
-        this(code, msg, null, data);
-    }
-
-    /**
-     * @param resultStatus 通用状态
-     * @param page 分页信息
-     * @param data 数据内容
-     */
-    public ResultDTO(ResultStatus resultStatus, PageInfo page, T data) {
-        this(resultStatus.code(), resultStatus.msg(), page, data);
-    }
-
-    /**
-     * @param code 提示状态码
-     * @param msg 提示内容
-     * @param page 分页信息
-     * @param data 数据内容
-     */
-    public ResultDTO(int code, String msg, PageInfo page, T data) {
         super();
         this.code = code;
         this.msg = msg;
-        this.page = page;
         this.data = data;
     }
 
@@ -91,14 +63,6 @@ public class ResultDTO<T> implements Serializable {
         return this;
     }
 
-    public PageInfo getPage() {
-        return page;
-    }
-
-    public ResultDTO<T> setPage(PageInfo page) {
-        this.page = page;
-        return this;
-    }
 
     public T getData() {
         return data;

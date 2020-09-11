@@ -1,4 +1,4 @@
-package com.imengli.appletServer.fallback;
+package com.imengli.appletServer.remote.fallback;
 
 import com.imengli.appletServer.daomain.WechatAuthEntity;
 import com.imengli.appletServer.remote.RedisWechatRemote;

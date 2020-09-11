@@ -1,8 +1,8 @@
-package com.imengli.appletServer.remote;
+package com.imengli.userServer.remote;
 
-import com.imengli.appletServer.config.MineFeignConfig;
-import com.imengli.appletServer.daomain.WechatAuthEntity;
-import com.imengli.appletServer.remote.fallback.RedisWechatRemoteFallback;
+import com.imengli.userServer.config.MineFeignConfig;
+import com.imengli.userServer.daomain.WechatAuthEntity;
+import com.imengli.userServer.remote.fallback.RedisWechatRemoteFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

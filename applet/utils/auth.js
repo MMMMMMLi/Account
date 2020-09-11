@@ -22,6 +22,7 @@ async function checkHasLogined() {
   return true;
 }
 
+// 校验当前用户是否登陆
 async function checkSession() {
   return new Promise((resolve, reject) => {
     wx.checkSession({
@@ -35,37 +36,7 @@ async function checkSession() {
   })
 }
 
-async function wxaCode() {
-  return new Promise((resolve, reject) => {
-    wx.login({
-      success(res) {
-        return resolve(res.code)
-      },
-      fail() {
-        wx.showToast({
-          title: '获取code失败',
-          icon: 'none'
-        })
-        return resolve('获取code失败')
-      }
-    })
-  })
-}
-
-async function getUserInfo() {
-  return new Promise((resolve, reject) => {
-    wx.getUserInfo({
-      success: res => {
-        return resolve(res)
-      },
-      fail: err => {
-        console.error(err)
-        return resolve()
-      }
-    })
-  })
-}
-
+// 获取用户登陆信息
 async function login(page) {
   const token = wx.getStorageSync('token')
   wx.login({
@@ -92,10 +63,45 @@ async function login(page) {
   })
 }
 
+// what?
+async function wxaCode() {
+  return new Promise((resolve, reject) => {
+    wx.login({
+      success(res) {
+        return resolve(res.code)
+      },
+      fail() {
+        wx.showToast({
+          title: '获取code失败',
+          icon: 'none'
+        })
+        return resolve('获取code失败')
+      }
+    })
+  })
+}
+
+// 获取用户信息
+async function getUserInfo() {
+  return new Promise((resolve, reject) => {
+    wx.getUserInfo({
+      success: res => {
+        return resolve(res)
+      },
+      fail: err => {
+        console.error(err)
+        return resolve()
+      }
+    })
+  })
+}
+
+// 推出登陆
 function loginOut() {
   wx.removeStorageSync('token')
 }
 
+// 校验并提示用户授权获取登陆信息
 async function checkAndAuthorize(scope) {
   return new Promise((resolve, reject) => {
     wx.getSetting({
@@ -135,7 +141,6 @@ async function checkAndAuthorize(scope) {
         }
       },
       fail(e) {
-        console.error(e)
         reject(e)
       }
     })
