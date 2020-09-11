@@ -25,7 +25,7 @@ public class MineGatewayFilter implements GlobalFilter, Ordered {
                 return exchange.getResponse().setComplete();
             }
             // 有的话，校验一下token的正确性
-
+            // TODO: 原本打算在这个地方同意校验方法的Token实用性,但是由于线程阻塞的缘故,调增到每个服务单独校验. By:2020-09-11 13:27:31
         }
         return chain.filter(exchange);
     }

@@ -6,11 +6,12 @@ import com.imengli.appletServer.daomain.UserEntity;
 import com.imengli.appletServer.daomain.WechatAuthEntity;
 import com.imengli.appletServer.dto.ResultDTO;
 import com.imengli.appletServer.dto.ResultStatus;
+import com.imengli.appletServer.remote.RedisWechatRemote;
 import com.imengli.appletServer.utils.HttpUtil;
-import com.imengli.appletServer.utils.RedisUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +36,8 @@ public class WechatAuthService {
     @Resource
     private UserRepostory userRepostory;
 
-    @Resource
-    private RedisUtil redisUtil;
+    @Autowired
+    private RedisWechatRemote redisWechatRemote;
 
     /**
      * 根据用户Code获取当前登陆用户信息
@@ -44,13 +45,13 @@ public class WechatAuthService {
      * @param code 用户登陆时候,微信给返回的唯一code码
      * @return 结果集
      */
-    public ResultDTO codeToSession(String code,String token) {
+    public ResultDTO codeToSession(String code, String token) {
         // 每次登陆之前，需要先判断之前是否存在登陆token
-        if(StringUtils.isNotBlank(token)){
+        if (StringUtils.isNotBlank(token)) {
             // 查看是否存在此token
-            if(redisUtil.containsWechat(token)) {
+            if (redisWechatRemote.containsWechat(token)) {
                 // 存在，则需要先删除。
-                redisUtil.deleteWechat(token);
+                redisWechatRemote.deleteWechat(token);
             }
         }
 
@@ -88,7 +89,7 @@ public class WechatAuthService {
             }
             // 更新好用户信息之后,返回保存Token值到Redis然后返回给微信小程序。
             String uuidToken = UUID.randomUUID().toString();
-            redisUtil.setWechat(uuidToken, wechatAuthEntity);
+            redisWechatRemote.setWechat(uuidToken, wechatAuthEntity);
             return new ResultDTO(ResultStatus.SUCCESS_LOGIN, uuidToken);
         } else {
             return new ResultDTO(Integer.valueOf(wechatAuthEntity.getErrcode()), wechatAuthEntity.getErrmsg());
@@ -97,7 +98,7 @@ public class WechatAuthService {
 
     public ResultDTO<String> checkToken(String token) {
         if (StringUtils.isNotBlank(token)) {
-            WechatAuthEntity entity = redisUtil.getWechat(token);
+            WechatAuthEntity entity = redisWechatRemote.getWechat(token);
             if (entity != null) {
                 return new ResultDTO(ResultStatus.SUCCESS_AUTH_TOKEN);
             }
