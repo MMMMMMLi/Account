@@ -9,6 +9,7 @@ page,view,image,input {
   min-height: 100%;
   overflow: hidden;
   overflow-y: hidden;
+  padding: 0;
 }
 
 .userinfo {

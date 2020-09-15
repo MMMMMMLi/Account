@@ -6,6 +6,7 @@ const REQUEST = require('../../utils/request');
 Page({
 	data: {
     wxlogin: true,
+    hasUserInfo:false,
 
     balance:0.00, //可用余额
     freeze:0,//冻结金额
@@ -88,7 +89,8 @@ Page({
     REQUEST.request('user/authUserInfo', 'POST', {}).then(res => {
       if (res.data.code == 20005) {
         that.setData({
-          apiUserInfoMap: res.data.data
+          apiUserInfoMap: res.data.data,
+          hasUserInfo:true
         });
       }
     })
@@ -135,10 +137,16 @@ Page({
       return;
     }
     console.log(">>>>>>> processLogin :",e)
+    let that = this;
     REQUEST.request('user/setUserInfo', 'POST', {
       ...e.detail.userInfo
     }).then(res => {
-
+      if (res.data.code == 20005) {
+        that.setData({
+          apiUserInfoMap: res.data.data, 
+          hasUserInfo:true
+        });
+      }
     })
   },
   scanOrderCode(){

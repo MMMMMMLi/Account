@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.UUID;
@@ -49,6 +50,7 @@ public class UserService {
 
     }
 
+    @Transactional
     public ResultDTO setUserInfo(String token, String nickName, Integer gender, String city, String province, String country, String avatarUrl) {
         // 校验Token
         WechatAuthEntity wechatAuthEntity = this.getWechatAuthEntity(token);
@@ -57,15 +59,22 @@ public class UserService {
             // 获取对应的用户信息
             WechatUserEntity wechatUserEntityByOpenId = wechatUserRepostory.getUserEntityByOpenId(wechatAuthEntity.getOpenId());
             if (wechatUserEntityByOpenId != null) {
-                // 生成用户ID
-                String userID = UUID.randomUUID().toString();
-                SysUserEntity sysUserEntity = new SysUserEntity(userID, nickName, avatarUrl, gender, country, province, city);
-                // 关联
-                wechatUserEntityByOpenId.setUserId(userID);
-                // 保存
-                wechatUserRepostory.updateUserEntity(wechatUserEntityByOpenId);
-                sysUserRepostory.save(sysUserEntity);
-                log.info(">>>>>>>>>>>>>>>>>>> sysUserEntity: {}", sysUserEntity);
+                String userId = wechatUserEntityByOpenId.getUserId();
+                if(StringUtils.isBlank(userId)) {
+                    // 生成用户ID
+                    String userID = UUID.randomUUID().toString();
+                    SysUserEntity sysUserEntity = new SysUserEntity(userID, nickName, avatarUrl, gender, country, province, city);
+                    // 关联
+                    wechatUserEntityByOpenId.setUserId(userID);
+                    // 保存
+                    wechatUserRepostory.updateUserEntity(wechatUserEntityByOpenId);
+                    sysUserRepostory.save(sysUserEntity);
+                    log.info(">>>>>>>>>>>>>>>>>>> sysUserEntity: {}", sysUserEntity);
+                    return new ResultDTO(ResultStatus.SUCCESS_USERINFO,sysUserEntity);
+                }else {
+                    return new ResultDTO(ResultStatus.SUCCESS_USERINFO,sysUserRepostory.getUserInfoById(userId));
+                }
+
             }
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
