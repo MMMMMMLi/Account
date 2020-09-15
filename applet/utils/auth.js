@@ -11,9 +11,7 @@ async function checkHasLogined() {
     wx.removeStorageSync('token')
     return false
   }
-  REQUEST.request('applet/auth/checkToken', 'POST', {
-    token: token
-  }).then(res => {
+  REQUEST.request('applet/auth/checkToken', 'POST', {}).then(res => {
     if (res.data.code != 20003) {
       wx.removeStorageSync('token')
       return false
@@ -38,12 +36,10 @@ async function checkSession() {
 
 // 获取用户登陆信息
 async function login(page) {
-  const token = wx.getStorageSync('token')
   wx.login({
     success: function (res) {
       REQUEST.request('applet/auth/code2Session', 'POST', {
         code: res.code,
-        token: token
       }).then(res => {
         if (res.data.code != 20004) {
           // 登录错误

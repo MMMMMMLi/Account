@@ -41,6 +41,16 @@ public class SysUserEntity {
     public SysUserEntity() {
     }
 
+    public SysUserEntity(String id,String nickName, String avatarUrl, int gender, String country, String province, String city) {
+        this.id = id;
+        this.nickName = nickName;
+        this.avatarUrl = avatarUrl;
+        this.gender = gender;
+        this.country = country;
+        this.province = province;
+        this.city = city;
+    }
+
     public String getId() {
         return id;
     }
@@ -127,5 +137,22 @@ public class SysUserEntity {
 
     public void setLastLoginTimeStamp(Long lastLoginTimeStamp) {
         this.lastLoginTimeStamp = lastLoginTimeStamp;
+    }
+
+    @Override
+    public String toString() {
+        return "SysUserEntity{" +
+                "id='" + id + '\'' +
+                ", userName='" + userName + '\'' +
+                ", userNameCode='" + userNameCode + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", avatarUrl='" + avatarUrl + '\'' +
+                ", gender=" + gender +
+                ", country='" + country + '\'' +
+                ", province='" + province + '\'' +
+                ", city='" + city + '\'' +
+                ", lastLoginTimeStamp=" + lastLoginTimeStamp +
+                '}';
     }
 }

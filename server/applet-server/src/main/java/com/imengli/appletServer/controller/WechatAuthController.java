@@ -20,7 +20,7 @@ public class WechatAuthController {
     private WechatAuthService wechatAuthService;
 
     @RequestMapping("/code2Session")
-    public ResultDTO<String> codeToSession(@RequestParam String code,@RequestParam String token) {
+    public ResultDTO<String> codeToSession(@RequestParam String code,@RequestParam(required = false) String token) {
         return wechatAuthService.codeToSession(code,token);
     }
 

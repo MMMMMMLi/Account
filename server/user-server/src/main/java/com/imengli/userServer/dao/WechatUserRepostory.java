@@ -12,6 +12,5 @@ public interface WechatUserRepostory {
     @Update("update wechat_user " +
             "set unionId = #{wechatUserEntity.unionId} and  userId = #{wechatUserEntity.userId} " +
             "where openId = #{wechatUserEntity.openId}")
-    void updateUserEntity(@Param("userEntity") WechatUserEntity wechatUserEntity);
-
+    void updateUserEntity(@Param("wechatUserEntity") WechatUserEntity wechatUserEntity);
 }

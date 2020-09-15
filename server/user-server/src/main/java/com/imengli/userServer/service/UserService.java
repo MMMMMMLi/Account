@@ -2,6 +2,7 @@ package com.imengli.userServer.service;
 
 import com.imengli.userServer.dao.SysUserRepostory;
 import com.imengli.userServer.dao.WechatUserRepostory;
+import com.imengli.userServer.daomain.SysUserEntity;
 import com.imengli.userServer.daomain.WechatAuthEntity;
 import com.imengli.userServer.daomain.WechatUserEntity;
 import com.imengli.userServer.dto.ResultDTO;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -47,6 +49,29 @@ public class UserService {
 
     }
 
+    public ResultDTO setUserInfo(String token, String nickName, Integer gender, String city, String province, String country, String avatarUrl) {
+        // 校验Token
+        WechatAuthEntity wechatAuthEntity = this.getWechatAuthEntity(token);
+        // 判断是否异常
+        if (wechatAuthEntity != null) {
+            // 获取对应的用户信息
+            WechatUserEntity wechatUserEntityByOpenId = wechatUserRepostory.getUserEntityByOpenId(wechatAuthEntity.getOpenId());
+            if (wechatUserEntityByOpenId != null) {
+                // 生成用户ID
+                String userID = UUID.randomUUID().toString();
+                SysUserEntity sysUserEntity = new SysUserEntity(userID, nickName, avatarUrl, gender, country, province, city);
+                // 关联
+                wechatUserEntityByOpenId.setUserId(userID);
+                // 保存
+                wechatUserRepostory.updateUserEntity(wechatUserEntityByOpenId);
+                sysUserRepostory.save(sysUserEntity);
+                log.info(">>>>>>>>>>>>>>>>>>> sysUserEntity: {}", sysUserEntity);
+            }
+        }
+        return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
+    }
+
+
     /**
      * 根据Token值获取wechatAuthEntity
      *
@@ -60,6 +85,7 @@ public class UserService {
             // 获取Token对应的对象信息
             wechatAuthEntity = redisWechatRemote.getWechat(token);
         }
+        log.info(">>>>>>>>>>>>>>>>>> wechatAuthEntity : {}", wechatAuthEntity);
         return wechatAuthEntity;
     }
 }

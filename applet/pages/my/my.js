@@ -23,6 +23,7 @@ Page({
       // TODO: 暂时不知道这个有什么用?
       version: CONFIG.version,
     })
+
     // 校验用户是否登陆
     AUTH.checkHasLogined().then(isLogined => {
       this.setData({
@@ -84,10 +85,7 @@ Page({
   // 获取用户信息
   getUserApiInfo: function () {
     var that = this;
-    const token = wx.getStorageSync('token');
-    REQUEST.request('user/authUserInfo', 'POST', {
-      token: token
-    }).then(res => {
+    REQUEST.request('user/authUserInfo', 'POST', {}).then(res => {
       if (res.data.code == 20005) {
         that.setData({
           apiUserInfoMap: res.data.data
@@ -136,7 +134,12 @@ Page({
       })
       return;
     }
-    AUTH.register(this);
+    console.log(">>>>>>> processLogin :",e)
+    REQUEST.request('user/setUserInfo', 'POST', {
+      ...e.detail.userInfo
+    }).then(res => {
+
+    })
   },
   scanOrderCode(){
     wx.scanCode({

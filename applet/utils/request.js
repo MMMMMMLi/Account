@@ -19,6 +19,8 @@ function request(url, method, data) {
         header.token = e.data;
       }
     })
+  }else {
+    data.token = header.token; 
   }
   let promise = new Promise((resolve, reject) => {
     wx.showLoading({

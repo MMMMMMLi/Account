@@ -21,7 +21,7 @@ Page({
       });
     } else {
 
-      REQUEST.request('applet/getBanners', 'POST', '').then(res => {
+      REQUEST.request('applet/getBanners', 'POST', {}).then(res => {
         if (res.data.code == 40000) {
           return;
         }
