@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public class MineGatewayFilter implements GlobalFilter, Ordered {
 
     @Value("${custom.unAuthPath}")
@@ -16,7 +19,11 @@ public class MineGatewayFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         // 校验一下，不需要校验配置好的路径，其余都需要验证token的正确性
-        if (!exchange.getRequest().getURI().getPath().contains(unAuthPath)) {
+        if (Arrays.asList(unAuthPath.split(","))
+                .stream()
+                .filter(path -> exchange.getRequest().getURI().getPath().contains(path))
+                .collect(Collectors.toList())
+                .size() == 0) {
             // 获取token值
             String token = exchange.getRequest().getHeaders().getFirst("token");
             if (token == null || token.isEmpty()) {

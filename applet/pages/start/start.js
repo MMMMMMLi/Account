@@ -74,19 +74,21 @@ Page({
         } else if (res.data.code == 40003) {
           // 假如当前用户是第一次使用小程序，则用户信息应该不完善，则跳转到个人信息页
           wx.switchTab({
-            url: 'pages/my/my',
+            url: '/pages/my/my',
           });
         } else if (res.data.code == 40002) {
           // 如果校验失败，则重新login一下
           AUTH.login();
           // 随后跳转到个人信息页面
           wx.switchTab({
-            url: 'pages/my/my',
+            url: '/pages/my/my',
           });
         } else {
-          wx.showToast({
-            title: '服务器错误，请重启！',
-            icon: 'none',
+          // 登录错误
+          wx.showModal({
+            title: '无法登录',
+            content: "服务器错误，请重启!",
+            showCancel: false
           })
           return;
         }

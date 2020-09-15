@@ -24,8 +24,11 @@ public class RedisService {
     @Value("${mineRedis.userinfo.key}")
     private String KEY_PREFIX;
 
+    // TODO: 正式环境的时候,修改一下超时时间。
     @Value("${mineRedis.default.timeout}")
     private Long DEFAULT_TIMEOUT;
+
+    private TimeUnit timeUnit = TimeUnit.HOURS;
 
 
     // --------------------String : WechatAuthEntity ----------------------------------------
@@ -47,7 +50,7 @@ public class RedisService {
         try {
             wechatRedisTemplate.opsForValue().set(KEY_PREFIX + key, value);
             if (time > 0) {
-                wechatRedisTemplate.expire(KEY_PREFIX + key, time, TimeUnit.DAYS);
+                wechatRedisTemplate.expire(KEY_PREFIX + key, time, timeUnit);
             }
             result = true;
         } catch (Exception e) {
@@ -99,7 +102,7 @@ public class RedisService {
         try {
             wechatRedisTemplate.opsForValue().getAndSet(KEY_PREFIX + key, value);
             if (time > 0) {
-                wechatRedisTemplate.expire(KEY_PREFIX + key, time, TimeUnit.DAYS);
+                wechatRedisTemplate.expire(KEY_PREFIX + key, time, timeUnit);
             }
             result = true;
         } catch (Exception e) {
@@ -145,7 +148,7 @@ public class RedisService {
         try {
             redisTemplate.opsForValue().set(KEY_PREFIX + key, value);
             if (time > 0) {
-                redisTemplate.expire(KEY_PREFIX + key, time, TimeUnit.DAYS);
+                redisTemplate.expire(KEY_PREFIX + key, time, timeUnit);
             }
             result = true;
         } catch (Exception e) {
@@ -199,7 +202,7 @@ public class RedisService {
         try {
             redisTemplate.opsForValue().getAndSet(KEY_PREFIX + key, value);
             if (time > 0) {
-                redisTemplate.expire(KEY_PREFIX + key, time, TimeUnit.DAYS);
+                redisTemplate.expire(KEY_PREFIX + key, time, timeUnit);
             }
             result = true;
         } catch (Exception e) {

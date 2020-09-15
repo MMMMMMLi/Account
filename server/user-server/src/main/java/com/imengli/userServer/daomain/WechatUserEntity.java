@@ -41,4 +41,13 @@ public class WechatUserEntity {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+    @Override
+    public String toString() {
+        return "WechatUserEntity{" +
+                "openId='" + openId + '\'' +
+                ", unionId='" + unionId + '\'' +
+                ", userId='" + userId + '\'' +
+                '}';
+    }
 }

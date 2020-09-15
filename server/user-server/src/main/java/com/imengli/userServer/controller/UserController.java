@@ -14,10 +14,10 @@ public class UserController {
     private UserService userService;
 
     /**
-     * 根据Token值 获取用户信息
+     * 根据Token值 校验用户信息
      *
      * @param token 自定义Token
-     * @return 用户信息
+     * @return 用户状态
      */
     @RequestMapping("/authUserInfo")
     public ResultDTO authUserInfo(@RequestParam String token) {
