@@ -8,6 +8,7 @@ import com.imengli.userServer.daomain.WechatUserEntity;
 import com.imengli.userServer.dto.ResultDTO;
 import com.imengli.userServer.dto.ResultStatus;
 import com.imengli.userServer.remote.RedisWechatRemote;
+import com.imengli.userServer.utils.PinyinUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,12 +40,16 @@ public class UserService {
             // 获取对应的用户信息
             WechatUserEntity wechatUserEntityByOpenId = wechatUserRepostory.getUserEntityByOpenId(wechatAuthEntity.getOpenId());
             // 根据信息完善度返回
-            if(wechatUserEntityByOpenId!=null) {
+            if (wechatUserEntityByOpenId != null) {
                 if (StringUtils.isBlank(wechatUserEntityByOpenId.getUserId())) {
                     // 需要完善
-                    return new ResultDTO(ResultStatus.ERROR_USERINFO);
+                    return new ResultDTO(ResultStatus.ERROR_UN_AUTHORIZED);
                 } else {
-                    return new ResultDTO(ResultStatus.SUCCESS_USERINFO, sysUserRepostory.getUserInfoById(wechatUserEntityByOpenId.getUserId()));
+                    SysUserEntity info = sysUserRepostory.getUserInfoById(wechatUserEntityByOpenId.getUserId());
+                    if(StringUtils.isAnyBlank(info.getAddress(),info.getUserName(),info.getPhoneNumber())) {
+                        return new ResultDTO(ResultStatus.ERROR_USERINFO,info);
+                    }
+                    return new ResultDTO(ResultStatus.SUCCESS_USERINFO, info);
                 }
             }
         }
@@ -62,7 +67,7 @@ public class UserService {
             WechatUserEntity wechatUserEntityByOpenId = wechatUserRepostory.getUserEntityByOpenId(wechatAuthEntity.getOpenId());
             if (wechatUserEntityByOpenId != null) {
                 String userId = wechatUserEntityByOpenId.getUserId();
-                if(StringUtils.isBlank(userId)) {
+                if (StringUtils.isBlank(userId)) {
                     // 生成用户ID
                     String userID = UUID.randomUUID().toString();
                     SysUserEntity sysUserEntity = new SysUserEntity(userID, nickName, avatarUrl, gender, country, province, city);
@@ -71,32 +76,37 @@ public class UserService {
                     // 保存
                     wechatUserRepostory.updateUserEntity(wechatUserEntityByOpenId);
                     sysUserRepostory.save(sysUserEntity);
-                    log.info(">>>>>>>>>>>>>>>>>>> sysUserEntity: {}", sysUserEntity);
-                    return new ResultDTO(ResultStatus.SUCCESS_USERINFO,sysUserEntity);
-                }else {
-                    return new ResultDTO(ResultStatus.SUCCESS_USERINFO,sysUserRepostory.getUserInfoById(userId));
+                    return new ResultDTO(ResultStatus.SUCCESS_USERINFO, sysUserEntity);
+                } else {
+                    return new ResultDTO(ResultStatus.SUCCESS_USERINFO, sysUserRepostory.getUserInfoById(userId));
                 }
-
             }
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }
 
+    public ResultDTO updateUserInfo(String token, String address, String name, String phone) {
+        // 校验Token
+        WechatAuthEntity wechatAuthEntity = this.getWechatAuthEntity(token);
+        // 判断是否异常
+        if (wechatAuthEntity != null) {
+            WechatUserEntity userEntityByOpenId = wechatUserRepostory.getUserEntityByOpenId(wechatAuthEntity.getOpenId());
+            if (userEntityByOpenId != null) {
+                // 更新
+                sysUserRepostory.update(new SysUserEntity(userEntityByOpenId.getUserId(), name, PinyinUtil.ToFirstChar(name), phone, address));
+                return new ResultDTO(ResultStatus.SUCCESS_UPDATE_USERINFO);
+            }
+        }
+        return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
+    }
 
-    /**
-     * 根据Token值获取wechatAuthEntity
-     *
-     * @param token yonghuToken
-     * @return wechatAuthEntity
-     */
-    private WechatAuthEntity getWechatAuthEntity(String token) {
+    public WechatAuthEntity getWechatAuthEntity(String token) {
         WechatAuthEntity wechatAuthEntity = new WechatAuthEntity();
         // 检验Token是否正常
         if (redisWechatRemote.containsWechat(token)) {
             // 获取Token对应的对象信息
             wechatAuthEntity = redisWechatRemote.getWechat(token);
         }
-        log.info(">>>>>>>>>>>>>>>>>> wechatAuthEntity : {}", wechatAuthEntity);
         return wechatAuthEntity;
     }
 }

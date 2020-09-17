@@ -1,0 +1,62 @@
+<view class="page">
+	<view wx:if="{{topTips}}" class="weui-toptips weui-toptips_warn fadeIn" style="display:block">{{tipMsg}}</view>
+	<view class="weui-form">
+		<view class="weui-form__text-area">
+			<h2 class="weui-form__title">个人信息</h2>
+			<view wx:if="{{!hasUserInfo}}" class="weui-form__desc">请根据以下提示正确填写个人信息</view>
+		</view>
+		<form catchsubmit="formSubmit" catchreset="formReset">
+			<view class="weui-form__control-area">
+				<view class="weui-cells__group weui-cells__group_form">
+					<view class="weui-cells__title">基本信息</view>
+					<view class="weui-cells weui-cells_form">
+						<view class="weui-cell weui-cell_active">
+							<view class="weui-cell__hd"><label class="weui-label">真实姓名</label></view>
+							<view class="weui-cell__bd">
+								<input class="weui-input" maxlength="4" disabled="{{hasUserInfo}}" placeholder="{{hasUserInfo ? userInfos.userName:'填写本人真实姓名'}}" name="name" placeholder-class="weui-input__placeholder" />
+							</view>
+						</view>
+						<view class="weui-cell weui-cell_active" style="display: {{hasUserInfo ? '':'none'}}">
+							<view class="weui-cell__hd"><label class="weui-label">拼音简写</label></view>
+							<view class="weui-cell__bd">
+								<input class="weui-input" maxlength="4" disabled="true}" placeholder="{{userInfos.userNameCode}}" name="nameCode" placeholder-class="weui-input__placeholder" />
+							</view>
+						</view>
+						<view class="weui-cell weui-cell_active">
+							<view class="weui-cell__hd">
+								<label class="weui-label">联系电话</label>
+							</view>
+							<view class="weui-cell__bd">
+								<input class="weui-input" maxlength="11" disabled="{{hasUserInfo}}" placeholder="{{hasUserInfo ? userInfos.phoneNumber:'填写绑定的电话号码'}}" type="number" name="phone" placeholder-class="weui-input__placeholder" bindblur="checkNum" />
+							</view>
+						</view>
+						<view class="weui-cell weui-cell_active">
+							<view class="weui-cell__hd">
+								<label class="weui-label">常用住址</label>
+							</view>
+							<view class="weui-cell__bd">
+								<input class="weui-input"  disabled="{{hasUserInfo}}" placeholder="{{hasUserInfo ? userInfos.address:'填写常用住址'}}"  name="address" placeholder-class="weui-input__placeholder" />
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view wx:if="{{!hasUserInfo}}" class="weui-form__tips-area">
+				<view class="weui-form__tips">
+					以上信息，一旦提交则无法修改，请核实准确后提交！
+				</view>
+			</view>
+			<view wx:if="{{!hasUserInfo}}" class="weui-form__opr-area">
+				<button class="weui-btn weui-btn_primary" formType="submit">提交</button>
+			</view>
+		</form>
+		<!-- <view class="weui-form__extra-area">
+			<view class="weui-footer">
+				<view class="weui-footer__links">
+					<a href="javascript:" class="weui-footer__link">底部链接文本</a>
+				</view>
+				<view class="weui-footer__text">Copyright © 2008-2019 weui.io</view>
+			</view>
+		</view> -->
+	</view>
+</view>

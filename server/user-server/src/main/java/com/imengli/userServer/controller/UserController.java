@@ -36,4 +36,13 @@ public class UserController {
         return userService.setUserInfo(token, nickName, gender, city, province, country, avatarUrl);
     }
 
+    @RequestMapping("/updateUserInfo")
+    public ResultDTO updateUserInfo(@RequestParam String token,
+                                    @RequestParam String address,
+                                    @RequestParam String name,
+                                    @RequestParam String phone) {
+        return  userService.updateUserInfo(token,address,name,phone);
+
+    }
+
 }

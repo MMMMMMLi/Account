@@ -64,6 +64,8 @@ App({
     })
   },
   globalData: {
-    isConnected: true
+    isConnected: true,
+    needUpdateUserInfo: false,
+    userInfos: []
   }
 })

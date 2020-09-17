@@ -7,9 +7,9 @@
     <text  wx:if= "{{apiUserInfoMap.userName}}" class="userinfo-nickname">{{ apiUserInfoMap.userName }}</text>
     <text  wx:else class="userinfo-nickname">{{ apiUserInfoMap.nickName }}</text>
 	</view>
-	<view wx:else class="userinfo" style="margin-bottom:50rpx;">
+	<view wx:else class="userinfo" style="margin-bottom:40rpx;">
 		<image class="userinfo-avatar" src="/images/nologin.png" background-size="cover"></image>
-		<button class="weui-btn mini-btn" plain="true" size="mini" bindtap="goLogin">立即登录</button>
+		<button class="weui-btn mini-btn" style="margin-top:20rpx;"  plain="true" size="mini" bindtap="goLogin">立即登录</button>
 	</view>
 	<view class="asset">
 		<view class='item' bindtap='goAsset'>
@@ -33,13 +33,13 @@
 	</view>
 	<view class="space"></view>
 
-	<navigator wx:if="{{hasUserInfo}}" url="/pages/userInfo/index">
+	<navigator wx:if="{{needUpdateUserInfo}}" url="/pages/userInfo/index">
 		<view class="menu-item" style="background-color:red">
 			<view class="l">完善信息</view>
 			<image class="next" src="/images/icon/next.png"></image>
 		</view>
 	</navigator>
-	<view wx:if="{{hasUserInfo}}" class="line"></view>
+	<view wx:if="{{needUpdateUserInfo}}" class="line"></view>
 	<navigator url="/pages/maidan/index">
 		<view class="menu-item">
 			<view class="l">优惠买单</view>
@@ -160,6 +160,13 @@
 	<view class="line"></view>
 
 	<view class="space"></view>
+	<navigator url="/pages/userInfo/index">
+		<view class="menu-item">
+			<view class="l">个人信息</view>
+			<image class="next" src="/images/icon/next.png"></image>
+		</view>
+	</navigator>
+	<view class="line"></view>
 	<view class="menu-item" bindtap="aboutUs">
 		<view class="l">关于我们</view>
 		<image class="next" src="/images/icon/next.png"></image>
@@ -199,4 +206,4 @@
 	<view class="space"></view>
 </view>
 
-<template is="apifmLogin" data="{{wxlogin: wxlogin}}" />
+<template is="apifmLogin" data="{{wxAuth: wxAuth}}" />

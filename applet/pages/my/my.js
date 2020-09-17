@@ -1,23 +1,24 @@
-const app = getApp()
+const APP = getApp()
 const AUTH = require('../../utils/auth')
 const CONFIG = require('../../config.js')
 const REQUEST = require('../../utils/request');
 
 Page({
-	data: {
-    wxlogin: true,
-    hasUserInfo:false,
+  data: {
+    wxAuth: false,
+    hasUserInfo: false,
+    needUpdateUserInfo: false,
 
-    balance:0.00, //可用余额
-    freeze:0,//冻结金额
-    score:0,//可用积分
-    growth:0,//当前成长值
-    score_sign_continuous:0,
+    balance: 0.00, //可用余额
+    freeze: 0, //冻结金额
+    score: 0, //可用积分
+    growth: 0, //当前成长值
+    score_sign_continuous: 0,
     rechargeOpen: false, // 是否开启充值[预存]功能
   },
-	onLoad() {
-    
-	},
+  onLoad() {
+
+  },
   onShow() {
     const _this = this
     this.setData({
@@ -27,9 +28,6 @@ Page({
 
     // 校验用户是否登陆
     AUTH.checkHasLogined().then(isLogined => {
-      this.setData({
-        wxlogin: isLogined
-      })
       // 如果已经登陆了话,获取一些基本信息.
       if (isLogined) {
         _this.getUserApiInfo();
@@ -38,20 +36,20 @@ Page({
     })
   },
   // TODO: 可以修改一下展示信息。
-  aboutUs : function () {
+  aboutUs: function () {
     wx.showModal({
       title: '关于我们',
       content: '本系统是兴隆薯业的展示订单平台，祝大家使用愉快！',
-      showCancel:false
+      showCancel: false
     })
   },
-  loginOut(){
+  loginOut() {
     AUTH.loginOut()
     wx.reLaunch({
       url: '/pages/my/index'
     })
   },
-  getPhoneNumber: function(e) {
+  getPhoneNumber: function (e) {
     if (!e.detail.errMsg || e.detail.errMsg != "getPhoneNumber:ok") {
       wx.showModal({
         title: '提示',
@@ -60,39 +58,32 @@ Page({
       })
       return;
     }
-    // WXAPI.bindMobileWxa(wx.getStorageSync('token'), e.detail.encryptedData, e.detail.iv).then(res => {
-    //   if (res.code === 10002) {
-    //     this.setData({
-    //       wxlogin: false
-    //     })
-    //     return
-    //   }
-    //   if (res.code == 0) {
-    //     wx.showToast({
-    //       title: '绑定成功',
-    //       icon: 'success',
-    //       duration: 2000
-    //     })
-    //     this.getUserApiInfo();
-    //   } else {
-    //     wx.showModal({
-    //       title: '提示',
-    //       content: res.msg,
-    //       showCancel: false
-    //     })
-    //   }
-    // })
   },
   // 获取用户信息
   getUserApiInfo: function () {
     var that = this;
     REQUEST.request('user/authUserInfo', 'POST', {}).then(res => {
+      // 用户信息不需要完善
       if (res.data.code == 20005) {
         that.setData({
           apiUserInfoMap: res.data.data,
-          wxlogin: true,
-          hasUserInfo:true
+          wxAuth: true,
+          hasUserInfo: true,
+          needUpdateUserInfo:false
         });
+        // 保存主进程的用户信息
+        APP.globalData.userInfos = res.data.data;
+      }
+      // 用户信息还需要完善
+      if (res.data.code == 40003) {
+        that.setData({
+          apiUserInfoMap: res.data.data,
+          wxAuth: true,
+          needUpdateUserInfo:true,
+          hasUserInfo: true
+        });
+        // 保存主进程的用户信息
+        APP.globalData.needUpdateUserInfo = true;
       }
     })
   },
@@ -121,12 +112,13 @@ Page({
   },
   cancelLogin() {
     this.setData({
-      wxlogin: true
+      wxAuth: true,
+      hasUserInfo: true
     })
   },
   goLogin() {
     this.setData({
-      wxlogin: false
+      wxAuth: false
     })
   },
   processLogin(e) {
@@ -137,26 +129,23 @@ Page({
       })
       return;
     }
-    console.log(">>>>>>> processLogin :",e)
     let that = this;
     REQUEST.request('user/setUserInfo', 'POST', {
       ...e.detail.userInfo
     }).then(res => {
       if (res.data.code == 20005) {
         that.setData({
-          apiUserInfoMap: res.data.data, 
-          wxlogin: true,
-          hasUserInfo:true
+          apiUserInfoMap: res.data.data,
+          wxAuth: true,
+          hasUserInfo: true,
+          needUpdateUserInfo:true
         });
+         // 保存主进程的用户信息
+         APP.globalData.needUpdateUserInfo = true;
       }
     })
   },
-  cancelLogin() {
-    this.setData({
-      hasUserInfo:true
-    })
-  },
-  scanOrderCode(){
+  scanOrderCode() {
     wx.scanCode({
       onlyFromCamera: true,
       success(res) {
@@ -173,7 +162,7 @@ Page({
       }
     })
   },
-  clearStorage(){
+  clearStorage() {
     wx.clearStorageSync()
     wx.showToast({
       title: '已清除',

@@ -35,13 +35,24 @@ public class SysUserEntity {
     // 用户所在城市
     private String city;
 
+    // 用户地址
+    private String address;
+
     // 最后一次登陆时间
     private Long lastLoginTimeStamp;
 
     public SysUserEntity() {
     }
 
-    public SysUserEntity(String id,String nickName, String avatarUrl, int gender, String country, String province, String city) {
+    public SysUserEntity(String id, String userName, String userNameCode, String phoneNumber, String address) {
+        this.id = id;
+        this.userName = userName;
+        this.userNameCode = userNameCode;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+    }
+
+    public SysUserEntity(String id, String nickName, String avatarUrl, int gender, String country, String province, String city) {
         this.id = id;
         this.nickName = nickName;
         this.avatarUrl = avatarUrl;
@@ -139,6 +150,14 @@ public class SysUserEntity {
         this.lastLoginTimeStamp = lastLoginTimeStamp;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     @Override
     public String toString() {
         return "SysUserEntity{" +
@@ -152,6 +171,7 @@ public class SysUserEntity {
                 ", country='" + country + '\'' +
                 ", province='" + province + '\'' +
                 ", city='" + city + '\'' +
+                ", address='" + address + '\'' +
                 ", lastLoginTimeStamp=" + lastLoginTimeStamp +
                 '}';
     }

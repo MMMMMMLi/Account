@@ -71,7 +71,7 @@ Page({
           wx.switchTab({
             url: '/pages/order/index',
           });
-        } else if (res.data.code == 40003) {
+        } else if (res.data.code == 40003 || res.data.code == 40004) {
           // 假如当前用户是第一次使用小程序，则用户信息应该不完善，则跳转到个人信息页
           wx.switchTab({
             url: '/pages/my/my',
