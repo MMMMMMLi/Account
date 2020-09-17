@@ -39,11 +39,13 @@ public class UserService {
             // 获取对应的用户信息
             WechatUserEntity wechatUserEntityByOpenId = wechatUserRepostory.getUserEntityByOpenId(wechatAuthEntity.getOpenId());
             // 根据信息完善度返回
-            if (StringUtils.isBlank(wechatUserEntityByOpenId.getUserId())) {
-                // 需要完善
-                return new ResultDTO(ResultStatus.ERROR_USERINFO);
-            } else {
-                return new ResultDTO(ResultStatus.SUCCESS_USERINFO, sysUserRepostory.getUserInfoById(wechatUserEntityByOpenId.getUserId()));
+            if(wechatUserEntityByOpenId!=null) {
+                if (StringUtils.isBlank(wechatUserEntityByOpenId.getUserId())) {
+                    // 需要完善
+                    return new ResultDTO(ResultStatus.ERROR_USERINFO);
+                } else {
+                    return new ResultDTO(ResultStatus.SUCCESS_USERINFO, sysUserRepostory.getUserInfoById(wechatUserEntityByOpenId.getUserId()));
+                }
             }
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);

@@ -1,5 +1,5 @@
 {
-  "entryPagePath": "pages/start/start",
+  "entryPagePath": "pages/my/my",
   "pages": [
     "pages/start/start",
     "pages/index/index",
@@ -8,7 +8,8 @@
     "pages/billCount/count",
     "pages/add/add",
     "pages/manage/manage",
-    "pages/order/index"
+    "pages/order/index",
+    "pages/userInfo/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
@@ -21,7 +22,8 @@
     "selectedColor": "#1296db",
     "borderStyle": "white",
     "backgroundColor": "#fff",
-    "list": [{
+    "list": [
+      {
         "pagePath": "pages/order/index",
         "iconPath": "images/tabBar/bill.png",
         "selectedIconPath": "images/tabBar/bill_select.png",

@@ -1,5 +1,5 @@
 <template name="apifmLogin">
-  <view class="apifmLogin" hidden="{{hasUserInfo}}">
+  <view class="apifmLogin" hidden="{{wxlogin}}">
     <view class="s-b">
       <view class="s-l-b">
         <image src="/images/nologin.png" />

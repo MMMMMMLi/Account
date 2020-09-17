@@ -90,6 +90,7 @@ Page({
       if (res.data.code == 20005) {
         that.setData({
           apiUserInfoMap: res.data.data,
+          wxlogin: true,
           hasUserInfo:true
         });
       }
@@ -144,9 +145,15 @@ Page({
       if (res.data.code == 20005) {
         that.setData({
           apiUserInfoMap: res.data.data, 
+          wxlogin: true,
           hasUserInfo:true
         });
       }
+    })
+  },
+  cancelLogin() {
+    this.setData({
+      hasUserInfo:true
     })
   },
   scanOrderCode(){
