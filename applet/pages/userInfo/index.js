@@ -63,6 +63,8 @@ Page({
           content: '提交成功',
           showCancel: false,
           success(res) {
+            // 修改主进程状态
+            APP.globalData.needUpdateUserInfo = false;
             wx.switchTab({
               url: '/pages/my/my',
             });

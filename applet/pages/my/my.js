@@ -5,7 +5,7 @@ const REQUEST = require('../../utils/request');
 
 Page({
   data: {
-    wxAuth: false,
+    wxAuth: true,
     hasUserInfo: false,
     needUpdateUserInfo: false,
 
@@ -28,6 +28,11 @@ Page({
 
     // 校验用户是否登陆
     AUTH.checkHasLogined().then(isLogined => {
+      if (!isLogined) {
+        this.setData({
+          wxAuth: false
+        })
+      }
       // 如果已经登陆了话,获取一些基本信息.
       if (isLogined) {
         _this.getUserApiInfo();
@@ -69,7 +74,7 @@ Page({
           apiUserInfoMap: res.data.data,
           wxAuth: true,
           hasUserInfo: true,
-          needUpdateUserInfo:false
+          needUpdateUserInfo: false
         });
         // 保存主进程的用户信息
         APP.globalData.userInfos = res.data.data;
@@ -79,7 +84,7 @@ Page({
         that.setData({
           apiUserInfoMap: res.data.data,
           wxAuth: true,
-          needUpdateUserInfo:true,
+          needUpdateUserInfo: true,
           hasUserInfo: true
         });
         // 保存主进程的用户信息
@@ -138,10 +143,10 @@ Page({
           apiUserInfoMap: res.data.data,
           wxAuth: true,
           hasUserInfo: true,
-          needUpdateUserInfo:true
+          needUpdateUserInfo: true
         });
-         // 保存主进程的用户信息
-         APP.globalData.needUpdateUserInfo = true;
+        // 保存主进程的用户信息
+        APP.globalData.needUpdateUserInfo = true;
       }
     })
   },
