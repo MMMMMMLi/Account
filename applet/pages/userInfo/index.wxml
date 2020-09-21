@@ -49,6 +49,9 @@
 			<view wx:if="{{!hasUserInfo}}" class="weui-form__opr-area">
 				<button class="weui-btn weui-btn_primary" formType="submit">提交</button>
 			</view>
+			<view wx:else class="weui-form__opr-area">
+				<button class="weui-btn weui-btn_primary" bindtap="back">返回</button>
+			</view>
 		</form>
 		<!-- <view class="weui-form__extra-area">
 			<view class="weui-footer">

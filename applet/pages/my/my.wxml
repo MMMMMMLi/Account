@@ -2,14 +2,20 @@
 
 <view class="container">
 	<view wx:if="{{apiUserInfoMap}}" class="userinfo">
-		<image wx:if="{{apiUserInfoMap.avatarUrl}}" class="userinfo-avatar" src="{{ apiUserInfoMap.avatarUrl }}" background-size="cover"></image>
-		<image wx:else class="userinfo-avatar" src="/images/nologin.png" background-size="cover"></image>
-    <text  wx:if= "{{apiUserInfoMap.userName}}" class="userinfo-nickname">{{ apiUserInfoMap.userName }}</text>
-    <text  wx:else class="userinfo-nickname">{{ apiUserInfoMap.nickName }}</text>
+		<navigator url="/pages/userInfo/index">
+			<image wx:if="{{apiUserInfoMap.avatarUrl}}" class="userinfo-avatar" src="{{ apiUserInfoMap.avatarUrl }}" background-size="cover"></image>
+			<image wx:else class="userinfo-avatar" src="/images/nologin.png" background-size="cover"></image>
+		</navigator>
+		<view class="userNames">
+			<text  wx:if= "{{apiUserInfoMap.userName}}" class="userinfo-nickname">{{ apiUserInfoMap.userName }}</text>
+			<text  wx:else class="userinfo-nickname">{{ apiUserInfoMap.nickName }}</text>
+			<text  wx:if= "{{apiUserInfoMap.phoneNumber}}" class="userinfo-phoneNumber">{{ apiUserInfoMap.phoneNumber }}</text>
+			<text  wx:else class="userinfo-phoneNumber">暂未完善手机号</text>
+		</view>
 	</view>
 	<view wx:else class="userinfo" style="margin-bottom:40rpx;">
 		<image class="userinfo-avatar" src="/images/nologin.png" background-size="cover"></image>
-		<button class="weui-btn mini-btn" style="margin-top:20rpx;"  plain="true" size="mini" bindtap="goLogin">立即登录</button>
+		<button class="weui-btn mini-btn" style="margin-left:30rpx;" plain="true" size="mini" bindtap="goLogin">立即登录</button>
 	</view>
 	<view class="asset">
 		<view class='item' bindtap='goAsset'>

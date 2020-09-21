@@ -1,3 +1,0 @@
-<pazi-order  orderList="{{orderList}}" 
-    goodsList = "{{goodsList}}">
-</pazi-order>

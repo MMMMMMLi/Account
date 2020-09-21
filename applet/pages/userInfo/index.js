@@ -103,4 +103,7 @@ Page({
       })
     }
   },
+  back() {
+    wx.navigateBack()
+  }
 })

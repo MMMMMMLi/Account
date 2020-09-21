@@ -16,10 +16,14 @@ Page({
     score_sign_continuous: 0,
     rechargeOpen: false, // 是否开启充值[预存]功能
   },
-  onLoad() {
-
-  },
   onShow() {
+    // 每次打开页面,都需要回到顶部。
+    if (wx.pageScrollTo) {
+      wx.pageScrollTo({
+        scrollTop: 0
+      })
+    }
+    // 执行操作
     const _this = this
     this.setData({
       // TODO: 暂时不知道这个有什么用?
@@ -78,6 +82,7 @@ Page({
         });
         // 保存主进程的用户信息
         APP.globalData.userInfos = res.data.data;
+        APP.globalData.needUpdateUserInfo = false;
       }
       // 用户信息还需要完善
       if (res.data.code == 40003) {
@@ -86,6 +91,17 @@ Page({
           wxAuth: true,
           needUpdateUserInfo: true,
           hasUserInfo: true
+        });
+        // 保存主进程的用户信息
+        APP.globalData.needUpdateUserInfo = true;
+      }
+      // 用户未授权
+      if (res.data.code == 40004) {
+        that.setData({
+          apiUserInfoMap: res.data.data,
+          wxAuth: false,
+          needUpdateUserInfo: true,
+          hasUserInfo: false
         });
         // 保存主进程的用户信息
         APP.globalData.needUpdateUserInfo = true;
@@ -147,23 +163,6 @@ Page({
         });
         // 保存主进程的用户信息
         APP.globalData.needUpdateUserInfo = true;
-      }
-    })
-  },
-  scanOrderCode() {
-    wx.scanCode({
-      onlyFromCamera: true,
-      success(res) {
-        wx.navigateTo({
-          url: '/pages/order-details/scan-result?hxNumber=' + res.result,
-        })
-      },
-      fail(err) {
-        console.error(err)
-        wx.showToast({
-          title: err.errMsg,
-          icon: 'none'
-        })
       }
     })
   },

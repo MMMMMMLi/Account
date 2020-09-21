@@ -1,5 +1,3 @@
-const REQUEST = require('./utils/request');
-const CONFIG = require('config.js');
 const AUTH = require('utils/auth');
 
 App({

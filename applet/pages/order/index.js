@@ -124,9 +124,9 @@ Page({
       wx.hideLoading();
       return;
     }
+    wx.hideLoading();
     // 动态获取数据
     mock.mockThreeData().then(mockData => {
-      wx.hideLoading();
       that.setData({
         orderList: that.data.orderList.concat(mockData.orderList),
         goodsList: Object.assign(that.data.goodsList, mockData.goodsList),

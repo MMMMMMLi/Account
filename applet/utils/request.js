@@ -24,20 +24,15 @@ function request(url, method, data) {
     data.token = header.token; 
   }
   let promise = new Promise((resolve, reject) => {
-    wx.showLoading({
-      title: '加载中'
-    })
     wx.request({
       url: preUrl + url,
       method: method,
       data: data,
       header: header,
       success: (res => {
-        wx.hideLoading();
         resolve(res);
       }),
       fail: (res => {
-        wx.hideLoading();
         wx.showToast({
           title: '网络出错',
           icon: 'none',
