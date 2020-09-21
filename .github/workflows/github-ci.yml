@@ -15,4 +15,4 @@ jobs:
         username: ${{ secrets.ALIYUN_USER }}
         password: ${{ secrets.ALIYUN_PASSWORD }}
         port: ${{ secrets.ALIYUN_PORT }}
-        script: cd /root/wechat/Account/server && chmod +x ./serverScript.sh && bash ./serverScript.sh
+        script: bash /root/wechat/serverScript.sh
