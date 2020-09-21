@@ -3,6 +3,7 @@ const REQUEST = require('./request');
 // 检测登录状态，返回 true / false
 async function checkHasLogined() {
   const token = wx.getStorageSync('token')
+
   if (!token) {
     return false
   }
@@ -11,7 +12,9 @@ async function checkHasLogined() {
     wx.removeStorageSync('token')
     return false
   }
-  REQUEST.request('applet/auth/checkToken', 'POST', {}).then(res => {
+  REQUEST.request('applet/auth/checkToken', 'POST', {
+    token:token
+  }).then(res => {
     if (res.data.code != 20003) {
       wx.removeStorageSync('token')
       return false
@@ -50,6 +53,7 @@ async function login(page) {
           })
           return;
         }
+        console.log("login res",res)
         wx.setStorageSync('token', res.data.data);
         if (page) {
           page.onShow()

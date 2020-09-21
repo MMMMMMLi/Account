@@ -71,7 +71,9 @@ Page({
   // 获取用户信息
   getUserApiInfo: function () {
     var that = this;
-    REQUEST.request('user/authUserInfo', 'POST', {}).then(res => {
+    REQUEST.request('user/authUserInfo', 'POST', {
+      token:  wx.getStorageSync('token'),
+    }).then(res => {
       // 用户信息不需要完善
       if (res.data.code == 20005) {
         that.setData({
@@ -152,14 +154,15 @@ Page({
     }
     let that = this;
     REQUEST.request('user/setUserInfo', 'POST', {
-      ...e.detail.userInfo
+      ...e.detail.userInfo,
+      token: wx.getStorageSync('token'),
     }).then(res => {
       if (res.data.code == 20005) {
         that.setData({
           apiUserInfoMap: res.data.data,
           wxAuth: true,
           hasUserInfo: true,
-          needUpdateUserInfo: true
+          needUpdateUserInfo: false
         });
         // 保存主进程的用户信息
         APP.globalData.needUpdateUserInfo = true;

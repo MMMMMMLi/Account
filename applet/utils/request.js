@@ -14,14 +14,12 @@ wx.getStorage({
 // 主要执行方法
 function request(url, method, data) {
   if (!header.token) {
-    wx.getStorage({
+    wx.getStorageSync({
       key: 'token',
       success(e) {
         header.token = e.data;
       }
     })
-  }else {
-    data.token = header.token; 
   }
   let promise = new Promise((resolve, reject) => {
     wx.request({

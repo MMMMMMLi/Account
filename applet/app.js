@@ -56,6 +56,7 @@ App({
   onShow (e) {
     // 自动登录
     AUTH.checkHasLogined().then(async isLogined => {
+      console.log("app onShow",isLogined)
       if (!isLogined) {
         AUTH.login()
       }
