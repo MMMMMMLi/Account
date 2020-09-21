@@ -1,4 +1,5 @@
 #!/bin/bash
+source /etc/profile
 
 # delete jars
 echo '----------------------- delete jars begin ----------------------- '
