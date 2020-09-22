@@ -1,0 +1,22 @@
+.searchbar-result {
+  margin: 10rpx 5rpx 0 5rpx;
+  font-size: 14px;
+  position: absolute;
+  z-index: 100;
+  width: 98%;
+}
+
+.searchbar-result .weui-cell__bd {
+  padding: 2px 0 2px 20px;
+  color: var(--weui-FG-1)
+}
+
+.searchbar-result:before {
+  display: none
+}
+
+.orderInfo {
+  padding: 8rpx;
+  border-radius: 6rpx;
+  background-color: #ffffff;
+}

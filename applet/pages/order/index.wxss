@@ -64,7 +64,10 @@
 
 .load-more-wrap .load-content{
   text-align: center;
-  margin:30px auto 30px;
+  margin:10px auto 10px;
   color:#ccc;
   font-size: 15px;
+ }
+ .load-more-wrap{
+  padding-bottom: 5rpx;
  }

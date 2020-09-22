@@ -1,2 +1,6 @@
-<!--pages/manage/manage.wxml-->
-<text>pages/manage/manage.wxml</text>
+<scroll-view class="container" scroll-y>
+	<view>
+		
+	</view>
+</scroll-view>
+<button class="topButton" type="primary">新增</button>

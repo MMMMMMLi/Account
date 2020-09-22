@@ -1,1 +1,18 @@
-/* pages/manage/manage.wxss */
+/* 主要内容样式 */
+.container {
+  width: 100%;
+  height: 100%;
+  margin-top: 15rpx;
+  background-color: #F2f2f2;
+}
+
+/* 底部按钮的样式 */
+.topButton {
+  margin-top: 30rpx;
+  position:fixed;
+  bottom:0;
+}
+
+.topButton:not([size='mini']) {
+  width: 100%;
+}

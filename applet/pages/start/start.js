@@ -20,8 +20,9 @@ Page({
         url: '/pages/order/index',
       });
     } else {
-
-      REQUEST.request('applet/getBanners', 'POST', {}).then(res => {
+      REQUEST.request('applet/getBanners', 'POST', {
+        token: wx.getStorageSync('token'),
+      }).then(res => {
         if (res.data.code == 40000) {
           return;
         }
@@ -48,7 +49,6 @@ Page({
   goToIndex: function (e) {
     // 校验网络是否正常
     if (app.globalData.isConnected) {
-      const token = wx.getStorageSync('token');
       if (!token) {
         // 如果Token为空,则等待1S之后执行。
         wx.showLoading({
@@ -64,7 +64,7 @@ Page({
       })
       // 校验用户是否授权和完善过信息
       REQUEST.request('user/authUserInfo', 'POST', {
-        token: token
+        token:  wx.getStorageSync('token'),
       }).then(res => {
         if (res.data.code == 20005) {
           // 如果用户信息全换 ，则直接跳转订单页面即可。

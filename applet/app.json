@@ -1,8 +1,7 @@
 {
-  "entryPagePath": "pages/start/start",
+  "entryPagePath": "pages/add/add",
   "pages": [
     "pages/start/start",
-    "pages/index/index",
     "pages/logs/logs",
     "pages/my/my",
     "pages/billCount/count",
@@ -48,7 +47,7 @@
         "text": "添加"
       },
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/manage/manage",
         "iconPath": "images/tabBar/manage.png",
         "selectedIconPath": "images/tabBar/manage_select.png",
         "text": "管理"
