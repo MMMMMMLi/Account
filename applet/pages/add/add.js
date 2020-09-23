@@ -6,7 +6,17 @@ Page({
    */
   data: {
     inputShowed: false,
-    inputVal: ""
+    inputVal: "",
+    categoryArray: ['西瓜红', '济薯26', '烟薯25'],
+    categoryValue: 0,
+    orderList: [{
+      userName: '',
+      userPhone: '',
+      createTime: '',
+      orders: [{
+        title: ''
+      }]
+    }]
   },
   // 打开搜索input
   showInput: function () {
@@ -33,5 +43,14 @@ Page({
     this.setData({
       inputVal: e.detail.value
     });
-  }
+  },
+  testAdd(e) {
+    console.log(e.currentTarget.dataset.name)
+  },
+  // 选择框
+  categoryPickerChange: function(e) {
+    this.setData({
+      categoryValue: e.detail.value
+    })
+},
 })
