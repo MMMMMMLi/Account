@@ -9,6 +9,10 @@ Component({
       value: []
     },
     sizeArray: {
+      type: Array,
+      value: []
+    },
+    orderInfo:{
       type: Map,
       value: []
     },

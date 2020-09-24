@@ -41,8 +41,15 @@ public class UserController {
                                     @RequestParam String address,
                                     @RequestParam String name,
                                     @RequestParam String phone) {
-        return  userService.updateUserInfo(token,address,name,phone);
+        return userService.updateUserInfo(token, address, name, phone);
 
+    }
+
+    @RequestMapping("/getUserInfoBySearch")
+    public ResultDTO getUserInfoBySearch(@RequestParam String token,
+                                         @RequestParam String searchValue,
+                                         @RequestParam Integer size) {
+        return userService.getUserInfoBySearch(token,searchValue,size);
     }
 
 }

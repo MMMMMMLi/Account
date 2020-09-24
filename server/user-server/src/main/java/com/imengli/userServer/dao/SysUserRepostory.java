@@ -4,6 +4,8 @@ import com.imengli.userServer.dao.provide.MineUpdateProvider;
 import com.imengli.userServer.daomain.SysUserEntity;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 @Mapper
 public interface SysUserRepostory {
 
@@ -17,4 +19,7 @@ public interface SysUserRepostory {
 
     @UpdateProvider(type = MineUpdateProvider.class, method = "updateSysUserInfo")
     void update(@Param("sysUserEntity") SysUserEntity sysUserEntity);
+
+    @Select("SELECT * FROM sys_user WHERE (LOCATE(#{searchValue},userName) OR LOCATE(#{searchValue},userNameCode) OR LOCATE(#{searchValue},phoneNumber)) LIMIT #{size}")
+    List<SysUserEntity> getUserInfoBySearch(@Param("searchValue") String searchValue,@Param("size") Integer size);
 }

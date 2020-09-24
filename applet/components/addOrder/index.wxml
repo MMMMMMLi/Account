@@ -1,9 +1,9 @@
 <view class="weui-panel weui-panel_access">
 	<view class="weui-panel__hd">
 		<view class="weui-media-box__info">
-			<view class="weui-media-box__info__meta">姜伟加</view>
-			<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">18369655298</view>
-			<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">2020-09-23 17:12:39</view>
+			<view class="weui-media-box__info__meta">{{orderInfo.userInfo.userName}}</view>
+			<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{orderInfo.userInfo.phoneNumber}}</view>
+			<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{orderInfo.userInfo.orderDate}}</view>
 		</view>
 	</view>
 	<view class="weui-panel__bd">

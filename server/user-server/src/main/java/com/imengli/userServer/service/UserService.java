@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -32,6 +33,16 @@ public class UserService {
 
     @Resource
     private SysUserRepostory sysUserRepostory;
+
+    public WechatAuthEntity getWechatAuthEntity(String token) {
+        WechatAuthEntity wechatAuthEntity = new WechatAuthEntity();
+        // 检验Token是否正常
+        if (redisWechatRemote.containsWechat(token)) {
+            // 获取Token对应的对象信息
+            wechatAuthEntity = redisWechatRemote.getWechat(token);
+        }
+        return wechatAuthEntity;
+    }
 
     public ResultDTO authUserInfo(String token) {
         WechatAuthEntity wechatAuthEntity = this.getWechatAuthEntity(token);
@@ -100,13 +111,15 @@ public class UserService {
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }
 
-    public WechatAuthEntity getWechatAuthEntity(String token) {
-        WechatAuthEntity wechatAuthEntity = new WechatAuthEntity();
-        // 检验Token是否正常
-        if (redisWechatRemote.containsWechat(token)) {
-            // 获取Token对应的对象信息
-            wechatAuthEntity = redisWechatRemote.getWechat(token);
+
+    public ResultDTO getUserInfoBySearch(String token, String searchValue,Integer size) {
+        // 校验Token
+        WechatAuthEntity wechatAuthEntity = this.getWechatAuthEntity(token);
+        // 判断是否异常
+        if (wechatAuthEntity != null) {
+            List<SysUserEntity> userEntityList = sysUserRepostory.getUserInfoBySearch(searchValue,size);
+            return new ResultDTO(ResultStatus.SUCCESS_SEARCH_USERINFO,userEntityList);
         }
-        return wechatAuthEntity;
+        return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }
 }

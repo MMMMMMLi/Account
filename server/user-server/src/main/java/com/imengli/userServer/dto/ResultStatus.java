@@ -14,7 +14,8 @@ public enum ResultStatus {
     SUCCESS_AUTH_TOKEN(20003,"校验Token成功"),
     SUCCESS_LOGIN(20004,"登陆成功"),
     SUCCESS_USERINFO(20005,"获取用户信息成功"),
-    SUCCESS_UPDATE_USERINFO(20006,"获取用户信息成功"),
+    SUCCESS_UPDATE_USERINFO(20006,"更新用户信息成功"),
+    SUCCESS_SEARCH_USERINFO(20007,"搜索用户信息成功"),
 
 
     ERROR_GET_OPEN_ID(40001,"获取微信OpenId失败"),

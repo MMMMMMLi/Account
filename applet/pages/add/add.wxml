@@ -1,5 +1,5 @@
-<view class="page">
-	<view>
+<view class="page" style="position: relative;">
+	<view class="{{ inputVal.length > 0 ? 'mask' : '' }}">
 		<view class="weui-search-bar {{inputShowed ? 'weui-search-bar_focusing' : ''}}" id="searchBar">
 			<form class="weui-search-bar__form">
 				<label class="weui-search-bar__label" bindtap="showInput">
@@ -8,42 +8,34 @@
 				</label>
 				<view class="weui-search-bar__box">
 					<i class="weui-icon-search"></i>
-					<input type="text" class="weui-search-bar__input" confirm-type="search" placeholder="搜索" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" />
+					<input type="text" class="weui-search-bar__input" confirm-type="search" placeholder="支持输入姓名/拼音/手机号；至多展示20位" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" />
 					<span class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" bindtap="clearInput"></span>
 				</view>
 			</form>
 			<view class="weui-search-bar__cancel-btn" bindtap="hideInput">取消</view>
 		</view>
-		<view class="weui-cells searchbar-result" wx:if="{{inputVal.length > 0}}">
-			<view class="weui-cell weui-cell_active weui-cell_access">
-				<view class="weui-cell__bd weui-cell_primary">
-					<view>实时搜索文本</view>
+		<view wx:if="{{inputVal.length > 0}}">
+			<view class="weui-cells searchbar-result" wx:if="{{inputUserInfo.length > 0}}">
+				<view class="weui-cell weui-cell_active weui-cell_access" 
+				wx:for="{{inputUserInfo}}" wx:key="id" data-info="{{item}}" bindtap="searchClick">
+					<view class="weui-cell__bd weui-cell_primary">
+						<view class="weui-media-box__info__meta" style="width:3em">{{item.userName}}</view>
+						<view class="weui-media-box__info__meta weui-media-box__info__meta_extra" style="width:3em">{{item.userNameCode}}</view>
+						<view class="weui-media-box__info__meta weui-media-box__info__meta_extra" style="width:3em">{{item.phoneNumber}}</view>
+					</view>
 				</view>
 			</view>
-			<view class="weui-cell weui-cell_active weui-cell_access">
-				<view class="weui-cell__bd weui-cell_primary">
-					<view>实时搜索文本</view>
-				</view>
-			</view>
-			<view class="weui-cell weui-cell_active weui-cell_access">
-				<view class="weui-cell__bd weui-cell_primary">
-					<view>实时搜索文本</view>
-				</view>
-			</view>
-			<view class="weui-cell weui-cell_active weui-cell_access">
-				<view class="weui-cell__bd weui-cell_primary">
-					<view>实时搜索文本</view>
-				</view>
-			</view>
-			<view class="weui-cell weui-cell_active weui-cell_access">
-				<view class="weui-cell__bd weui-cell_primary">
-					<view>实时搜索文本</view>
+			<view class="weui-cells searchbar-result" wx:else>
+				<view class="weui-cell weui-cell_active weui-cell_access">
+					<view class="weui-cell__bd weui-cell_primary">
+						<view>暂无匹配数据</view>
+					</view>
 				</view>
 			</view>
 		</view>
 	</view>
 	<scroll-view scroll-y>
-		<my-addOrder categoryArray="{{categoryArray}}" sizeArray="{{sizeArray}}" />
+		<my-addOrder wx:for="{{orderList}}" wx:key="orderListId" orderInfo="{{item}}" categoryArray="{{categoryArray}}" sizeArray="{{sizeArray}}" />
 		<view style="margin-top:25px;">.</view>
 	</scroll-view>
 	<button class="topButton" type="primary">确定</button>
