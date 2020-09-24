@@ -2179,7 +2179,8 @@ i.weui-tabbar__icon {
   bottom: 0;
   right: 0;
   height: 1px;
-  border-bottom: 1px solid var(--weui-FG-3);
+  /* 此处修改是因为新增订单页面 */
+  /* border-bottom: 1px solid var(--weui-FG-3); */
   color: var(--weui-FG-3);
   -webkit-transform-origin: 0 100%;
   transform-origin: 0 100%;
@@ -2254,7 +2255,7 @@ a.weui-media-box:active {
   padding-bottom: 4px;
   /* font-size: 13px; */
   /* color: var(--weui-FG-2); */
-  line-height: 1em;
+  /* line-height: 1em; */
   list-style: none;
   overflow: hidden
 }

@@ -9,6 +9,8 @@ Page({
     inputVal: "",
     categoryArray: ['西瓜红', '济薯26', '烟薯25'],
     categoryValue: 0,
+    sizeArray: ['大', '中', '小'],
+    sizeValue: 0,
     orderList: [{
       userName: '',
       userPhone: '',
@@ -48,9 +50,15 @@ Page({
     console.log(e.currentTarget.dataset.name)
   },
   // 选择框
-  categoryPickerChange: function(e) {
+  categoryPickerChange: function (e) {
     this.setData({
       categoryValue: e.detail.value
     })
-},
+  },
+  // 选择框
+  sizePickerChange: function (e) {
+    this.setData({
+      sizeValue: e.detail.value
+    })
+  },
 })
