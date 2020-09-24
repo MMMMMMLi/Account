@@ -1,7 +1,7 @@
 {
-  "navigationBarTitleText":"订单列表",
+  "navigationBarTitleText": "订单列表",
   "usingComponents": {
-    "my-orderList":"/components/orderList/index"
-}
+    "my-orderList": "/components/orderList/index"
+  }
 
 }

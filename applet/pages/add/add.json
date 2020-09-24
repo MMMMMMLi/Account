@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "新增订单"
+  "navigationBarTitleText": "新增订单",
+  "usingComponents": {
+    "my-addOrder":"/components/addOrder/index"
+}
 }

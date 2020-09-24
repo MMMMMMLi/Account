@@ -42,81 +42,8 @@
 			</view>
 		</view>
 	</view>
-	<scroll-view scroll-y >
-		<view class="weui-panel weui-panel_access">
-			<view class="weui-panel__hd">
-				<view class="weui-media-box__info">
-					<view class="weui-media-box__info__meta">姜伟加</view>
-					<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">18369655298</view>
-					<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">2020-09-23 17:12:39</view>
-				</view>
-			</view>
-			<view class="weui-panel__bd">
-				<view class="weui-media-box_text" style="border-top: 1px solid var(--weui-FG-3);">
-					<h4 style="padding:0;display: flex;">
-						<view class="pickerView weui-cell_select">
-							<view class="weui-cell__hd">
-								<label class="weui-label" style="width: 4em">品种 ：</label>
-							</view>
-							<view class="weui-cell__bd">
-								<picker bindchange="categoryPickerChange" range="{{categoryArray}}">
-									<view class="weui-select" style="padding-left: 0px;">{{categoryArray[categoryValue]}}</view>
-								</picker>
-							</view>
-						</view>
-						<view class="pickerView weui-cell_select">
-							<view class="weui-cell__hd">
-								<label class="weui-label" style="width: 4em">大小 ：</label>
-							</view>
-							<view class="weui-cell__bd">
-								<picker bindchange="sizePickerChange" range="{{sizeArray}}">
-									<view class="weui-select" style="padding-left: 0px;">{{sizeArray[sizeValue]}}</view>
-								</picker>
-							</view>
-						</view>
-					</h4>
-					<h4 style="padding:0;display: flex;">
-						<view class="pickerView">
-							<view class="weui-cell__hd">
-								<label class="weui-label" style="width: 4em">毛重 ：</label>
-							</view>
-							<view class="weui-cell__bd">
-								<input class="weui-input" type="number" placeholder="毛重/KG" placeholder-class="weui-input__placeholder" value="{{value}}" bindinput="onInput" />
-							</view>
-						</view>
-						<view class="pickerView">
-							<view class="weui-cell__hd">
-								<label class="weui-label" style="width: 4em">皮重 ：</label>
-							</view>
-							<view class="weui-cell__bd">
-								<input class="weui-input" type="number" placeholder="皮重/KG" placeholder-class="weui-input__placeholder" value="{{value}}" bindinput="onInput" />
-							</view>
-						</view>
-					</h4>
-				</view>
-			</view>
-			<view class="weui-panel__ft">
-				<view class="weui-cells weui-cells_form" style="display: flex;">
-					<view class="weui-cell weui-cell_active " style="flex:0.5">
-						<view class="weui-cell__hd"><label>用框 ：</label></view>
-						<view class="weui-cell__bd">
-							<input class="weui-input" style="padding-left:7px" type="number" placeholder="用框总数量" placeholder-class="weui-input__placeholder" value="{{value}}"/>
-						</view>
-					</view>
-					<view class="weui-cell weui-cell_active " style="flex:0.5">
-						<view class="weui-cell__hd"><label>退框 ：</label></view>
-						<view class="weui-cell__bd">
-							<input class="weui-input" style="padding-left:7px" type="number" placeholder="退框总数量" placeholder-class="weui-input__placeholder" value="{{value}}"/>
-						</view>
-					</view>
-				</view>
-			</view>
-			<view class="weui-panel__ft">
-				<a class="weui-cell weui-cell_active weui-cell_access weui-cell_link" style="padding: 0" data-name="haha" bindtap="testAdd">
-					<view class="weui-cell__bd" style="text-align: center">+</view>
-				</a>
-			</view>
-		</view>
+	<scroll-view scroll-y>
+		<my-addOrder categoryArray="{{categoryArray}}" sizeArray="{{sizeArray}}" />
 		<view style="margin-top:25px;">.</view>
 	</scroll-view>
 	<button class="topButton" type="primary">确定</button>

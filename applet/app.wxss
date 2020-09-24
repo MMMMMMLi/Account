@@ -2129,7 +2129,9 @@ i.weui-tabbar__icon {
   background-color: var(--weui-BG-2);
   margin-top: 10px;
   position: relative;
-  overflow: hidden
+  overflow: hidden;
+  /* 为了适配新增订单页面 */
+  margin-bottom: 10px;
 }
 
 .weui-panel:first-child {
