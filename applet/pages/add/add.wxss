@@ -1,9 +1,9 @@
 .searchbar-result {
-  margin: 10rpx 5rpx 0 5rpx;
+  margin: 0;
   font-size: 14px;
   position: absolute;
   z-index: 100;
-  width: 98%;
+  width: 100%;
 }
 
 .searchbar-result .weui-cell__bd {
@@ -36,4 +36,14 @@
   align-items: center;
   -webkit-box-align: center;
   -webkit-align-items: center;
+}
+
+.mask {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: #999;
+  z-index: 9999;
+  top: 0;
+  left: 0;
 }
