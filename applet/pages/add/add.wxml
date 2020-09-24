@@ -36,7 +36,5 @@
 	</view>
 	<scroll-view scroll-y>
 		<my-addOrder wx:for="{{orderList}}" wx:key="orderListId" orderInfo="{{item}}" categoryArray="{{categoryArray}}" sizeArray="{{sizeArray}}" />
-		<view style="margin-top:25px;">.</view>
 	</scroll-view>
-	<button class="topButton" type="primary">确定</button>
 </view>

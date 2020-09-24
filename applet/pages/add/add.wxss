@@ -15,17 +15,6 @@
   display: none
 }
 
-/* 底部按钮的样式 */
-.topButton {
-  margin-top: 30rpx;
-  position: fixed;
-  bottom: 0;
-}
-
-.topButton:not([size='mini']) {
-  width: 100%;
-}
-
 /* picker选择框样式 */
 .pickerView {
   flex: 0.5;

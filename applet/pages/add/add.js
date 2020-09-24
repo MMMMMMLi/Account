@@ -10,8 +10,14 @@ Page({
     inputUserInfo: "",
     categoryArray: ['西瓜红', '济薯26', '烟薯25'],
     sizeArray: ['大', '中', '小'],
-    orderListId:0,
+    orderListId: 0,
     orderList: []
+  },
+  onShow() {
+    // 页面初始化的时候，获取品种和大小的清单
+    // REQUEST.request('manage/getCategoryAndSizeArray', 'POST', {})
+      // .then(res => {
+      // })
   },
   // 打开搜索input
   showInput: function () {
@@ -56,18 +62,18 @@ Page({
   searchClick(e) {
     let oldOrderList = this.data.orderList;
     const clickUserInfo = e.currentTarget.dataset.info;
-    clickUserInfo.orderDate = new Date().toLocaleString();
-    if(oldOrderList.filter(order => order.userInfo.id == clickUserInfo.id).length == 0) {
+    clickUserInfo.orderDate = new Date().toLocaleTimeString();
+    if (oldOrderList.filter(order => order.userInfo.id == clickUserInfo.id).length == 0) {
       oldOrderList.push({
-        orderListId:this.data.orderListId++,
-        userInfo:clickUserInfo,
-        orders:[]
+        orderListId: this.data.orderListId++,
+        userInfo: clickUserInfo,
+        orders: [{}]
       })
       this.setData({
-        orderList:oldOrderList
+        orderList: oldOrderList
       })
       this.clearInput();
-    }else {
+    } else {
       wx.showModal({
         content: '当前操作用户存在订单，请勿重复操作！',
         showCancel: false

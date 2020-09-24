@@ -7,7 +7,7 @@
 		</view>
 	</view>
 	<view class="weui-panel__bd">
-		<view class="weui-media-box_text" style="border-top: 1px solid var(--weui-FG-3);">
+		<view wx:for="{{orderInfo.orders}}" wx:key="index" class="weui-media-box_text" style="border-top: 1px solid var(--weui-FG-3);margin-bottom:10px">
 			<h4 style="padding:0;display: flex;">
 				<view class="pickerView weui-cell_select">
 					<view class="weui-cell__hd">
@@ -67,8 +67,10 @@
 		</view>
 	</view>
 	<view class="weui-panel__ft">
-		<a class="weui-cell weui-cell_active weui-cell_access weui-cell_link" style="padding: 0" data-name="haha" bindtap="testAdd">
-			<view class="weui-cell__bd" style="text-align: center">+</view>
+		<a class="weui-cell weui-cell_active weui-cell_access weui-cell_link" style="padding: 0">
+			<view class="weui-cell__bd" style="text-align: center;flex:0.5" bindtap="delOrder">-</view>
+			<view class="weui-cell__bd" style="text-align: center;flex:0.5" bindtap="addOrder">+</view>
 		</a>
 	</view>
+	<button class="topButton" type="primary">确定</button>
 </view>

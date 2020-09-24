@@ -11,3 +11,8 @@
   -webkit-box-align: center;
   -webkit-align-items: center;
 }
+
+/* 底部按钮的样式 */
+.topButton:not([size='mini']) {
+  width: 100%;
+}
