@@ -16,8 +16,7 @@
 		</view>
 		<view wx:if="{{inputVal.length > 0}}">
 			<view class="weui-cells searchbar-result" wx:if="{{inputUserInfo.length > 0}}">
-				<view class="weui-cell weui-cell_active weui-cell_access" 
-				wx:for="{{inputUserInfo}}" wx:key="id" data-info="{{item}}" bindtap="searchClick">
+				<view class="weui-cell weui-cell_active weui-cell_access" wx:for="{{inputUserInfo}}" wx:key="id" data-info="{{item}}" bindtap="searchClick">
 					<view class="weui-cell__bd weui-cell_primary">
 						<view class="weui-media-box__info__meta" style="width:3em">{{item.userName}}</view>
 						<view class="weui-media-box__info__meta weui-media-box__info__meta_extra" style="width:3em">{{item.userNameCode}}</view>
@@ -35,6 +34,6 @@
 		</view>
 	</view>
 	<scroll-view scroll-y>
-		<my-addOrder wx:for="{{orderList}}" wx:key="orderListId" orderInfo="{{item}}" categoryArray="{{categoryArray}}" sizeArray="{{sizeArray}}" />
+		<my-addOrder wx:for="{{orderList}}" wx:key="orderListId" orderInfo="{{item}}" id="my-addOrder{{item.orderListId}}" bind:deleteOrderInfo="deleteOrderInfo" categoryArray="{{categoryArray}}" sizeArray="{{sizeArray}}" />
 	</scroll-view>
 </view>

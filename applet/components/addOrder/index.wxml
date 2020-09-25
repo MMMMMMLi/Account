@@ -1,76 +1,99 @@
 <view class="weui-panel weui-panel_access">
-	<view class="weui-panel__hd">
-		<view class="weui-media-box__info">
-			<view class="weui-media-box__info__meta">{{orderInfo.userInfo.userName}}</view>
-			<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{orderInfo.userInfo.phoneNumber}}</view>
-			<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{orderInfo.userInfo.orderDate}}</view>
-		</view>
-	</view>
-	<view class="weui-panel__bd">
-		<view wx:for="{{orderInfo.orders}}" wx:key="index" class="weui-media-box_text" style="border-top: 1px solid var(--weui-FG-3);margin-bottom:10px">
-			<h4 style="padding:0;display: flex;">
-				<view class="pickerView weui-cell_select">
-					<view class="weui-cell__hd">
-						<label class="weui-label" style="width: 4em">品种 ：</label>
-					</view>
-					<view class="weui-cell__bd">
-						<picker bindchange="categoryPickerChange" range="{{categoryArray}}">
-							<view class="weui-select" style="padding-left: 0px;">{{categoryArray[categoryValue]}}</view>
-						</picker>
-					</view>
-				</view>
-				<view class="pickerView weui-cell_select">
-					<view class="weui-cell__hd">
-						<label class="weui-label" style="width: 4em">大小 ：</label>
-					</view>
-					<view class="weui-cell__bd">
-						<picker bindchange="sizePickerChange" range="{{sizeArray}}">
-							<view class="weui-select" style="padding-left: 0px;">{{sizeArray[sizeValue]}}</view>
-						</picker>
-					</view>
-				</view>
-			</h4>
-			<h4 style="padding:0;display: flex;">
-				<view class="pickerView">
-					<view class="weui-cell__hd">
-						<label class="weui-label" style="width: 4em">毛重 ：</label>
-					</view>
-					<view class="weui-cell__bd">
-						<input class="weui-input" type="number" placeholder="毛重/KG" placeholder-class="weui-input__placeholder" value="{{value}}" bindinput="onInput" />
-					</view>
-				</view>
-				<view class="pickerView">
-					<view class="weui-cell__hd">
-						<label class="weui-label" style="width: 4em">皮重 ：</label>
-					</view>
-					<view class="weui-cell__bd">
-						<input class="weui-input" type="number" placeholder="皮重/KG" placeholder-class="weui-input__placeholder" value="{{value}}" bindinput="onInput" />
-					</view>
-				</view>
-			</h4>
-		</view>
-	</view>
-	<view class="weui-panel__ft">
-		<view class="weui-cells weui-cells_form" style="display: flex;">
-			<view class="weui-cell weui-cell_active " style="flex:0.5">
-				<view class="weui-cell__hd"><label>用框 ：</label></view>
-				<view class="weui-cell__bd">
-					<input class="weui-input" style="padding-left:7px" type="number" placeholder="用框总数量" placeholder-class="weui-input__placeholder" value="{{value}}" />
-				</view>
-			</view>
-			<view class="weui-cell weui-cell_active " style="flex:0.5">
-				<view class="weui-cell__hd"><label>退框 ：</label></view>
-				<view class="weui-cell__bd">
-					<input class="weui-input" style="padding-left:7px" type="number" placeholder="退框总数量" placeholder-class="weui-input__placeholder" value="{{value}}" />
-				</view>
+	<form catchsubmit="formSubmit">
+		<view class="weui-panel__hd">
+			<view class="weui-media-box__info">
+				<view class="weui-media-box__info__meta">{{orderInfo.userInfo.userName}}</view>
+				<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{orderInfo.userInfo.phoneNumber}}</view>
+				<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{orderInfo.userInfo.orderDate}}</view>
+				<view wx:if="{{orderInfo.totalPrice}}" style="float:right;color:red;">￥{{orderInfo.totalPrice}}</view>
 			</view>
 		</view>
-	</view>
-	<view class="weui-panel__ft">
-		<a class="weui-cell weui-cell_active weui-cell_access weui-cell_link" style="padding: 0">
-			<view class="weui-cell__bd" style="text-align: center;flex:0.5" bindtap="delOrder">-</view>
-			<view class="weui-cell__bd" style="text-align: center;flex:0.5" bindtap="addOrder">+</view>
-		</a>
-	</view>
-	<button class="topButton" type="primary">确定</button>
+		<view class="weui-panel__bd">
+			<view wx:for="{{orderInfo.orders}}" wx:key="index" class="weui-media-box_text" style="border-top: 1px solid var(--weui-FG-3);margin-bottom:10px">
+				<h4 style="padding:0;display: flex;">
+					<view class="pickerView weui-cell_select">
+						<view class="weui-cell__hd">
+							<label class="weui-label" style="width: 4em">品种 ：</label>
+						</view>
+						<view class="weui-cell__bd">
+							<picker bindchange="categoryPickerChange" data-index="{{index}}" range="{{categoryArray}}">
+								<view class="weui-select" style="padding-left: 0px;">{{categoryArray[item.categoryValue]}}</view>
+							</picker>
+						</view>
+					</view>
+					<view class="pickerView weui-cell_select">
+						<view class="weui-cell__hd">
+							<label class="weui-label" style="width: 4em">大小 ：</label>
+						</view>
+						<view class="weui-cell__bd">
+							<picker bindchange="sizePickerChange" data-index="{{index}}" range="{{sizeArray}}">
+								<view class="weui-select" style="padding-left: 0px;">{{sizeArray[item.sizeValue]}}</view>
+							</picker>
+						</view>
+					</view>
+				</h4>
+				<h4 style="padding:0;display: flex;margin-bottom: 16px;">
+					<view class="pickerView">
+						<view class="weui-cell__hd">
+							<label class="weui-label" style="width: 4em">毛重 ：</label>
+						</view>
+						<view class="weui-cell__bd">
+							<input class="weui-input" type="digit" placeholder="毛重/KG" placeholder-class="weui-input__placeholder" data-index="{{index}}" data-type="gross" value="{{value}}" bindblur="overInput" />
+						</view>
+					</view>
+					<view class="pickerView">
+						<view class="weui-cell__hd">
+							<label class="weui-label" style="width: 4em">皮重 ：</label>
+						</view>
+						<view class="weui-cell__bd">
+							<input class="weui-input" type="digit" placeholder="皮重/KG" placeholder-class="weui-input__placeholder"data-index="{{index}}" data-type="tare" value="{{value}}" bindblur="overInput"  />
+						</view>
+					</view>
+				</h4>
+				<h4 style="padding:0;display: flex;">
+					<view class="pickerView">
+						<view class="weui-cell__hd">
+							<label class="weui-label" style="width: 4em">单价 ：</label>
+						</view>
+						<view class="weui-cell__bd">
+							<input class="weui-input" type="digit" placeholder="元/KG" placeholder-class="weui-input__placeholder" data-index="{{index}}" data-type="unitPrice" value="{{value}}" bindblur="overInput" />
+						</view>
+					</view>
+					<view class="pickerView">
+						<view class="weui-cell__hd">
+							<label class="weui-label" style="width: 4em">总价 ：</label>
+						</view>
+						<view class="weui-cell__bd">
+							<input class="weui-input" type="digit" placeholder="当前项总价" disabled="true" placeholder-class="weui-input__placeholder" value="{{item.totalPrice}}"></input>
+						</view>
+					</view>
+				</h4>
+			</view>
+		</view>
+		<view class="weui-panel__ft">
+			<view class="weui-cells weui-cells_form" style="display: flex;">
+				<view class="weui-cell weui-cell_active " style="flex:0.5">
+					<view class="weui-cell__hd"><label>用框 ：</label></view>
+					<view class="weui-cell__bd">
+						<input class="weui-input" style="padding-left:7px" type="number" name="apply" placeholder="用框总数量" placeholder-class="weui-input__placeholder" value="{{value}}" />
+					</view>
+				</view>
+				<view class="weui-cell weui-cell_active " style="flex:0.5">
+					<view class="weui-cell__hd"><label>退框 ：</label></view>
+					<view class="weui-cell__bd">
+						<input class="weui-input" style="padding-left:7px" type="number" name="retreat" placeholder="退框总数量" placeholder-class="weui-input__placeholder" value="{{value}}" />
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="weui-panel__ft" style="display:flex;">
+			<a class="weui-cell weui-cell_active weui-cell_access weui-cell_link" style="padding: 0;flex:0.5;">
+				<view class="weui-cell__bd" style="text-align: center;" bindtap="delOrder">-</view>
+			</a>
+			<a class="weui-cell weui-cell_active weui-cell_access weui-cell_link" style="padding: 0;flex:0.5;">
+				<view class="weui-cell__bd" style="text-align: center;" bindtap="addOrder">+</view>
+			</a>
+		</view>
+		<button class="topButton" type="primary" formType="submit">确定</button>
+	</form>
 </view>
