@@ -1,6 +1,6 @@
 package com.imengli.redisServer.controller;
 
-import com.imengli.redisServer.daomain.WechatAuthEntity;
+import com.imengli.redisServer.daomain.WechatAuthDO;
 import com.imengli.redisServer.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,8 +16,8 @@ public class RedisWechatAuthController {
     private RedisService redisService;
 
     @RequestMapping("/set")
-    public Boolean setWechat(@RequestParam(value = "key") String key, @RequestBody WechatAuthEntity wechatAuthEntity) {
-        return redisService.setWechat(key, wechatAuthEntity);
+    public Boolean setWechat(@RequestParam(value = "key") String key, @RequestBody WechatAuthDO wechatAuthDO) {
+        return redisService.setWechat(key, wechatAuthDO);
     }
 
     @RequestMapping("/contains")
@@ -26,13 +26,13 @@ public class RedisWechatAuthController {
     }
 
     @RequestMapping("/get")
-    public WechatAuthEntity getWechat(@RequestParam(value = "key") String key) {
+    public WechatAuthDO getWechat(@RequestParam(value = "key") String key) {
         return redisService.getWechat(key);
     }
 
     @RequestMapping("/getAndSet")
-    public Boolean getAndSetWechat(@RequestParam(value = "key") String key, @RequestBody WechatAuthEntity wechatAuthEntity) {
-        return redisService.getAndSetWechat(key, wechatAuthEntity);
+    public Boolean getAndSetWechat(@RequestParam(value = "key") String key, @RequestBody WechatAuthDO wechatAuthDO) {
+        return redisService.getAndSetWechat(key, wechatAuthDO);
     }
 
     @RequestMapping("/delete")

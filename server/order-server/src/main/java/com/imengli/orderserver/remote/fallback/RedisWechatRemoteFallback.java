@@ -1,15 +1,15 @@
-package com.imengli.userServer.remote.fallback;
+package com.imengli.orderserver.remote.fallback;
 
 
-import com.imengli.userServer.daomain.WechatAuthDO;
-import com.imengli.userServer.remote.RedisWechatRemote;
+import com.imengli.orderserver.daomain.WechatAuthDO;
+import com.imengli.orderserver.remote.RedisWechatRemote;
 
 public class RedisWechatRemoteFallback implements RedisWechatRemote {
 
     // TODO: 没有想好怎么搞,后续再说, by: 2020-09-11 10:37:25
 
     @Override
-    public Boolean setWechat(String key, WechatAuthDO wechatAuthDO) {
+    public Boolean setWechat(String key, WechatAuthDO wechatAuthEntity) {
         return null;
     }
 
@@ -24,7 +24,7 @@ public class RedisWechatRemoteFallback implements RedisWechatRemote {
     }
 
     @Override
-    public Boolean getAndSetWechat(String key, WechatAuthDO wechatAuthDO) {
+    public Boolean getAndSetWechat(String key, WechatAuthDO wechatAuthEntity) {
         return null;
     }
 

@@ -1,6 +1,6 @@
 package com.imengli.redisServer.service;
 
-import com.imengli.redisServer.daomain.WechatAuthEntity;
+import com.imengli.redisServer.daomain.WechatAuthDO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class RedisService {
     private RedisTemplate<String, String> redisTemplate;
 
     @Autowired
-    private RedisTemplate<String, WechatAuthEntity> wechatRedisTemplate;
+    private RedisTemplate<String, WechatAuthDO> wechatRedisTemplate;
 
     @Value("${mineRedis.userinfo.key}")
     private String KEY_PREFIX;
@@ -33,7 +33,7 @@ public class RedisService {
 
     // --------------------String : WechatAuthEntity ----------------------------------------
 
-    public boolean setWechat(final String key, WechatAuthEntity value) {
+    public boolean setWechat(final String key, WechatAuthDO value) {
         return this.setWechat(key, value, DEFAULT_TIMEOUT);
     }
 
@@ -45,7 +45,7 @@ public class RedisService {
      * @param time  过期时间
      * @return 是否成功
      */
-    public boolean setWechat(final String key, WechatAuthEntity value, long time) {
+    public boolean setWechat(final String key, WechatAuthDO value, long time) {
         boolean result = false;
         try {
             wechatRedisTemplate.opsForValue().set(KEY_PREFIX + key, value);
@@ -80,7 +80,7 @@ public class RedisService {
      * @param key
      * @return
      */
-    public WechatAuthEntity getWechat(final String key) {
+    public WechatAuthDO getWechat(final String key) {
         try {
             return wechatRedisTemplate.opsForValue().get(KEY_PREFIX + key);
         } catch (Throwable e) {
@@ -90,14 +90,14 @@ public class RedisService {
     }
 
 
-    public boolean getAndSetWechat(final String key, WechatAuthEntity value) {
+    public boolean getAndSetWechat(final String key, WechatAuthDO value) {
         return this.getAndSetWechat(key, value, DEFAULT_TIMEOUT);
     }
 
     /**
      * 更新缓存
      */
-    public boolean getAndSetWechat(final String key, WechatAuthEntity value, long time) {
+    public boolean getAndSetWechat(final String key, WechatAuthDO value, long time) {
         boolean result = false;
         try {
             wechatRedisTemplate.opsForValue().getAndSet(KEY_PREFIX + key, value);

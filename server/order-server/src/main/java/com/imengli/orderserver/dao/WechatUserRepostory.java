@@ -1,6 +1,6 @@
-package com.imengli.appletServer.dao;
+package com.imengli.orderserver.dao;
 
-import com.imengli.appletServer.daomain.WechatUserDO;
+import com.imengli.orderserver.daomain.WechatUserDO;
 import org.apache.ibatis.annotations.*;
 
 @Mapper

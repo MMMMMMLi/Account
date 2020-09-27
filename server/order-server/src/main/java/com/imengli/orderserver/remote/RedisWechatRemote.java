@@ -1,8 +1,8 @@
-package com.imengli.userServer.remote;
+package com.imengli.orderserver.remote;
 
-import com.imengli.userServer.config.MineFeignConfig;
-import com.imengli.userServer.daomain.WechatAuthDO;
-import com.imengli.userServer.remote.fallback.RedisWechatRemoteFallback;
+import com.imengli.orderserver.config.MineFeignConfig;
+import com.imengli.orderserver.daomain.WechatAuthDO;
+import com.imengli.orderserver.remote.fallback.RedisWechatRemoteFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface RedisWechatRemote {
 
     @RequestMapping("/wechat/set")
-    public Boolean setWechat(@RequestParam(value = "key") String key, @RequestBody WechatAuthDO wechatAuthDO);
+    public Boolean setWechat(@RequestParam(value = "key") String key, @RequestBody WechatAuthDO wechatAuthEntity);
 
     @RequestMapping("/wechat/contains")
     public Boolean containsWechat(@RequestParam(value = "key") String key);
@@ -21,7 +21,7 @@ public interface RedisWechatRemote {
     public WechatAuthDO getWechat(@RequestParam(value = "key") String key);
 
     @RequestMapping("/wechat/getAndSet")
-    public Boolean getAndSetWechat(@RequestParam(value = "key") String key, @RequestBody WechatAuthDO wechatAuthDO);
+    public Boolean getAndSetWechat(@RequestParam(value = "key") String key, @RequestBody WechatAuthDO wechatAuthEntity);
 
     @RequestMapping("/wechat/delete")
     public Boolean deleteWechat(@RequestParam(value = "key") String key);

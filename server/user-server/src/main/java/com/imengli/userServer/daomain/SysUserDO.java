@@ -3,7 +3,7 @@ package com.imengli.userServer.daomain;
 /**
  * 用户实体类
  */
-public class SysUserEntity {
+public class SysUserDO {
 
     // 用户唯一ID
     private String id;
@@ -41,10 +41,10 @@ public class SysUserEntity {
     // 最后一次登陆时间
     private Long lastLoginTimeStamp;
 
-    public SysUserEntity() {
+    public SysUserDO() {
     }
 
-    public SysUserEntity(String id, String userName, String userNameCode, String phoneNumber, String address) {
+    public SysUserDO(String id, String userName, String userNameCode, String phoneNumber, String address) {
         this.id = id;
         this.userName = userName;
         this.userNameCode = userNameCode;
@@ -52,7 +52,7 @@ public class SysUserEntity {
         this.address = address;
     }
 
-    public SysUserEntity(String id, String nickName, String avatarUrl, int gender, String country, String province, String city) {
+    public SysUserDO(String id, String nickName, String avatarUrl, int gender, String country, String province, String city) {
         this.id = id;
         this.nickName = nickName;
         this.avatarUrl = avatarUrl;

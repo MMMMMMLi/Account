@@ -1,11 +1,11 @@
-package com.imengli.redisServer.daomain;
+package com.imengli.userServer.daomain;
 
 import java.io.Serializable;
 
 /**
  * 微信接口返回的对象信息
  */
-public class WechatAuthEntity implements Serializable {
+public class WechatAuthDO implements Serializable {
 
     // 用户唯一ID
     private String openId;

@@ -1,9 +1,9 @@
-package com.imengli.userServer.daomain;
+package com.imengli.appletServer.daomain;
 
 /**
  * 用户实体类
  */
-public class WechatUserEntity {
+public class WechatUserDO {
 
     // 用户唯一ID
     private String openId;
@@ -15,7 +15,12 @@ public class WechatUserEntity {
     private String userId;
 
 
-    public WechatUserEntity() {
+    public WechatUserDO() {
+    }
+
+    public WechatUserDO(String openId, String unionId) {
+        this.openId = openId;
+        this.unionId = unionId;
     }
 
     public String getOpenId() {
@@ -40,14 +45,5 @@ public class WechatUserEntity {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    @Override
-    public String toString() {
-        return "WechatUserEntity{" +
-                "openId='" + openId + '\'' +
-                ", unionId='" + unionId + '\'' +
-                ", userId='" + userId + '\'' +
-                '}';
     }
 }
