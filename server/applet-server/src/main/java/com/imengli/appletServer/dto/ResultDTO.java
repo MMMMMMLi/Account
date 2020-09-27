@@ -1,5 +1,7 @@
 package com.imengli.appletServer.dto;
 
+import com.imengli.appletServer.common.ResultStatus;
+
 import java.io.Serializable;
 
 public class ResultDTO<T> implements Serializable {

@@ -1,4 +1,4 @@
-package com.imengli.appletServer.dto;
+package com.imengli.appletServer.common;
 
 public enum ResultStatus {
 

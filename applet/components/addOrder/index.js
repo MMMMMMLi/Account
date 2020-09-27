@@ -23,8 +23,8 @@ Component({
    * 组件的初始数据
    */
   data: {
-    categoryValue: 0,
-    sizeValue: 0,
+    // 每个框的单价
+    boxPrice: 30
   },
 
   /**
@@ -54,35 +54,78 @@ Component({
       const orderInfo = this.properties.orderInfo;
       const index = e.currentTarget.dataset.index;
       const type = e.currentTarget.dataset.type;
+      // 毛重 输入框失去焦点
       if (type == 'gross') {
         orderInfo.orders[index].gross = e.detail.value;
         this.setData({
           orderInfo,
         })
       }
+      // 皮重 输入框失去焦点
       if (type == 'tare') {
         orderInfo.orders[index].tare = e.detail.value;
         this.setData({
           orderInfo,
         })
       }
+      // 单价 输入框失去焦点
       if (type == 'unitPrice') {
         orderInfo.orders[index].unitPrice = e.detail.value;
         this.setData({
           orderInfo,
         })
       }
+      // 用框 输入框失去焦点
+      if (type == 'applyBox') {
+        orderInfo.applyBox = e.detail.value;
+        this.setData({
+          orderInfo,
+        })
+      }
+      // 退框 输入框失去焦点
+      if (type == 'retreatBox') {
+        orderInfo.retreatBox = e.detail.value;
+        this.setData({
+          orderInfo,
+        })
+      }
       let thisOrder = orderInfo.orders[index];
+      // console.log(thisOrder);
       // 判断三个条件是否都存在，存在的话，则生成总价。
       if (thisOrder.hasOwnProperty('gross') && thisOrder.hasOwnProperty('tare') && thisOrder.hasOwnProperty('unitPrice')) {
         // 计算当前订单项的金额
         orderInfo.orders[index].totalPrice = thisOrder.unitPrice * (thisOrder.gross - thisOrder.tare);
         // 计算所有订单项的金额
-        orderInfo.totalPrice = orderInfo.orders.map(order => order.totalPrice).reduce((total, num) => total + num);
+        orderInfo.totalPrice = orderInfo.orders.map(order => order.totalPrice).reduce((total, num) => total + num) 
+                                + (((orderInfo.applyBox ? orderInfo.applyBox : 0) - (orderInfo.retreatBox ? orderInfo.retreatBox : 0)) * this.data.boxPrice);
         this.setData({
           orderInfo,
         })
       }
+    },
+    // 框子输入框输入结束
+    overInputBox(e) {
+      const orderInfo = this.properties.orderInfo;
+      const type = e.currentTarget.dataset.type;
+      // 用框 输入框失去焦点
+      if (type == 'applyBox') {
+        orderInfo.applyBox = e.detail.value;
+        this.setData({
+          orderInfo,
+        })
+      }
+      // 退框 输入框失去焦点
+      if (type == 'retreatBox') {
+        orderInfo.retreatBox = e.detail.value;
+        this.setData({
+          orderInfo,
+        })
+      }
+      orderInfo.totalPrice = ((orderInfo.applyBox ? orderInfo.applyBox : 0) - (orderInfo.retreatBox ? orderInfo.retreatBox : 0)) * this.data.boxPrice 
+                                + orderInfo.orders.map(order => (order.totalPrice ? order.totalPrice : 0)).reduce((total, num) => total + num);
+      this.setData({
+        orderInfo,
+      })
     },
     // 添加订单列表
     addOrder() {
@@ -100,7 +143,8 @@ Component({
       const orderInfo = this.properties.orderInfo;
       if (orderInfo.orders.length > 1) {
         orderInfo.orders.pop();
-        orderInfo.totalPrice = orderInfo.orders.map(order => order.totalPrice).reduce((total, num) => total + num);
+        orderInfo.totalPrice = orderInfo.orders.map(order => order.totalPrice).reduce((total, num) => total + num)
+                                + (((orderInfo.applyBox ? orderInfo.applyBox : 0) - (orderInfo.retreatBox ? orderInfo.retreatBox : 0)) * this.data.boxPrice);
         this.setData({
           orderInfo,
         })
@@ -111,11 +155,12 @@ Component({
         })
       }
     },
-    formSubmit(e) {
+    formSubmit() {
       // 获取框子使用情况
-      let formValue = e.detail.value;
+      const orderInfo = this.properties.orderInfo;
+      orderInfo.token = wx.getStorageSync('token');
       // 校验
-      if (formValue.apply == "" || formValue.retreat == "") {
+      if (orderInfo.applyBox == "" || orderInfo.retreatBox == "") {
         wx.showModal({
           title: '提示',
           content: '请输入正确的用框和退框数量！',
@@ -124,26 +169,24 @@ Component({
         return;
       }
       // 提交
-      const orderInfo = this.properties.orderInfo;
       console.log(orderInfo)
       wx.showModal({
         title: '请核实无误后点击确定',
-        content: '客户姓名：' + orderInfo.userInfo.userName + 
-             '\r\n用框数量：' + formValue.apply + 
-             '个\r\n退框数量：' + formValue.retreat +
-             '个\r\n订单总额：￥' + orderInfo.totalPrice,
+        content: '客户姓名：' + orderInfo.userInfo.userName +
+          '\r\n用框数量：' + orderInfo.applyBox +
+          '个\r\n退框数量：' + orderInfo.retreatBox +
+          '个\r\n订单总额：￥' + orderInfo.totalPrice,
         success(res) {
           if (res.confirm) {
-            REQUEST.request('user/getUserInfoBySearch', 'POST', {
-              token: wx.getStorageSync('token'),
-              orderFormInfo: ''
-            }).then(res => {
-
+            REQUEST.request('order/insertOrderInfo', 'POST', {
+              orderFormInfo: orderInfo
+            },'application/json;charset=utf-8').then(res => {
+              
             })
           }
         }
       })
-      this.bindDeleteOrderInfo();
+      // this.bindDeleteOrderInfo();
     },
     // 获取当前组件内的订单信息
     getOrderInfo() {

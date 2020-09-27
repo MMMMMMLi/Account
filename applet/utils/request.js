@@ -1,5 +1,5 @@
-// const preUrl = 'http://localhost:11001/api/'
-const preUrl = 'https://imengli.com/api/'
+const preUrl = 'http://localhost:11001/api/'
+// const preUrl = 'https://imengli.com/api/'
 let header = {
   'content-type': 'application/x-www-form-urlencoded',
   'token': ''
@@ -12,7 +12,7 @@ wx.getStorage({
   }
 })
 // 主要执行方法
-function request(url, method, data) {
+function request(url, method, data, headerInfo) {
   if (!header.token) {
     wx.getStorageSync({
       key: 'token',
@@ -26,7 +26,7 @@ function request(url, method, data) {
       url: preUrl + url,
       method: method,
       data: data,
-      header: header,
+      header: (headerInfo ? headerInfo : header),
       success: (res => {
         resolve(res);
       }),

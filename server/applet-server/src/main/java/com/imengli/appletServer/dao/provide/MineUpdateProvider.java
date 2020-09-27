@@ -1,6 +1,6 @@
 package com.imengli.appletServer.dao.provide;
 
-import com.imengli.appletServer.daomain.SysUserEntity;
+import com.imengli.appletServer.daomain.SysUserDO;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.jdbc.SQL;
 
@@ -8,28 +8,28 @@ public class MineUpdateProvider {
 
     private final String SYS_USER_TABLE_NAME = "sys_user";
 
-    public String updateSysUserInfo(SysUserEntity sysUserEntity) {
+    public String updateSysUserInfo(SysUserDO sysUserDO) {
         return new SQL(){{
             UPDATE(SYS_USER_TABLE_NAME);
-            if (!StringUtils.isEmpty(sysUserEntity.getUserName())) {
+            if (!StringUtils.isEmpty(sysUserDO.getUserName())) {
                 SET("userName = #{sysUserEntity.userName}");
             }
-            if (!StringUtils.isEmpty(sysUserEntity.getUserNameCode())) {
+            if (!StringUtils.isEmpty(sysUserDO.getUserNameCode())) {
                 SET("userNameCode= #{sysUserEntity.userNameCode}");
             }
-            if (!StringUtils.isEmpty(sysUserEntity.getPhoneNumber())) {
+            if (!StringUtils.isEmpty(sysUserDO.getPhoneNumber())) {
                 SET("phoneNumber= #{sysUserEntity.phoneNumber}");
             }
-            if (!StringUtils.isEmpty(sysUserEntity.getAddress())) {
+            if (!StringUtils.isEmpty(sysUserDO.getAddress())) {
                 SET("address= #{sysUserEntity.address}");
             }
-            if (!StringUtils.isEmpty(sysUserEntity.getNickName())) {
+            if (!StringUtils.isEmpty(sysUserDO.getNickName())) {
                 SET("nickName= #{sysUserEntity.nickName}");
             }
-            if (!StringUtils.isEmpty(sysUserEntity.getAvatarUrl())) {
+            if (!StringUtils.isEmpty(sysUserDO.getAvatarUrl())) {
                 SET("avatarUrl= #{sysUserEntity.avatarUrl}");
             }
-            if (sysUserEntity.getLastLoginTimeStamp() != null) {
+            if (sysUserDO.getLastLoginTimeStamp() != null) {
                 SET("lastLoginTimeStamp= #{sysUserEntity.lastLoginTimeStamp}");
             }
             WHERE("id = #{sysUserEntity.id}" );
