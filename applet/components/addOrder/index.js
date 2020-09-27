@@ -96,8 +96,8 @@ Component({
         // 计算当前订单项的金额
         orderInfo.orders[index].totalPrice = thisOrder.unitPrice * (thisOrder.gross - thisOrder.tare);
         // 计算所有订单项的金额
-        orderInfo.totalPrice = orderInfo.orders.map(order => order.totalPrice).reduce((total, num) => total + num) 
-                                + (((orderInfo.applyBox ? orderInfo.applyBox : 0) - (orderInfo.retreatBox ? orderInfo.retreatBox : 0)) * this.data.boxPrice);
+        orderInfo.totalPrice = orderInfo.orders.map(order => order.totalPrice).reduce((total, num) => total + num) +
+          (((orderInfo.applyBox ? orderInfo.applyBox : 0) - (orderInfo.retreatBox ? orderInfo.retreatBox : 0)) * this.data.boxPrice);
         this.setData({
           orderInfo,
         })
@@ -121,8 +121,8 @@ Component({
           orderInfo,
         })
       }
-      orderInfo.totalPrice = ((orderInfo.applyBox ? orderInfo.applyBox : 0) - (orderInfo.retreatBox ? orderInfo.retreatBox : 0)) * this.data.boxPrice 
-                                + orderInfo.orders.map(order => (order.totalPrice ? order.totalPrice : 0)).reduce((total, num) => total + num);
+      orderInfo.totalPrice = ((orderInfo.applyBox ? orderInfo.applyBox : 0) - (orderInfo.retreatBox ? orderInfo.retreatBox : 0)) * this.data.boxPrice +
+        orderInfo.orders.map(order => (order.totalPrice ? order.totalPrice : 0)).reduce((total, num) => total + num);
       this.setData({
         orderInfo,
       })
@@ -143,8 +143,8 @@ Component({
       const orderInfo = this.properties.orderInfo;
       if (orderInfo.orders.length > 1) {
         orderInfo.orders.pop();
-        orderInfo.totalPrice = orderInfo.orders.map(order => order.totalPrice).reduce((total, num) => total + num)
-                                + (((orderInfo.applyBox ? orderInfo.applyBox : 0) - (orderInfo.retreatBox ? orderInfo.retreatBox : 0)) * this.data.boxPrice);
+        orderInfo.totalPrice = orderInfo.orders.map(order => order.totalPrice).reduce((total, num) => total + num) +
+          (((orderInfo.applyBox ? orderInfo.applyBox : 0) - (orderInfo.retreatBox ? orderInfo.retreatBox : 0)) * this.data.boxPrice);
         this.setData({
           orderInfo,
         })
@@ -156,6 +156,7 @@ Component({
       }
     },
     formSubmit() {
+      let that = this;
       // 获取框子使用情况
       const orderInfo = this.properties.orderInfo;
       orderInfo.token = wx.getStorageSync('token');
@@ -169,7 +170,6 @@ Component({
         return;
       }
       // 提交
-      console.log(orderInfo)
       wx.showModal({
         title: '请核实无误后点击确定',
         content: '客户姓名：' + orderInfo.userInfo.userName +
@@ -178,15 +178,21 @@ Component({
           '个\r\n订单总额：￥' + orderInfo.totalPrice,
         success(res) {
           if (res.confirm) {
-            REQUEST.request('order/insertOrderInfo', 'POST', {
-              orderFormInfo: orderInfo
-            },'application/json;charset=utf-8').then(res => {
-              
+            REQUEST.request('order/insertOrderInfo', 'POST', orderInfo, {'content-type':'application/json;charset=utf-8'}).
+            then(res => {
+              if (res.data.code == 20000) {
+                that.bindDeleteOrderInfo();
+              } else {
+                wx.showModal({
+                  title: '提示',
+                  content: res.data.msg,
+                  showCancel: false
+                })
+              }
             })
           }
         }
       })
-      // this.bindDeleteOrderInfo();
     },
     // 获取当前组件内的订单信息
     getOrderInfo() {
