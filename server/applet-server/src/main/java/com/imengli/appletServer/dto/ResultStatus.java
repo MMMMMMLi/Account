@@ -13,10 +13,15 @@ public enum ResultStatus {
     SUCCESS_SELECT_SHOW(20002,"查询成功,并展示"),
     SUCCESS_AUTH_TOKEN(20003,"校验Token成功"),
     SUCCESS_LOGIN(20004,"登陆成功"),
+    SUCCESS_USERINFO(20005,"获取用户信息成功"),
+    SUCCESS_UPDATE_USERINFO(20006,"更新用户信息成功"),
+    SUCCESS_SEARCH_USERINFO(20007,"搜索用户信息成功"),
 
 
     ERROR_GET_OPEN_ID(40001,"获取微信OpenId失败"),
-    ERROR_AUTH_TOKEN(40002,"校验Token失败");
+    ERROR_AUTH_TOKEN(40002,"校验Token失败"),
+    ERROR_USERINFO(40003,"用户信息不完整，请完善！"),
+    ERROR_UN_AUTHORIZED(40004,"用户未授权！");
 
     // 状态码
     private Integer code;

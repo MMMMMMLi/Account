@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Author: Weijia Jiang
  */
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/applet/auth")
 public class WechatAuthController {
 
     @Autowired

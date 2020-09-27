@@ -131,7 +131,7 @@ Component({
         content: '客户姓名：' + orderInfo.userInfo.userName + 
              '\r\n用框数量：' + formValue.apply + 
              '个\r\n退框数量：' + formValue.retreat +
-             '个\r\n订单总额：￥' + orderInfo.totalPrice + '元',
+             '个\r\n订单总额：￥' + orderInfo.totalPrice,
         success(res) {
           if (res.confirm) {
             REQUEST.request('user/getUserInfoBySearch', 'POST', {
@@ -140,10 +140,10 @@ Component({
             }).then(res => {
 
             })
-            // this.bindDeleteOrderInfo();
           }
         }
       })
+      this.bindDeleteOrderInfo();
     },
     // 获取当前组件内的订单信息
     getOrderInfo() {

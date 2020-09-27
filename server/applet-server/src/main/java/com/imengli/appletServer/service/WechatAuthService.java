@@ -6,8 +6,8 @@ import com.imengli.appletServer.daomain.WechatAuthEntity;
 import com.imengli.appletServer.daomain.WechatUserEntity;
 import com.imengli.appletServer.dto.ResultDTO;
 import com.imengli.appletServer.dto.ResultStatus;
-import com.imengli.appletServer.remote.RedisWechatRemote;
 import com.imengli.appletServer.utils.HttpUtil;
+import com.imengli.appletServer.utils.RedisUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ public class WechatAuthService {
     private WechatUserRepostory wechatUserRepostory;
 
     @Autowired
-    private RedisWechatRemote redisWechatRemote;
+    private RedisUtil redisUtil;
 
     /**
      * 根据用户Code获取当前登陆用户信息
@@ -49,9 +49,9 @@ public class WechatAuthService {
         // 每次登陆之前，需要先判断之前是否存在登陆token
         if (StringUtils.isNotBlank(token)) {
             // 查看是否存在此token
-            if (redisWechatRemote.containsWechat(token)) {
+            if (redisUtil.containsWechat(token)) {
                 // 存在，则需要先删除。
-                redisWechatRemote.deleteWechat(token);
+                redisUtil.deleteWechat(token);
             }
         }
 
@@ -85,7 +85,7 @@ public class WechatAuthService {
             // 更新好用户信息之后,返回保存Token值到Redis然后返回给微信小程序。
             // TODO: 此处生成Token的方法过于简单，后续升级一下。
             String uuidToken = UUID.randomUUID().toString();
-            redisWechatRemote.setWechat(uuidToken, wechatAuthEntity);
+            redisUtil.setWechat(uuidToken, wechatAuthEntity);
             return new ResultDTO(ResultStatus.SUCCESS_LOGIN, uuidToken);
         } else {
             return new ResultDTO(Integer.valueOf(wechatAuthEntity.getErrcode()), wechatAuthEntity.getErrmsg());
@@ -94,7 +94,7 @@ public class WechatAuthService {
 
     public ResultDTO<String> checkToken(String token) {
         if (StringUtils.isNotBlank(token)) {
-            WechatAuthEntity entity = redisWechatRemote.getWechat(token);
+            WechatAuthEntity entity = redisUtil.getWechat(token);
             if (entity != null) {
                 return new ResultDTO(ResultStatus.SUCCESS_AUTH_TOKEN);
             }
