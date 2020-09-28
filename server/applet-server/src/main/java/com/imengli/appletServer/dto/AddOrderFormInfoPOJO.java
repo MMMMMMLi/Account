@@ -54,6 +54,21 @@ public class AddOrderFormInfoPOJO implements Serializable {
     private Double totalPrice;
 
     /**
+     * 当前订单总重量
+     */
+    private Double totalWeight;
+
+    /**
+     * 当前订单生成时间
+     */
+    private String createDate;
+
+    /**
+     * 订单状态
+     */
+    private String status;
+
+    /**
      * 用户信息
      */
     @JsonProperty(value = "userInfo")

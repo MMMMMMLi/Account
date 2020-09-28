@@ -5,6 +5,7 @@ import com.imengli.appletServer.daomain.OrderInfoDetailDO;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -19,4 +20,7 @@ public interface OrderInfoDetailRepostory {
 
     @InsertProvider(value = MineInsertProvider.class, method = "insertOrderInfoDetail")
     Integer save(@Param("orders") List<OrderInfoDetailDO> orders);
+
+    @Select("SELECT * FROM order_info_detail WHERE orderId = #{orderId}")
+    List<OrderInfoDetailDO> select(@Param("orderId") Integer id);
 }

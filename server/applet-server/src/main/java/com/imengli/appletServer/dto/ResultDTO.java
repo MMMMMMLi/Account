@@ -1,5 +1,6 @@
 package com.imengli.appletServer.dto;
 
+import com.github.pagehelper.Page;
 import com.imengli.appletServer.common.ResultStatus;
 
 import java.io.Serializable;
@@ -13,6 +14,8 @@ public class ResultDTO<T> implements Serializable {
     private String msg;
 
     private T data;
+
+    private Page pageInfo;
 
     public ResultDTO() {
     }
@@ -46,6 +49,18 @@ public class ResultDTO<T> implements Serializable {
         this.msg = msg;
         this.data = data;
     }
+
+
+    public ResultDTO(ResultStatus resultStatus, Page pageInfo) {
+        this(resultStatus.code(), resultStatus.msg(), null, pageInfo);
+    }
+
+    public ResultDTO(int code, String msg, T data, Page pageInfo) {
+        this.code = code;
+        this.msg = msg;
+        this.pageInfo = pageInfo;
+    }
+
 
     public int getCode() {
         return code;

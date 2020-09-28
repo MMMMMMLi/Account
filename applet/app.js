@@ -63,8 +63,15 @@ App({
     })
   },
   globalData: {
+    // 校验是否登陆
     isConnected: true,
+    // 是否需要更新用户信息
     needUpdateUserInfo: false,
-    userInfos: []
+    // 当前用户信息列表
+    userInfos: [],
+    // 地瓜品种列表
+    categoryArray: ['西瓜红', '济薯26', '烟薯25'],
+    // 地瓜大小列表
+    sizeArray: ['大', '中', '小'],
   }
 })

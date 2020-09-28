@@ -178,6 +178,12 @@ Component({
           '个\r\n订单总额：￥' + orderInfo.totalPrice,
         success(res) {
           if (res.confirm) {
+            // 修改一下品种和规格的中文字段
+            orderInfo.orders = orderInfo.orders.map(order => {
+              order.categoryValue = that.data.categoryArray[order.categoryValue]; 
+              order.sizeValue = that.data.sizeArray[order.sizeValue];
+              return order;
+            });
             REQUEST.request('order/insertOrderInfo', 'POST', orderInfo, {
               'content-type': 'application/json;charset=utf-8'
             }).

@@ -1,10 +1,10 @@
 package com.imengli.appletServer.dao;
 
 import com.imengli.appletServer.daomain.OrderInfoDO;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author: Weijia Jiang
@@ -15,8 +15,11 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface OrderInfoRepostory {
 
-    @Insert("INSERT INTO order_info (userId,createBy,createDate,applyBox,retreatBox,totalPrice) " +
-            "VALUES (#{orderInfo.userId},#{orderInfo.createBy},#{orderInfo.createDate},#{orderInfo.applyBox},#{orderInfo.retreatBox},#{orderInfo.totalPrice})")
+    @Insert("INSERT INTO order_info (userId,createBy,createDate,applyBox,retreatBox,totalPrice,totalWeight) " +
+            "VALUES (#{orderInfo.userId},#{orderInfo.createBy},#{orderInfo.createDate},#{orderInfo.applyBox},#{orderInfo.retreatBox},#{orderInfo.totalPrice},#{orderInfo.totalWeight})")
     @Options(useGeneratedKeys = true,keyProperty = "id")
     void save(@Param("orderInfo") OrderInfoDO orderInfo);
+
+    @Select("select * from order_info where userId = #{userId} AND createDate BETWEEN #{startDate} AND #{endDate}")
+    List<OrderInfoDO> select(@Param("userId") String userId, @Param("startDate")LocalDateTime startDate,@Param("endDate")LocalDateTime endDate);
 }

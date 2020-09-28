@@ -1,4 +1,5 @@
 const REQUEST = require('../../utils/request');
+const APP = getApp();
 
 Page({
   /**
@@ -8,12 +9,16 @@ Page({
     inputShowed: false,
     inputVal: "",
     inputUserInfo: "",
-    categoryArray: ['西瓜红', '济薯26', '烟薯25'],
-    sizeArray: ['大', '中', '小'],
     orderListId: 0,
     orderList: [],
     toast: false,
     hideToast: false,
+  },
+  onLoad() {
+    this.setData({
+      categoryArray: APP.globalData.categoryArray,
+      sizeArray: APP.globalData.sizeArray
+    })
   },
   onShow() {
     // 页面初始化的时候，获取品种和大小的清单

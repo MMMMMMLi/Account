@@ -1,8 +1,12 @@
 package com.imengli.appletServer.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.imengli.appletServer.common.Constant;
 import com.imengli.appletServer.common.ResultStatus;
 import com.imengli.appletServer.dao.OrderInfoDetailRepostory;
 import com.imengli.appletServer.dao.OrderInfoRepostory;
+import com.imengli.appletServer.dao.SysUserRepostory;
 import com.imengli.appletServer.dao.WechatUserRepostory;
 import com.imengli.appletServer.daomain.*;
 import com.imengli.appletServer.dto.AddOrderFormInfoPOJO;
@@ -15,7 +19,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,19 +45,30 @@ public class OrderService {
     private WechatUserRepostory wechatUserRepostory;
 
     @Resource
+    private SysUserRepostory sysUserRepostory;
+
+    @Resource
     private OrderInfoRepostory orderInfoRepostory;
 
     @Resource
     private OrderInfoDetailRepostory orderInfoDetailRepostory;
 
-    public WechatAuthDO getWechatAuthEntity(String token) {
+    private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    public WechatUserDO getWechatAuthEntity(String token) {
         WechatAuthDO wechatAuthDO = null;
+        WechatUserDO wechatUserDOByOpenId = null;
         // 检验Token是否正常
         if (redisUtil.containsWechat(token)) {
             // 获取Token对应的对象信息
             wechatAuthDO = redisUtil.getWechat(token);
         }
-        return wechatAuthDO;
+        // 判断是否异常
+        if (wechatAuthDO != null) {
+            // 获取对应的用户信息
+            wechatUserDOByOpenId = wechatUserRepostory.getUserEntityByOpenId(wechatAuthDO.getOpenId());
+        }
+        return wechatUserDOByOpenId;
     }
 
     /**
@@ -61,45 +80,84 @@ public class OrderService {
     @Transactional
     public ResultDTO insertOrderInfo(AddOrderFormInfoPOJO orderFormInfo) {
         // 校验token
-        WechatAuthDO wechatAuthDO = this.getWechatAuthEntity(orderFormInfo.getToken());
+        WechatUserDO wecharUserDo = this.getWechatAuthEntity(orderFormInfo.getToken());
         // 判断是否异常
-        if (wechatAuthDO != null) {
-            // 获取对应的用户信息
-            WechatUserDO wechatUserDOByOpenId = wechatUserRepostory.getUserEntityByOpenId(wechatAuthDO.getOpenId());
-            // 根据信息完善度返回
-            if (wechatUserDOByOpenId != null) {
-                // 处理Form信息
-                // 下订单的用户信息
-                SysUserDO userInfo = orderFormInfo.getUserInfo();
-                // 创建订单
-                OrderInfoDO orderInfoDO = OrderInfoDO.builder()
-                        .userId(userInfo.getId())
-                        .createBy(wechatUserDOByOpenId.getUserId())
-                        .createDate(new Date())
-                        .applyBox(orderFormInfo.getApplyBox())
-                        .retreatBox(orderFormInfo.getRetreatBox())
-                        .totalPrice(orderFormInfo.getTotalPrice())
-                        .build();
-                // 入库
-                orderInfoRepostory.save(orderInfoDO);
-                // 订单详情信息,去除空订单信息和完善订单ID。
-                List<OrderInfoDetailDO> orders = orderFormInfo.getOrders()
-                        .parallelStream()
-                        .filter(order -> order.getGross() != null
-                                && order.getTare() != null
-                                && order.getUnitPrice() != null)
-                        .map(order -> {
-                            order.setOrderId(orderInfoDO.getId());
-                            return order;
-                        })
-                        .collect(Collectors.toList());
-                // 创建订单详情
-                Integer size = orderInfoDetailRepostory.save(orders);
-                // 判断是否插入正常
-                if (orders.size() == size) {
-                    return new ResultDTO<>(ResultStatus.SUCCESS, orderInfoDO.getId());
-                }
+        // 根据信息完善度返回
+        if (wecharUserDo != null) {
+            // 处理Form信息
+            // 下订单的用户信息
+            SysUserDO userInfo = orderFormInfo.getUserInfo();
+            // 创建订单
+            OrderInfoDO orderInfoDO = OrderInfoDO.builder()
+                    .userId(userInfo.getId())
+                    .createBy(wecharUserDo.getUserId())
+                    .createDate(LocalDateTime.now())
+                    .applyBox(orderFormInfo.getApplyBox())
+                    .retreatBox(orderFormInfo.getRetreatBox())
+                    .totalPrice(orderFormInfo.getTotalPrice())
+                    .totalWeight(orderFormInfo.getOrders().parallelStream()
+                            .map(order -> order.getGross() - order.getTare())
+                            .reduce((k, v) -> k + v).get())
+                    .build();
+            // 入库
+            orderInfoRepostory.save(orderInfoDO);
+            // 订单详情信息,去除空订单信息和完善订单ID。
+            List<OrderInfoDetailDO> orders = orderFormInfo.getOrders()
+                    .parallelStream()
+                    .filter(order -> order.getGross() != null
+                            && order.getTare() != null
+                            && order.getUnitPrice() != null)
+                    .map(order -> {
+                        order.setOrderId(orderInfoDO.getId());
+                        return order;
+                    })
+                    .collect(Collectors.toList());
+            // 创建订单详情
+            Integer size = orderInfoDetailRepostory.save(orders);
+            // 判断是否插入正常
+            if (orders.size() == size) {
+                return new ResultDTO<>(ResultStatus.SUCCESS, orderInfoDO.getId());
             }
+        }
+        return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
+    }
+
+    /**
+     * 获取每个人的订单信息
+     *
+     * @param token
+     * @param status
+     * @return
+     */
+    public ResultDTO getMyOrderList(String token, Integer status, Integer page, Integer size) {
+        // 校验token
+        WechatUserDO wechatUserDO = this.getWechatAuthEntity(token);
+        // 根据信息完善度返回
+        if (wechatUserDO != null) {
+            // 获取用户信息
+            SysUserDO userInfoById = sysUserRepostory.getUserInfoById(wechatUserDO.getUserId());
+            PageHelper.startPage(page, size);
+            // 查询用户订单
+            List<OrderInfoDO> orderInfoDOS = orderInfoRepostory.select(userInfoById.getId(), LocalDateTime.of(LocalDate.now().minusDays(status), LocalTime.of(00, 00, 00)), LocalDateTime.now());
+            // 构建返回信息
+            return new ResultDTO(ResultStatus.SUCCESS,
+                    new PageInfo<AddOrderFormInfoPOJO>(
+                            orderInfoDOS.parallelStream()
+                                    .map(orderInfoDO ->
+                                            AddOrderFormInfoPOJO.builder()
+                                                    .totalPrice(orderInfoDO.getTotalPrice())
+                                                    .totalWeight(orderInfoDO.getTotalWeight())
+                                                    .applyBox(orderInfoDO.getApplyBox())
+                                                    .retreatBox(orderInfoDO.getRetreatBox())
+                                                    .createDate(dateTimeFormatter.format(orderInfoDO.getCreateDate()))
+                                                    .orders(orderInfoDetailRepostory.select(orderInfoDO.getId()))
+                                                    .status(Constant.getMsg(orderInfoDO.getStatus()))
+                                                    .build()
+                                    )
+                                    .sorted(Comparator.comparing(AddOrderFormInfoPOJO::getCreateDate).reversed())
+                                    .collect(Collectors.toList())
+                    )
+            );
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }

@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @author: Weijia Jiang
@@ -38,7 +38,7 @@ public class OrderInfoDO {
     /**
      * 创建时间
      */
-    private Date createDate;
+    private LocalDateTime createDate;
 
     /**
      * 使用框子数量
@@ -54,5 +54,15 @@ public class OrderInfoDO {
      * 总价钱
      */
     private Double totalPrice;
+
+    /**
+     * 当前订单总重量
+     */
+    private Double totalWeight;
+
+    /**
+     * 订单状态
+     */
+    private int status;
 
 }

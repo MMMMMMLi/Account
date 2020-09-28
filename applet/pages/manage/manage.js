@@ -1,4 +1,5 @@
-// pages/manage/manage.js
+const REQUEST = require('../../utils/request');
+
 Page({
 
   /**
@@ -10,21 +11,22 @@ Page({
         label: '今日'
       },
       {
-        status: 1,
+        status: 3,
         label: '三天'
       },
       {
-        status: 2,
+        status: 7,
         label: '一周'
       },
       {
-        status: 9999,
+        status: 999,
         label: '全部'
       },
     ],
-    status: 0,
+    // 当前选中的 列表值
     currentTab: 0,
   },
+  // 按钮切换的操作。
   swichNav: function (e) {
     var that = this;
     if (this.data.currentTab === e.target.dataset.current) {
@@ -41,56 +43,39 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-
+  onShow: function (options) {
+    this.getData(this.data.currentTab);
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  getData(status) {
+    let that = this;
+    wx.showLoading({
+      title: '加载中',
+    })
+    // 根据传入的状态码，去后台获取订单列表
+    REQUEST.request('order/getMyOrderList', 'POST', {
+      token: wx.getStorageSync('token'),
+      status,
+      page:0,
+      size:10
+    }).then(res => {
+      
+      if(res.data.code === 20000) {
+        that.setData({
+          orderInfo : res.data.data
+        })
+      }else {
+        wx.showModal({
+          content: res.data.msg,
+          showCancel: false
+        })
+      }
+    })
+    wx.hideLoading();
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
 
   },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
 })

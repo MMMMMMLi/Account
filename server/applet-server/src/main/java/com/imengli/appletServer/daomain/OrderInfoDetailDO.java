@@ -27,12 +27,12 @@ public class OrderInfoDetailDO {
     /**
      * 品种
      */
-    private Integer categoryValue;
+    private String categoryValue;
 
     /**
      * 大小
      */
-    private Integer sizeValue;
+    private String sizeValue;
 
     /**
      * 毛重
