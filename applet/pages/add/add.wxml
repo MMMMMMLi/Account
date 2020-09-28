@@ -36,4 +36,11 @@
 	<scroll-view scroll-y>
 		<my-addOrder wx:for="{{orderList}}" wx:key="orderListId" orderInfo="{{item}}" id="my-addOrder{{item.orderListId}}" bind:deleteOrderInfo="deleteOrderInfo" categoryArray="{{categoryArray}}" sizeArray="{{sizeArray}}" />
 	</scroll-view>
+	<view class="fadeIn {{hideToast ? 'fadeOut' : ''}}" wx:if="{{toast}}">
+		<view class="weui-mask_transparent"></view>
+		<view class="weui-toast">
+			<i class="weui-icon-success-no-circle weui-icon_toast"></i>
+			<view class="weui-toast__content">已完成</view>
+		</view>
+	</view>
 </view>

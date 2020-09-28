@@ -5,9 +5,39 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    statusType: [{
+        status: 0,
+        label: '今日'
+      },
+      {
+        status: 1,
+        label: '三天'
+      },
+      {
+        status: 2,
+        label: '一周'
+      },
+      {
+        status: 9999,
+        label: '全部'
+      },
+    ],
+    status: 0,
+    currentTab: 0,
   },
+  swichNav: function (e) {
+    var that = this;
+    if (this.data.currentTab === e.target.dataset.current) {
+      return false;
+    } else {
+      that.setData({
+        currentTab: e.target.dataset.current,
+      })
+      // 此处改成动态获取数据
 
+
+    }
+  },
   /**
    * 生命周期函数--监听页面加载
    */

@@ -178,7 +178,9 @@ Component({
           '个\r\n订单总额：￥' + orderInfo.totalPrice,
         success(res) {
           if (res.confirm) {
-            REQUEST.request('order/insertOrderInfo', 'POST', orderInfo, {'content-type':'application/json;charset=utf-8'}).
+            REQUEST.request('order/insertOrderInfo', 'POST', orderInfo, {
+              'content-type': 'application/json;charset=utf-8'
+            }).
             then(res => {
               if (res.data.code == 20000) {
                 that.bindDeleteOrderInfo();
@@ -190,6 +192,19 @@ Component({
                 })
               }
             })
+          }
+        }
+      })
+    },
+    // 删除订单项
+    delThisOrder() {
+      let that = this;
+      wx.showModal({
+        title: '提示',
+        content: "确定要删除此订单？",
+        success(res) {
+          if (res.confirm) {
+            that.bindDeleteOrderInfo();
           }
         }
       })

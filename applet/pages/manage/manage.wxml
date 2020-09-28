@@ -1,6 +1,91 @@
-<scroll-view class="container" scroll-y>
-	<view>
-		
+<view class="container">
+	<view class="swiper-tab">
+		<view class="tab-item {{currentTab == item.status ? 'on' : ''}}" wx:for="{{statusType}}" wx:key="index" data-current="{{item.status}}" bindtap="swichNav">
+			{{item.label}}
+		</view>
 	</view>
-</scroll-view>
-<button class="topButton" type="primary">新增</button>
+	<scroll-view scroll-y>
+		<view class="weui-form-preview">
+			<view class="weui-form-preview__ft">
+				<view class="weui-form-preview__btn">2020-09-28 10:58:49</view>
+				<view class="weui-form-preview__btn">待付款</view>
+			</view>
+			<view class="weui-form-preview__bd">
+				<view style="display: flex;">
+					<view class="weui-form-preview__item" style="flex:0.5;">
+						<label class="weui-form-preview__label">品种：</label>
+						<text class="weui-form-preview__value">西瓜红</text>
+					</view>
+					<view class="weui-form-preview__item" style="flex:0.5;">
+						<label class="weui-form-preview__label">毛重：</label>
+						<text class="weui-form-preview__value">120KG</text>
+					</view>
+				</view>
+				<view style="display: flex;">
+					<view class="weui-form-preview__item" style="flex:0.5;">
+						<label class="weui-form-preview__label">大小：</label>
+						<text class="weui-form-preview__value">大</text>
+					</view>
+					<view class="weui-form-preview__item" style="flex:0.5;">
+						<label class="weui-form-preview__label">皮重：</label>
+						<text class="weui-form-preview__value">100KG</text>
+					</view>
+				</view>
+			</view>
+				<view class="weui-form-preview__bd">
+				<view style="display: flex;">
+					<view class="weui-form-preview__item" style="flex:0.5;">
+						<label class="weui-form-preview__label">品种：</label>
+						<text class="weui-form-preview__value">西瓜红</text>
+					</view>
+					<view class="weui-form-preview__item" style="flex:0.5;">
+						<label class="weui-form-preview__label">毛重：</label>
+						<text class="weui-form-preview__value">120KG</text>
+					</view>
+				</view>
+				<view style="display: flex;">
+					<view class="weui-form-preview__item" style="flex:0.5;">
+						<label class="weui-form-preview__label">大小：</label>
+						<text class="weui-form-preview__value">大</text>
+					</view>
+					<view class="weui-form-preview__item" style="flex:0.5;">
+						<label class="weui-form-preview__label">皮重：</label>
+						<text class="weui-form-preview__value">100KG</text>
+					</view>
+				</view>
+			</view>
+			<view class="weui-form-preview__bd">
+				<view style="display: flex;">
+					<view class="weui-form-preview__item" style="flex:0.5;">
+						<label class="weui-form-preview__label">用框：</label>
+						<text class="weui-form-preview__value">12个</text>
+					</view>
+					<view class="weui-form-preview__item" style="flex:0.5;">
+						<label class="weui-form-preview__label">总重量：</label>
+						<text class="weui-form-preview__value">40KG</text>
+					</view>
+				</view>
+				<view style="display: flex;">
+					<view class="weui-form-preview__item" style="flex:0.5;">
+						<label class="weui-form-preview__label">退框：</label>
+						<text class="weui-form-preview__value">5个</text>
+					</view>
+				</view>
+			</view>
+			<view class="weui-form-preview__hd">
+				<view class="weui-form-preview__item">
+					<label class="weui-form-preview__label">付款金额</label>
+					<em class="weui-form-preview__value" style="text-align: right;">¥2400.00</em>
+				</view>
+			</view>
+		</view>
+	</scroll-view>
+
+	<!-- <view class="weui-loadmore">
+		<i class="weui-loading"></i>
+		<text class="weui-loadmore__tips">正在加载</text>
+	</view> -->
+	<!-- <view class="weui-loadmore weui-loadmore_line">
+		<text class="weui-loadmore__tips">暂无数据</text>
+	</view> -->
+</view>

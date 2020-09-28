@@ -1,7 +1,7 @@
 <view class="weui-panel weui-panel_access">
 	<view class="weui-panel__hd">
 		<view class="weui-media-box__info">
-			<view class="weui-media-box__info__meta">{{orderInfo.userInfo.userName}}</view>
+			<a class="weui-media-box__info__meta" bindtap="delThisOrder">{{orderInfo.userInfo.userName}}</a>
 			<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{orderInfo.userInfo.phoneNumber}}</view>
 			<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{orderInfo.userInfo.orderDate}}</view>
 			<view wx:if="{{orderInfo.totalPrice}}" style="float:right;color:red;">￥{{orderInfo.totalPrice}}</view>

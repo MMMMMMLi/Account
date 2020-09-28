@@ -1,5 +1,5 @@
 {
-  "entryPagePath": "pages/add/add",
+  "entryPagePath": "pages/manage/manage",
   "pages": [
     "pages/start/start",
     "pages/logs/logs",

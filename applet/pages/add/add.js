@@ -11,7 +11,9 @@ Page({
     categoryArray: ['西瓜红', '济薯26', '烟薯25'],
     sizeArray: ['大', '中', '小'],
     orderListId: 0,
-    orderList: []
+    orderList: [],
+    toast: false,
+    hideToast: false,
   },
   onShow() {
     // 页面初始化的时候，获取品种和大小的清单
@@ -105,15 +107,32 @@ Page({
         return order;
       })
       this.setData({
-        orderList  
+        orderList
       })
     }
   },
   // 在每个订单组件提交了之后，都调用这个方法删除当前页面订单信息。
   deleteOrderInfo(e) {
+    this.openToast();
     let orderList = this.data.orderList;
     this.setData({
       orderList: orderList.filter(order => order.orderListId != e.detail)
     })
+  },
+  openToast: function () {
+    this.setData({
+      toast: true
+    });
+    setTimeout(() => {
+      this.setData({
+        hideToast: true
+      });
+      setTimeout(() => {
+        this.setData({
+          toast: false,
+          hideToast: false,
+        });
+      }, 300);
+    }, 1500);
   },
 })

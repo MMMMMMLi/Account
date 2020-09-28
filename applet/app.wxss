@@ -969,7 +969,8 @@ input.weui-btn_mini {
 
 .weui-form-preview {
   position: relative;
-  background-color: var(--weui-BG-2)
+  background-color: var(--weui-BG-2);
+  margin-bottom: 10px;
 }
 
 .weui-form-preview:before {
@@ -1014,7 +1015,7 @@ input.weui-btn_mini {
   bottom: 0;
   right: 0;
   height: 1px;
-  border-bottom: 1px solid var(--weui-FG-3);
+  /* border-bottom: 1px solid var(--weui-FG-3); */
   color: var(--weui-FG-3);
   -webkit-transform-origin: 0 100%;
   transform-origin: 0 100%;
@@ -1033,7 +1034,8 @@ input.weui-btn_mini {
   font-size: .9em;
   text-align: right;
   color: var(--weui-FG-1);
-  line-height: 2
+  line-height: 2;
+  border-bottom: 1px solid var(--weui-FG-3);
 }
 
 .weui-form-preview__ft {
@@ -1041,7 +1043,8 @@ input.weui-btn_mini {
   line-height: 50px;
   display: -webkit-box;
   display: -webkit-flex;
-  display: flex
+  display: flex;
+  border-bottom: 1px solid var(--weui-DIALOG-LINE-COLOR);
 }
 
 .weui-form-preview__ft:before {
@@ -1051,7 +1054,7 @@ input.weui-btn_mini {
   top: 0;
   right: 0;
   height: 1px;
-  border-top: 1px solid var(--weui-DIALOG-LINE-COLOR);
+  /* border-bottom: 1px solid var(--weui-DIALOG-LINE-COLOR); */
   color: var(--weui-DIALOG-LINE-COLOR);
   -webkit-transform-origin: 0 0;
   transform-origin: 0 0;
@@ -1073,6 +1076,7 @@ input.weui-btn_mini {
 }
 
 .weui-form-preview__value {
+  text-align: center;
   display: block;
   overflow: hidden;
   word-break: normal;
@@ -1086,7 +1090,7 @@ input.weui-btn_mini {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
   flex: 1;
-  color: var(--weui-LINK);
+  /* color: var(--weui-LINK); */
   text-align: center;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
 }
@@ -1099,9 +1103,9 @@ button.weui-form-preview__btn {
   font-size: inherit
 }
 
-.weui-form-preview__btn:active {
+/* .weui-form-preview__btn:active {
   background-color: var(--weui-BG-COLOR-ACTIVE)
-}
+} */
 
 .weui-form-preview__btn:after {
   content: " ";
@@ -3083,7 +3087,7 @@ a.weui-media-box:active {
 
 .weui-loadmore {
   width: 65%;
-  margin: 1.5em auto;
+  margin: auto;
   line-height: 1.6em;
   font-size: 14px;
   text-align: center
