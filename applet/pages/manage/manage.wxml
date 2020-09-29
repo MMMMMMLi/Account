@@ -4,8 +4,8 @@
 			{{item.label}}
 		</view>
 	</view>
-	<scroll-view scroll-y wx:if="{{orderInfo.list.length > 0}}">
-		<view class="weui-form-preview" wx:for="{{orderInfo.list}}" wx:key="index" >
+	<scroll-view scroll-y wx:if="{{orderList.length > 0}}">
+		<view class="weui-form-preview" wx:for="{{orderList}}" wx:key="index">
 			<view class="weui-form-preview__ft">
 				<view class="weui-form-preview__btn">{{item.createDate}}</view>
 				<view class="weui-form-preview__btn">{{item.status}}</view>
@@ -57,11 +57,7 @@
 				</view>
 			</view>
 		</view>
-		<!-- <view class="weui-loadmore" wx:of="{{orderInfo.}}">
-			<i class="weui-loading"></i>
-			<text class="weui-loadmore__tips">正在加载</text>
-		</view> -->
-		<view wx:if="{{orderInfo.isLastPage}}" class="weui-loadmore weui-loadmore_line">
+		<view wx:if="{{!hasNextPage}}" class="weui-loadmore weui-loadmore_line">
 			<text class="weui-loadmore__tips">暂无更多数据</text>
 		</view>
 	</scroll-view>

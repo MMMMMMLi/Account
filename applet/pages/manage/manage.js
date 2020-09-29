@@ -1,7 +1,6 @@
 const REQUEST = require('../../utils/request');
 
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -24,46 +23,57 @@ Page({
       },
     ],
     // 当前选中的 列表值
-    currentTab: 0,
-  },
-  // 按钮切换的操作。
-  swichNav: function (e) {
-    var that = this;
-    if (this.data.currentTab === e.target.dataset.current) {
-      return false;
-    } else {
-      that.setData({
-        currentTab: e.target.dataset.current,
-      })
-      // 此处改成动态获取数据
-
-
-    }
+    currentTab: 3,
+    page: 0,
+    size: 2,
+    hasNextPage: false,
+    oldOrderList:[]
   },
   /**
    * 生命周期函数--监听页面加载
    */
-  onShow: function (options) {
-    this.getData(this.data.currentTab);
+  onLoad: function (options) {
+    // 获取数据
+    this.getData(this.data.currentTab, false);
   },
-  getData(status) {
+  // 按钮切换的操作。
+  swichNav: function (e) {
     let that = this;
-    wx.showLoading({
-      title: '加载中',
-    })
+    let current = e.target.dataset.current;
+    if (this.data.currentTab === current) {
+      return false;
+    } else {
+      that.setData({
+        currentTab: current,
+        page: 0,
+        orderList:[]
+      })
+      //动态获取数据
+      that.getData(current, true);
+    }
+  },
+  getData(status, showLoading) {
+    let that = this;
+    if (showLoading) {
+      wx.showLoading({
+        title: '加载中',
+      })
+    }
+    let oldOrderList = that.data.orderList ? that.data.orderList : [];
     // 根据传入的状态码，去后台获取订单列表
     REQUEST.request('order/getMyOrderList', 'POST', {
       token: wx.getStorageSync('token'),
       status,
-      page:0,
-      size:10
+      page: that.data.page,
+      size: that.data.size
     }).then(res => {
-      
-      if(res.data.code === 20000) {
+      if (res.data.code === 20000) {
         that.setData({
-          orderInfo : res.data.data
+          orderList: oldOrderList.concat(res.data.data),
+          page: res.data.pageInfo.nextPage,
+          hasNextPage: res.data.pageInfo.hasNextPage
         })
-      }else {
+      } else {
         wx.showModal({
           content: res.data.msg,
           showCancel: false
@@ -73,9 +83,29 @@ Page({
     wx.hideLoading();
   },
   /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide() {
+    // 离开的时候，默认选择 今日 tab栏。
+    this.setData({
+      currentTab: 0,
+    })
+    // 每次打开页面,都需要回到顶部。
+    if (wx.pageScrollTo) {
+      wx.pageScrollTo({
+        scrollTop: 0
+      })
+    }
+    // 获取数据
+    this.getData(this.data.currentTab, false);
+  },
+  /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    // 页面上拉触底事件的处理函数
+    if(this.data.hasNextPage) {
+      this.getData(this.data.currentTab,false);
+    }
   },
 })

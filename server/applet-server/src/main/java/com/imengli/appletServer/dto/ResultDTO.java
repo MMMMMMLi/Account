@@ -1,10 +1,14 @@
 package com.imengli.appletServer.dto;
 
-import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import com.imengli.appletServer.common.ResultStatus;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+@Data
+@NoArgsConstructor
 public class ResultDTO<T> implements Serializable {
 
     private static final long serialVersionUID = 7434727470152168503L;
@@ -15,10 +19,7 @@ public class ResultDTO<T> implements Serializable {
 
     private T data;
 
-    private Page pageInfo;
-
-    public ResultDTO() {
-    }
+    private PageInfo pageInfo;
 
     /**
      * @param resultStatus 通用状态
@@ -51,43 +52,14 @@ public class ResultDTO<T> implements Serializable {
     }
 
 
-    public ResultDTO(ResultStatus resultStatus, Page pageInfo) {
-        this(resultStatus.code(), resultStatus.msg(), null, pageInfo);
+    public ResultDTO(ResultStatus resultStatus, T data, PageInfo pageInfo) {
+        this(resultStatus.code(), resultStatus.msg(), data, pageInfo);
     }
 
-    public ResultDTO(int code, String msg, T data, Page pageInfo) {
+    public ResultDTO(int code, String msg, T data, PageInfo pageInfo) {
         this.code = code;
         this.msg = msg;
+        this.data = data;
         this.pageInfo = pageInfo;
     }
-
-
-    public int getCode() {
-        return code;
-    }
-
-    public ResultDTO<T> setCode(int code) {
-        this.code = code;
-        return this;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public ResultDTO<T> setMsg(String msg) {
-        this.msg = msg;
-        return this;
-    }
-
-
-    public T getData() {
-        return data;
-    }
-
-    public ResultDTO<T> setData(T data) {
-        this.data = data;
-        return this;
-    }
-
 }
