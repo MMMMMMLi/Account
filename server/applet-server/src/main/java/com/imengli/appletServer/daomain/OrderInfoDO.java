@@ -65,4 +65,9 @@ public class OrderInfoDO {
      */
     private int status;
 
+    /**
+     * 收款时间
+     */
+    private LocalDateTime collectionTime;
+
 }

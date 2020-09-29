@@ -78,7 +78,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onShow() {
     // 获取数据
     this.getData(this.data.currentTab, false);
   },
@@ -87,7 +87,6 @@ Page({
    */
   onHide() {
     this.hideAsync().then(res => {
-      console.log(res)
     })
   },
   hideAsync() {
@@ -105,8 +104,6 @@ Page({
           scrollTop: 0,
         })
       }
-      // 获取数据
-      that.getData(that.data.currentTab, false);
     })
   },
   /**

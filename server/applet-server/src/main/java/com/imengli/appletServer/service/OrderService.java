@@ -162,4 +162,47 @@ public class OrderService {
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }
+
+    /**
+     * 获取所有人的订单信息
+     *
+     * @param token
+     * @param status
+     * @param page
+     * @param size
+     * @return
+     */
+    public ResultDTO getOrderList(String token, Integer status, Integer page, Integer size) {
+        // 校验token
+        WechatUserDO wechatUserDO = this.getWechatAuthEntity(token);
+        // 根据信息完善度返回
+        if (wechatUserDO != null) {
+            PageHelper.startPage(page, size);
+            // 查询所有订单信息
+            List<OrderInfoDO> orderInfoDOS = orderInfoRepostory.selectAllOrderList(LocalDateTime.of(LocalDate.now().minusDays(status), LocalTime.of(00, 00, 00)), LocalDateTime.now());
+            PageInfo<OrderInfoDO> orderInfoDOPageInfo = new PageInfo<>(orderInfoDOS);
+            orderInfoDOPageInfo.setList(null);
+            // 构建返回信息
+            return new ResultDTO(ResultStatus.SUCCESS,
+                    orderInfoDOS.parallelStream()
+                            .map(orderInfoDO ->
+                                    AddOrderFormInfoPOJO.builder()
+                                            .userInfo(sysUserRepostory.getUserInfoById(orderInfoDO.getUserId()))
+                                            .totalPrice(orderInfoDO.getTotalPrice())
+                                            .totalWeight(orderInfoDO.getTotalWeight())
+                                            .applyBox(orderInfoDO.getApplyBox())
+                                            .retreatBox(orderInfoDO.getRetreatBox())
+                                            .createDate(dateTimeFormatter.format(orderInfoDO.getCreateDate()))
+                                            .orders(orderInfoDetailRepostory.select(orderInfoDO.getId()))
+                                            .status(Constant.getMsg(orderInfoDO.getStatus()))
+                                            .collectionTime(orderInfoDO.getCollectionTime() != null ? orderInfoDO.getCollectionTime().format(dateTimeFormatter) : "")
+                                            .build()
+                            )
+                            .sorted(Comparator.comparing(AddOrderFormInfoPOJO::getCreateDate).reversed())
+                            .collect(Collectors.toList())
+                    , orderInfoDOPageInfo
+            );
+        }
+        return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
+    }
 }

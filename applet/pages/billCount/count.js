@@ -29,6 +29,9 @@ Page({
     hasNextPage: false,
     oldOrderList: []
   },
+  switchBoxChange(e) {
+    console.log(e)
+  },
   // 按钮切换的操作。
   swichNav: function (e) {
     let that = this;
@@ -54,7 +57,7 @@ Page({
     }
     let oldOrderList = that.data.orderList ? that.data.orderList : [];
     // 根据传入的状态码，去后台获取订单列表
-    REQUEST.request('order/getMyOrderList', 'POST', {
+    REQUEST.request('order/getOrderList', 'POST', {
       token: wx.getStorageSync('token'),
       status,
       page: that.data.page,

@@ -28,4 +28,12 @@ public class OrderController {
                                     @RequestParam Integer size) {
         return orderService.getMyOrderList(token, status,page,size);
     }
+
+    @RequestMapping("/getOrderList")
+    public ResultDTO getOrderList(@RequestParam String token,
+                                    @RequestParam Integer status,
+                                    @RequestParam Integer page,
+                                    @RequestParam Integer size) {
+        return orderService.getOrderList(token, status,page,size);
+    }
 }

@@ -69,6 +69,11 @@ public class AddOrderFormInfoPOJO implements Serializable {
     private String status;
 
     /**
+     * 收款时间
+     */
+    private String collectionTime;
+
+    /**
      * 用户信息
      */
     @JsonProperty(value = "userInfo")

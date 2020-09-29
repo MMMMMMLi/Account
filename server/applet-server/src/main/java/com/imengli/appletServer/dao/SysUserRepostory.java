@@ -22,4 +22,7 @@ public interface SysUserRepostory {
 
     @Select("SELECT * FROM sys_user WHERE (LOCATE(#{searchValue},userName) OR LOCATE(#{searchValue},userNameCode) OR LOCATE(#{searchValue},phoneNumber)) LIMIT #{size}")
     List<SysUserDO> getUserInfoBySearch(@Param("searchValue") String searchValue, @Param("size") Integer size);
+
+    @Select("SELECT * FROM sys_user WHERE id = #{id}")
+    List<SysUserDO> getUserInfoByID(@Param("id") Integer id);
 }

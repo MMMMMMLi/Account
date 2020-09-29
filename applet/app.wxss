@@ -595,7 +595,8 @@ input.weui-btn_mini {
 }
 
 .weui-cells {
-  margin-top: 8px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   background-color: var(--weui-BG-2);
   line-height: 1.41176471;
   font-size: 17px;
@@ -605,7 +606,7 @@ input.weui-btn_mini {
 
 .weui-cells:before {
   top: 0;
-  border-top: 1px solid var(--weui-FG-3);
+  /* border-top: 1px solid var(--weui-FG-3); */
   -webkit-transform-origin: 0 0;
   transform-origin: 0 0;
   -webkit-transform: scaleY(.5);
@@ -625,7 +626,7 @@ input.weui-btn_mini {
 
 .weui-cells:after {
   bottom: 0;
-  border-bottom: 1px solid var(--weui-FG-3);
+  /* border-bottom: 1px solid var(--weui-FG-3); */
   -webkit-transform-origin: 0 100%;
   transform-origin: 0 100%;
   -webkit-transform: scaleY(.5);

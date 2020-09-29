@@ -4,11 +4,26 @@
 			{{item.label}}
 		</view>
 	</view>
+	<view class="weui-cells weui-cells_form">
+		<view class="weui-cell weui-cell_active weui-cell_switch">
+			<view class="weui-cell__bd">是否开启筛选</view>
+			<view class="weui-cell__ft">
+				<label class="weui-switch-cp">
+					<switch class="weui-switch-cp__input" bindchange="switchBoxChange" />
+					<view class="weui-switch-cp__box"></view>
+				</label>
+			</view>
+		</view>
+	</view>
+
 	<scroll-view scroll-y wx:if="{{orderList.length > 0}}">
 		<view class="weui-form-preview" wx:for="{{orderList}}" wx:key="index">
-			<view class="weui-form-preview__ft">
-				<view class="weui-form-preview__btn">{{item.createDate}}</view>
-				<view class="weui-form-preview__btn">{{item.status}}</view>
+			<view class="weui-form-preview__hd_count">
+				<view class="weui-form-preview__item">
+					<label class="{{item.status == '待付款' ? 'weui-form-preview__label_unpaid' : 'weui-form-preview__label_paid'}}">{{item.userInfo.userName}}</label>
+					<label class="weui-media-box__info__meta_extra {{item.status == '待付款' ? 'weui-form-preview__label_unpaid' : 'weui-form-preview__label_paid'}}">{{item.userInfo.phoneNumber}}</label>
+					<label class="weui-media-box__info__meta_extra {{item.status == '待付款' ? 'weui-form-preview__label_unpaid' : 'weui-form-preview__label_paid'}}">{{item.createDate}}</label>
+				</view>
 			</view>
 			<view class="weui-form-preview__bd" wx:for="{{item.orders}}" wx:key="index">
 				<view style="display: flex;">
@@ -31,6 +46,16 @@
 						<text class="weui-form-preview__value">{{item.tare}} KG</text>
 					</view>
 				</view>
+				<view style="display: flex;">
+					<view class="weui-form-preview__item" style="flex:0.5;">
+						<label class="weui-form-preview__label">单价：</label>
+						<text class="weui-form-preview__value">￥ {{item.unitPrice}}</text>
+					</view>
+					<view class="weui-form-preview__item" style="flex:0.5;">
+						<label class="weui-form-preview__label">单价：</label>
+						<text class="weui-form-preview__value">￥ {{item.totalPrice}}</text>
+					</view>
+				</view>
 			</view>
 			<view class="weui-form-preview__bd">
 				<view style="display: flex;">
@@ -48,13 +73,18 @@
 						<label class="weui-form-preview__label">退框：</label>
 						<text class="weui-form-preview__value">{{item.retreatBox}} 个</text>
 					</view>
+					<view class="weui-form-preview__item" style="flex:0.5;">
+						<label class="weui-form-preview__label">总价钱：</label>
+						<text class="weui-form-preview__value">￥ {{item.totalPrice}}</text>
+					</view>
 				</view>
 			</view>
-			<view class="weui-form-preview__hd">
-				<view class="weui-form-preview__item">
-					<label class="weui-form-preview__label">付款金额</label>
-					<em class="weui-form-preview__value" style="text-align: right;">¥ {{item.totalPrice}}</em>
-				</view>
+			<view class="weui-form-preview__ft" wx:if="{{item.status == '待付款'}}">
+				<a class="weui-form-preview__btn weui-form-preview__btn_default">修改订单</a>
+				<a class="weui-form-preview__btn weui-form-preview__btn_primary">确认收款</a>
+			</view>
+			<view class="weui-form-preview__ft" wx:else>
+				<a class="weui-form-preview__btn weui-form-preview__btn_primary" style="color:green">收款时间：{{item.collectionTime}}</a>
 			</view>
 		</view>
 		<view wx:if="{{!hasNextPage}}" class="weui-loadmore weui-loadmore_line">

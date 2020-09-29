@@ -22,4 +22,7 @@ public interface OrderInfoRepostory {
 
     @Select("select * from order_info where userId = #{userId} AND createDate BETWEEN #{startDate} AND #{endDate}")
     List<OrderInfoDO> select(@Param("userId") String userId, @Param("startDate")LocalDateTime startDate,@Param("endDate")LocalDateTime endDate);
+
+    @Select("select * from order_info where createDate BETWEEN #{startDate} AND #{endDate}")
+    List<OrderInfoDO> selectAllOrderList(@Param("startDate")LocalDateTime startDate,@Param("endDate")LocalDateTime endDate);
 }
