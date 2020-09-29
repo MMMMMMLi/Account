@@ -1,46 +1,16 @@
+/* 主要内容样式 */
 .container {
   width: 100%;
+  height: auto;
   background-color: #F2f2f2;
 }
-
-.status-box {
-  width: 100%;
-  height: 88rpx;
-  line-height: 88rpx;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #fff;
-}
-
-.status-box .status-label {
-  width: 150rpx;
-  height: 100%;
-  text-align: center;
-  font-size: 30rpx;
-  color: #353535;
-  box-sizing: border-box;
-  position: relative;
-  /* border-bottom: 1rpx solid #353535; */
-}
-
-.status-box .status-label.active {
-  font-size: 40rpx;
-  font-weight:bold;
-  color: #e64340;
-  border-bottom: 6rpx solid #e64340;
-  /* border-image: -webkit-linear-gradient(red, white, red)60 30 60 30;
-  border-image: -moz-linear-gradient(red, white, red)60 30 60 30;
-  border-image: linear-gradient(red, white, red)60 30 60 30; */
-}
-
-
 
 .swiper-tab {
   display: flex;
   flex-direction: row;
   line-height: 80rpx;
-  /* border-bottom: 2rpx solid #777; */
+  background-color: #ffffff;
+  margin-bottom: 10px;
 }
 
 .tab-item {
@@ -50,11 +20,6 @@
   color: #777;
 }
 
-.swiper {
-  /* height: 1100px; */
-  background: #dfdfdf;
-}
-
 .on {
   font-size: 40rpx;
   font-weight:bold;
@@ -62,12 +27,26 @@
   border-bottom: 6rpx solid #e64340;
 }
 
-.load-more-wrap .load-content{
+.no-order {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  top: 88rpx;
+  left: 0;
+  right: 0;
   text-align: center;
-  margin:10px auto 10px;
-  color:#ccc;
-  font-size: 15px;
- }
- .load-more-wrap{
-  padding-bottom: 5rpx;
- }
+  padding-top: 203rpx;
+  background-color: #F2f2f2;
+}
+
+.no-order-img {
+  width: 81rpx;
+  height: 96rpx;
+  margin-bottom: 31rpx;
+}
+
+.no-order .text {
+  font-size: 28rpx;
+  color: #999999;
+  text-align: center
+}

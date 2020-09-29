@@ -1,111 +1,66 @@
-const REQUEST = require('../../utils/request');
-
+// pages/init/index.js
 Page({
+
   /**
    * 页面的初始数据
    */
   data: {
-    statusType: [{
-        status: 0,
-        label: '今日'
-      },
-      {
-        status: 3,
-        label: '三天'
-      },
-      {
-        status: 7,
-        label: '一周'
-      },
-      {
-        status: 999,
-        label: '全部'
-      },
-    ],
-    // 当前选中的 列表值
-    currentTab: 3,
-    page: 0,
-    size: 2,
-    hasNextPage: false,
-    oldOrderList:[]
+
   },
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // 获取数据
-    this.getData(this.data.currentTab, false);
+
   },
-  // 按钮切换的操作。
-  swichNav: function (e) {
-    let that = this;
-    let current = e.target.dataset.current;
-    if (this.data.currentTab === current) {
-      return false;
-    } else {
-      that.setData({
-        currentTab: current,
-        page: 0,
-        orderList:[]
-      })
-      //动态获取数据
-      that.getData(current, true);
-    }
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
   },
-  getData(status, showLoading) {
-    let that = this;
-    if (showLoading) {
-      wx.showLoading({
-        title: '加载中',
-      })
-    }
-    let oldOrderList = that.data.orderList ? that.data.orderList : [];
-    // 根据传入的状态码，去后台获取订单列表
-    REQUEST.request('order/getMyOrderList', 'POST', {
-      token: wx.getStorageSync('token'),
-      status,
-      page: that.data.page,
-      size: that.data.size
-    }).then(res => {
-      if (res.data.code === 20000) {
-        that.setData({
-          orderList: oldOrderList.concat(res.data.data),
-          page: res.data.pageInfo.nextPage,
-          hasNextPage: res.data.pageInfo.hasNextPage
-        })
-      } else {
-        wx.showModal({
-          content: res.data.msg,
-          showCancel: false
-        })
-      }
-    })
-    wx.hideLoading();
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+
   },
+
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide() {
-    // 离开的时候，默认选择 今日 tab栏。
-    this.setData({
-      currentTab: 0,
-    })
-    // 每次打开页面,都需要回到顶部。
-    if (wx.pageScrollTo) {
-      wx.pageScrollTo({
-        scrollTop: 0
-      })
-    }
-    // 获取数据
-    this.getData(this.data.currentTab, false);
+  onHide: function () {
+
   },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+
+  },
+
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    // 页面上拉触底事件的处理函数
-    if(this.data.hasNextPage) {
-      this.getData(this.data.currentTab,false);
-    }
+
   },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+
+  }
 })

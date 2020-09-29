@@ -1,14 +1,14 @@
 {
-  "entryPagePath": "pages/manage/manage",
+  "entryPagePath": "pages/billCount/count",
   "pages": [
     "pages/start/start",
-    "pages/logs/logs",
     "pages/my/my",
     "pages/billCount/count",
     "pages/add/add",
     "pages/manage/manage",
     "pages/order/index",
-    "pages/userInfo/index"
+    "pages/userInfo/index",
+    "pages/init/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

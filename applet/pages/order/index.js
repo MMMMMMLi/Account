@@ -1,176 +1,121 @@
-const app = getApp();
-const AUTH = require('../../utils/auth');
-const mock = require('../../utils/mock');
+const REQUEST = require('../../utils/request');
 
 Page({
+  /**
+   * 页面的初始数据
+   */
   data: {
     statusType: [{
         status: 0,
         label: '今日'
       },
       {
-        status: 1,
+        status: 3,
         label: '三天'
       },
       {
-        status: 2,
+        status: 7,
         label: '一周'
       },
       {
-        status: 9999,
+        status: 999,
         label: '全部'
       },
     ],
-    status: 0,
+    // 当前选中的 列表值
     currentTab: 0,
-    goodsList: {},
-    orderList: [],
-    hasMore:true,
-    total:0
+    page: 0,
+    size: 2,
+    hasNextPage: false,
+    oldOrderList: []
   },
+  // 按钮切换的操作。
   swichNav: function (e) {
-    console.log(e);
-    var that = this;
-    if (this.data.currentTab === e.target.dataset.current) {
+    let that = this;
+    let current = e.target.dataset.current;
+    if (this.data.currentTab === current) {
       return false;
     } else {
       that.setData({
-        currentTab: e.target.dataset.current,
+        currentTab: current,
+        page: 0,
+        orderList: []
       })
-      // 此处改成动态获取数据
-      mock.mockData().then(mockData => {
-        this.setData({
-          orderList: mockData.orderList,
-          goodsList: mockData.goodsList
-        })
-      });
-
+      //动态获取数据
+      that.getData(current, true);
     }
   },
-
-  onLoad: function () {
-    // AUTH.getOrderList().then(res => {
-    //   console.log(res)
-    // })
-  },
-  onReady: function () {
-    // 生命周期函数--监听页面初次渲染完成
-  },
-  onShow: function () {
-    AUTH.checkHasLogined().then(isLogined => {
-      isLogined = true;
-      if (isLogined) {
-        this.doneShow();
+  getData(status, showLoading) {
+    let that = this;
+    if (showLoading) {
+      wx.showLoading({
+        title: '加载中',
+      })
+    }
+    let oldOrderList = that.data.orderList ? that.data.orderList : [];
+    // 根据传入的状态码，去后台获取订单列表
+    REQUEST.request('order/getMyOrderList', 'POST', {
+      token: wx.getStorageSync('token'),
+      status,
+      page: that.data.page,
+      size: that.data.size
+    }).then(res => {
+      if (res.data.code === 20000) {
+        that.setData({
+          orderList: oldOrderList.concat(res.data.data),
+          page: res.data.pageInfo.nextPage,
+          hasNextPage: res.data.pageInfo.hasNextPage
+        })
       } else {
         wx.showModal({
-          title: '提示',
-          content: '本次操作需要您的登录授权',
-          cancelText: '暂不登录',
-          confirmText: '前往登录',
-          success(res) {
-            if (res.confirm) {
-              this.doneShow();
-              wx.switchTab({
-                url: "/pages/index/index"
-              })
-            } else {
-              console.log("........")
-            }
-          }
+          content: res.data.msg,
+          showCancel: false
         })
       }
     })
-  },
-  doneShow() {
-    // 获取订单列表
-    var that = this;
-    var postData = {
-      token: wx.getStorageSync('token')
-    };
-    // 动态获取数据
-    mock.mockData().then(mockData => {
-      that.setData({
-        orderList: mockData.orderList,
-        goodsList: mockData.goodsList
-      })
-    });
-  },
-  onHide: function () {
-    // 生命周期函数--监听页面隐藏
-
-  },
-  onUnload: function () {
-    // 生命周期函数--监听页面卸载
-
-  },
-  onPullDownRefresh: function () {
-    // 页面相关事件处理函数--监听用户下拉动作
-
-  },
-  onReachBottom: function () {
-     // 页面上拉触底事件的处理函数
-    console.log(".................到底了......")
-    //加载提示
-    wx.showLoading({
-      title: '加载中',
-    })
-    let that = this;
-    let total = that.data.total + 1;
-    if(total > 3) {
-      this.setData({
-        hasMore: false,
-        total:total
-      })
-      wx.hideLoading();
-      return;
-    }
     wx.hideLoading();
-    // 动态获取数据
-    mock.mockThreeData().then(mockData => {
+  },
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    // 获取数据
+    this.getData(this.data.currentTab, false);
+  },
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide() {
+    this.hideAsync().then(res => {
+      console.log(res)
+    })
+  },
+  hideAsync() {
+    let that = this;
+    return new Promise((resolve, reject) => {
+       // 离开的时候，默认选择 今日 tab栏。
       that.setData({
-        orderList: that.data.orderList.concat(mockData.orderList),
-        goodsList: Object.assign(that.data.goodsList, mockData.goodsList),
-        total:total
+        currentTab: 0,
+        page: 0,
+        orderList: []
       })
-    });
-  }
+      // 每次打开页面,都需要回到顶部。
+      if (wx.pageScrollTo) {
+        wx.pageScrollTo({
+          scrollTop: 0,
+        })
+      }
+      // 获取数据
+      that.getData(that.data.currentTab, false);
+    })
+  },
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+    // 页面上拉触底事件的处理函数
+    if (this.data.hasNextPage) {
+      this.getData(this.data.currentTab, false);
+    }
+  },
 })
-
-// 滑动详情页相关方法
-// swiperChange: function (e) {
-//   console.log(e);
-//   this.setData({
-//     currentTab: e.detail.current,
-//   })
-//   this.setData({
-//     goodsList: {},
-//     orderList: []
-//   })
-//   mock.mockData().then(mockData => {
-//     this.setData({
-//       orderList: mockData.orderList,
-//       goodsList: mockData.goodsList
-//     })
-//   });
-
-// },
-// statusTap: function (e) {
-//   const status = e.currentTarget.dataset.status;
-//   this.setData({
-//     status
-//   });
-//   this.onShow();
-// },
-// cancelOrderTap: function (e) {
-//   const that = this;
-//   const orderId = e.currentTarget.dataset.id;
-//   wx.showModal({
-//     title: '确定要取消该订单吗？',
-//     content: '',
-//     success: function (res) {
-//       if (res.confirm) {
-//         console.log("cancelOrderTap....")
-//       }
-//     }
-//   })
-// },

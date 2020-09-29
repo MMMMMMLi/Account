@@ -1,6 +1,3 @@
 {
-  "navigationBarTitleText":"订单汇总",
-  "usingComponents": {
-   "my-tabs":"/components/tabs/index"
-  }
+  "navigationBarTitleText":"订单汇总"
 }

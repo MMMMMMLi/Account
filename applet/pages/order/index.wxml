@@ -1,61 +1,68 @@
-<!-- 顶部Tab栏 -->
-<view class="swiper-tab">
-	<view class="tab-item {{currentTab == item.status ? 'on' : ''}}" wx:for="{{statusType}}" wx:key="index" data-current="{{item.status}}" bindtap="swichNav">
-		{{item.label}}
+<view class="page">
+	<view class="swiper-tab">
+		<view class="tab-item {{currentTab == item.status ? 'on' : ''}}" wx:for="{{statusType}}" wx:key="index" data-current="{{item.status}}" bindtap="swichNav">
+			{{item.label}}
+		</view>
+	</view>
+	<scroll-view scroll-y wx:if="{{orderList.length > 0}}">
+		<view class="weui-form-preview" wx:for="{{orderList}}" wx:key="index">
+			<view class="weui-form-preview__ft">
+				<view class="weui-form-preview__btn">{{item.createDate}}</view>
+				<view class="weui-form-preview__btn">{{item.status}}</view>
+			</view>
+			<view class="weui-form-preview__bd" wx:for="{{item.orders}}" wx:key="index">
+				<view style="display: flex;">
+					<view class="weui-form-preview__item" style="flex:0.5;">
+						<label class="weui-form-preview__label">品种：</label>
+						<text class="weui-form-preview__value">{{item.categoryValue}}</text>
+					</view>
+					<view class="weui-form-preview__item" style="flex:0.5;">
+						<label class="weui-form-preview__label">毛重：</label>
+						<text class="weui-form-preview__value">{{item.gross}} KG</text>
+					</view>
+				</view>
+				<view style="display: flex;">
+					<view class="weui-form-preview__item" style="flex:0.5;">
+						<label class="weui-form-preview__label">大小：</label>
+						<text class="weui-form-preview__value">{{item.sizeValue}}</text>
+					</view>
+					<view class="weui-form-preview__item" style="flex:0.5;">
+						<label class="weui-form-preview__label">皮重：</label>
+						<text class="weui-form-preview__value">{{item.tare}} KG</text>
+					</view>
+				</view>
+			</view>
+			<view class="weui-form-preview__bd">
+				<view style="display: flex;">
+					<view class="weui-form-preview__item" style="flex:0.5;">
+						<label class="weui-form-preview__label">用框：</label>
+						<text class="weui-form-preview__value">{{item.applyBox}} 个</text>
+					</view>
+					<view class="weui-form-preview__item" style="flex:0.5;">
+						<label class="weui-form-preview__label">总重量：</label>
+						<text class="weui-form-preview__value">{{item.totalWeight}} KG</text>
+					</view>
+				</view>
+				<view style="display: flex;">
+					<view class="weui-form-preview__item" style="flex:0.5;">
+						<label class="weui-form-preview__label">退框：</label>
+						<text class="weui-form-preview__value">{{item.retreatBox}} 个</text>
+					</view>
+				</view>
+			</view>
+			<view class="weui-form-preview__hd">
+				<view class="weui-form-preview__item">
+					<label class="weui-form-preview__label">付款金额</label>
+					<em class="weui-form-preview__value" style="text-align: right;">¥ {{item.totalPrice}}</em>
+				</view>
+			</view>
+		</view>
+		<view wx:if="{{!hasNextPage}}" class="weui-loadmore weui-loadmore_line">
+			<text class="weui-loadmore__tips">暂无更多数据</text>
+		</view>
+	</scroll-view>
+	<view wx:else class="no-order">
+		<image src="/images/no-order.png" class="no-order-img"></image>
+		<view class="text">暂无订单</view>
 	</view>
 </view>
-<view class="container">
-	<!-- 订单列表 -->
-	<my-orderList orderList="{{orderList}}" goodsList="{{goodsList}}">
-	</my-orderList>
-	<view class="load-more-wrap">
-		<block wx:if="{{hasMore}}">
-			<view class="load-content">
-				<text class="weui-loading"/><text class="loading-text">玩命加载中</text>
-			</view>
-		</block>
-		<!-- 否则显示没有更多内容了 -->
-		<block wx:else>
-			<view class="load-content">
-				<text>没有更多内容了</text>
-			</view>
-		</block>
-	</view>
-</view>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 滑动组件,没有搞定. -->
-<!-- <swiper class="swiper" style="height:{{orderList.length * 430}}px" current="{{currentTab}}" duration="500" bindchange="swiperChange">
-	<swiper-item>
-		<my-orderList orderList="{{orderList}}" goodsList="{{goodsList}}">
-		</my-orderList>
-	</swiper-item>
-	<swiper-item>
-		<my-orderList orderList="{{orderList}}" goodsList="{{goodsList}}">
-		</my-orderList>
-	</swiper-item>
-	<swiper-item>
-		<my-orderList orderList="{{orderList}}" goodsList="{{goodsList}}">
-		</my-orderList>
-	</swiper-item>
-	<swiper-item>
-		<my-orderList orderList="{{orderList}}" goodsList="{{goodsList}}">
-		</my-orderList>
-	</swiper-item>
-</swiper> -->
