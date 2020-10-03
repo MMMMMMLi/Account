@@ -1,5 +1,5 @@
 {
-  "entryPagePath": "pages/billCount/count",
+  "entryPagePath": "pages/start/start",
   "pages": [
     "pages/start/start",
     "pages/my/my",

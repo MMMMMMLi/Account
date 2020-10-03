@@ -12,27 +12,27 @@ public class MineUpdateProvider {
         return new SQL(){{
             UPDATE(SYS_USER_TABLE_NAME);
             if (!StringUtils.isEmpty(sysUserDO.getUserName())) {
-                SET("userName = #{sysUserEntity.userName}");
+                SET("userName = #{sysUserDO.userName}");
             }
             if (!StringUtils.isEmpty(sysUserDO.getUserNameCode())) {
-                SET("userNameCode= #{sysUserEntity.userNameCode}");
+                SET("userNameCode= #{sysUserDO.userNameCode}");
             }
             if (!StringUtils.isEmpty(sysUserDO.getPhoneNumber())) {
-                SET("phoneNumber= #{sysUserEntity.phoneNumber}");
+                SET("phoneNumber= #{sysUserDO.phoneNumber}");
             }
             if (!StringUtils.isEmpty(sysUserDO.getAddress())) {
-                SET("address= #{sysUserEntity.address}");
+                SET("address= #{sysUserDO.address}");
             }
             if (!StringUtils.isEmpty(sysUserDO.getNickName())) {
-                SET("nickName= #{sysUserEntity.nickName}");
+                SET("nickName= #{sysUserDO.nickName}");
             }
             if (!StringUtils.isEmpty(sysUserDO.getAvatarUrl())) {
-                SET("avatarUrl= #{sysUserEntity.avatarUrl}");
+                SET("avatarUrl= #{sysUserDO.avatarUrl}");
             }
             if (sysUserDO.getLastLoginTimeStamp() != null) {
-                SET("lastLoginTimeStamp= #{sysUserEntity.lastLoginTimeStamp}");
+                SET("lastLoginTimeStamp= #{sysUserDO.lastLoginTimeStamp}");
             }
-            WHERE("id = #{sysUserEntity.id}" );
+            WHERE("id = #{sysUserDO.id}" );
         }}.toString();
 
     }

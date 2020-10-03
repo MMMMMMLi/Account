@@ -49,11 +49,11 @@
 				<view style="display: flex;">
 					<view class="weui-form-preview__item" style="flex:0.5;">
 						<label class="weui-form-preview__label">单价：</label>
-						<text class="weui-form-preview__value">￥ {{item.unitPrice}}</text>
+						<text class="weui-form-preview__value">￥{{item.unitPrice}}</text>
 					</view>
 					<view class="weui-form-preview__item" style="flex:0.5;">
-						<label class="weui-form-preview__label">单价：</label>
-						<text class="weui-form-preview__value">￥ {{item.totalPrice}}</text>
+						<label class="weui-form-preview__label">总价：</label>
+						<text class="weui-form-preview__value" style="color:red">￥{{item.totalPrice}}</text>
 					</view>
 				</view>
 			</view>
@@ -75,7 +75,7 @@
 					</view>
 					<view class="weui-form-preview__item" style="flex:0.5;">
 						<label class="weui-form-preview__label">总价钱：</label>
-						<text class="weui-form-preview__value">￥ {{item.totalPrice}}</text>
+						<text class="weui-form-preview__value" style="color:red;font-weight: bolder;">￥{{item.totalPrice}}</text>
 					</view>
 				</view>
 			</view>
@@ -94,5 +94,33 @@
 	<view wx:else class="no-order">
 		<image src="/images/no-order.png" class="no-order-img"></image>
 		<view class="text">暂无订单</view>
+	</view>
+	<view class="fadeIn" wx:if="{{needFilter}}">
+		<view class="weui-mask" bindtap="close"></view>
+		<view class="weui-half-screen-dialog">
+			<view class="weui-half-screen-dialog__hd">
+				<view class="weui-half-screen-dialog__hd__side" bindtap="closeFilter">
+					<a class="weui-icon-btn">返回<i class="weui-icon-back-arrow-thin"></i></a>
+				</view>
+				<view class="weui-half-screen-dialog__hd__main">
+					<strong class="weui-half-screen-dialog__title">筛选条件列表</strong>
+					<view class="weui-half-screen-dialog__subtitle">根据实际需要，填写下列筛选条件</view>
+				</view>
+				<view class="weui-half-screen-dialog__hd__side">
+					<a class="weui-icon-btn">更多<i class="weui-icon-more"></i></a>
+				</view>
+			</view>
+			<view class="weui-half-screen-dialog__bd">
+				<view class="weui-half-screen-dialog__desc">
+					辅助描述内容，可根据实际需要安排
+				</view>
+				<view class="weui-half-screen-dialog__tips">
+					辅助提示内容，可根据实际需要安排
+				</view>
+			</view>
+			<view class="weui-half-screen-dialog__ft">
+				<a class="weui-btn weui-btn_primary" bindtap="closeFilter">确定</a>
+			</view>
+		</view>
 	</view>
 </view>

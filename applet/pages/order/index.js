@@ -73,7 +73,9 @@ Page({
         })
       }
     })
-    wx.hideLoading();
+    if (showLoading) {
+      wx.hideLoading();
+    }
   },
   /**
    * 生命周期函数--监听页面加载
@@ -86,13 +88,12 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide() {
-    this.hideAsync().then(res => {
-    })
+    this.hideAsync().then(res => {})
   },
   hideAsync() {
     let that = this;
     return new Promise((resolve, reject) => {
-       // 离开的时候，默认选择 今日 tab栏。
+      // 离开的时候，默认选择 今日 tab栏。
       that.setData({
         currentTab: 0,
         page: 0,

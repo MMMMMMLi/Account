@@ -10,10 +10,10 @@ public interface WechatUserRepostory {
     WechatUserDO getUserEntityByOpenId(@Param("openId") String openId);
 
     @Update("update wechat_user " +
-            "set unionId = #{wechatUserEntity.unionId} and userId = #{wechatUserEntity.userId} " +
-            "where openId = #{wechatUserEntity.openId}")
-    void updateUserEntity(@Param("wechatUserEntity") WechatUserDO wechatUserDO);
+            "set unionId = #{wechatUserDO.unionId} , userId = #{wechatUserDO.userId} " +
+            "where openId = #{wechatUserDO.openId}")
+    void updateUserEntity(@Param("wechatUserDO") WechatUserDO wechatUserDO);
 
-    @Insert("insert into wechat_user (openId,unionId) values(#{wechatUserEntity.openId},#{wechatUserEntity.unionId})")
-    void saveUserEntity(@Param("wechatUserEntity") WechatUserDO wechatUserDO);
+    @Insert("insert into wechat_user (openId,unionId) values(#{wechatUserDO.openId},#{wechatUserDO.unionId})")
+    void saveUserEntity(@Param("wechatUserDO") WechatUserDO wechatUserDO);
 }

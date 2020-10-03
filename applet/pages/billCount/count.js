@@ -27,10 +27,23 @@ Page({
     page: 0,
     size: 2,
     hasNextPage: false,
-    oldOrderList: []
+    oldOrderList: [],
+    needFilter: false,
+    filterFalg: false,
+    filterCriteria: []
   },
+  // 点击是否开启帅选按钮
   switchBoxChange(e) {
-    console.log(e)
+    this.setData({
+      needFilter: e.detail.value,
+      filterFalg: e.detail.value
+    })
+  },
+  // 筛选界面返回按钮
+  closeFilter() {
+    this.setData({
+      needFilter: false
+    })
   },
   // 按钮切换的操作。
   swichNav: function (e) {
@@ -76,7 +89,9 @@ Page({
         })
       }
     })
-    wx.hideLoading();
+    if (showLoading) {
+      wx.hideLoading();
+    }
   },
   /**
    * 生命周期函数--监听页面加载
@@ -96,7 +111,7 @@ Page({
   hideAsync() {
     let that = this;
     return new Promise((resolve, reject) => {
-       // 离开的时候，默认选择 今日 tab栏。
+      // 离开的时候，默认选择 今日 tab栏。
       that.setData({
         currentTab: 0,
         page: 0,

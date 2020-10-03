@@ -75,7 +75,7 @@
 
 .weui-form-preview__label_unpaid {
   float: left;
-  margin-right: 1em;
+  margin-right: 0.5em;
   color: red;
   font-weight: bolder;
   text-align: justify;
@@ -84,11 +84,16 @@
 
 .weui-form-preview__label_paid {
   float: left;
-  margin-right: 1em;
+  margin-right: 0.5em;
   color: green;
   font-weight: bolder;
   text-align: justify;
   text-align-last: justify
+}
+
+.weui-media-box__info__meta_extra {
+  padding-left: 0.5em;
+  border-left: 1px solid var(--weui-FG-2)
 }
 
 .weui-form-preview__btn {

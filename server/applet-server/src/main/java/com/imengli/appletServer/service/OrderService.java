@@ -136,29 +136,32 @@ public class OrderService {
         if (wechatUserDO != null) {
             // 获取用户信息
             SysUserDO userInfoById = sysUserRepostory.getUserInfoById(wechatUserDO.getUserId());
-            PageHelper.startPage(page, size);
-            // 查询用户订单
-            List<OrderInfoDO> orderInfoDOS = orderInfoRepostory.select(userInfoById.getId(), LocalDateTime.of(LocalDate.now().minusDays(status), LocalTime.of(00, 00, 00)), LocalDateTime.now());
-            PageInfo<OrderInfoDO> orderInfoDOPageInfo = new PageInfo<>(orderInfoDOS);
-            orderInfoDOPageInfo.setList(null);
-            // 构建返回信息
-            return new ResultDTO(ResultStatus.SUCCESS,
-                    orderInfoDOS.parallelStream()
-                            .map(orderInfoDO ->
-                                    AddOrderFormInfoPOJO.builder()
-                                            .totalPrice(orderInfoDO.getTotalPrice())
-                                            .totalWeight(orderInfoDO.getTotalWeight())
-                                            .applyBox(orderInfoDO.getApplyBox())
-                                            .retreatBox(orderInfoDO.getRetreatBox())
-                                            .createDate(dateTimeFormatter.format(orderInfoDO.getCreateDate()))
-                                            .orders(orderInfoDetailRepostory.select(orderInfoDO.getId()))
-                                            .status(Constant.getMsg(orderInfoDO.getStatus()))
-                                            .build()
-                            )
-                            .sorted(Comparator.comparing(AddOrderFormInfoPOJO::getCreateDate).reversed())
-                            .collect(Collectors.toList())
-                    , orderInfoDOPageInfo
-            );
+            if (userInfoById != null) {
+                PageHelper.startPage(page, size);
+                // 查询用户订单
+                List<OrderInfoDO> orderInfoDOS = orderInfoRepostory.select(userInfoById.getId(), LocalDateTime.of(LocalDate.now().minusDays(status), LocalTime.of(00, 00, 00)), LocalDateTime.now());
+                PageInfo<OrderInfoDO> orderInfoDOPageInfo = new PageInfo<>(orderInfoDOS);
+                orderInfoDOPageInfo.setList(null);
+                // 构建返回信息
+                return new ResultDTO(ResultStatus.SUCCESS,
+                        orderInfoDOS.parallelStream()
+                                .map(orderInfoDO ->
+                                        AddOrderFormInfoPOJO.builder()
+                                                .totalPrice(orderInfoDO.getTotalPrice())
+                                                .totalWeight(orderInfoDO.getTotalWeight())
+                                                .applyBox(orderInfoDO.getApplyBox())
+                                                .retreatBox(orderInfoDO.getRetreatBox())
+                                                .createDate(dateTimeFormatter.format(orderInfoDO.getCreateDate()))
+                                                .orders(orderInfoDetailRepostory.select(orderInfoDO.getId()))
+                                                .status(Constant.getMsg(orderInfoDO.getStatus()))
+                                                .build()
+                                )
+                                .sorted(Comparator.comparing(AddOrderFormInfoPOJO::getCreateDate).reversed())
+                                .collect(Collectors.toList())
+                        , orderInfoDOPageInfo
+                );
+            }
+            return new ResultDTO(ResultStatus.SUCCESS,null);
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }

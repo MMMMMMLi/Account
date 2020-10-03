@@ -18,7 +18,7 @@ public interface SysUserRepostory {
     void save(@Param("sysUserEntity") SysUserDO sysUserDO);
 
     @UpdateProvider(type = MineUpdateProvider.class, method = "updateSysUserInfo")
-    void update(@Param("sysUserEntity") SysUserDO sysUserDO);
+    void update(@Param("sysUserDO") SysUserDO sysUserDO);
 
     @Select("SELECT * FROM sys_user WHERE (LOCATE(#{searchValue},userName) OR LOCATE(#{searchValue},userNameCode) OR LOCATE(#{searchValue},phoneNumber)) LIMIT #{size}")
     List<SysUserDO> getUserInfoBySearch(@Param("searchValue") String searchValue, @Param("size") Integer size);
