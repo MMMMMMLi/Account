@@ -162,7 +162,7 @@ Page({
           apiUserInfoMap: res.data.data,
           wxAuth: true,
           hasUserInfo: true,
-          needUpdateUserInfo: false
+          needUpdateUserInfo: true
         });
         // 保存主进程的用户信息
         APP.globalData.needUpdateUserInfo = true;

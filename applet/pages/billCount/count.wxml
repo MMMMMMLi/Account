@@ -6,7 +6,8 @@
 	</view>
 	<view class="weui-cells weui-cells_form">
 		<view class="weui-cell weui-cell_active weui-cell_switch">
-			<view class="weui-cell__bd">是否开启筛选</view>
+			<view class="weui-cell__bd" wx:if="{{!filterFalg}}">是否开启筛选</view>
+			<view class="weui-cell__bd" wx:else bindtap="openFilter">是否开启筛选</view>
 			<view class="weui-cell__ft">
 				<label class="weui-switch-cp">
 					<switch class="weui-switch-cp__input" bindchange="switchBoxChange" />
@@ -96,7 +97,8 @@
 		<view class="text">暂无订单</view>
 	</view>
 	<view class="fadeIn" wx:if="{{needFilter}}">
-		<view class="weui-mask" bindtap="close"></view>
+		<!-- <view class="weui-mask"  bindtap="closeFilter"></view> -->
+		<view class="weui-mask"></view>
 		<view class="weui-half-screen-dialog">
 			<view class="weui-half-screen-dialog__hd">
 				<view class="weui-half-screen-dialog__hd__side" bindtap="closeFilter">
@@ -104,18 +106,48 @@
 				</view>
 				<view class="weui-half-screen-dialog__hd__main">
 					<strong class="weui-half-screen-dialog__title">筛选条件列表</strong>
-					<view class="weui-half-screen-dialog__subtitle">根据实际需要，填写下列筛选条件</view>
+					<view class="weui-half-screen-dialog__subtitle">根据实际需要，填写筛选条件</view>
 				</view>
 				<view class="weui-half-screen-dialog__hd__side">
 					<a class="weui-icon-btn">更多<i class="weui-icon-more"></i></a>
 				</view>
 			</view>
 			<view class="weui-half-screen-dialog__bd">
-				<view class="weui-half-screen-dialog__desc">
-					辅助描述内容，可根据实际需要安排
+				<view style="display: flex;">
+					<view class="pickerView weui-cell_select" style="flex:0.4;">
+						<view class="weui-cell__bd ">
+							<picker bindchange="categoryPickerChange" data-index="firstFilterPickerValue" range="{{filterPicker}}" range-key="key">
+								<view class="weui-select" style="padding-left: 0px;">{{filterPicker[firstFilterPickerValue].key}}</view>
+							</picker>
+						</view>
+					</view>
+					<view class="pickerView" style="flex:0.6;">
+						<input class="weui-input" type="digit" placeholder="筛选内容" placeholder-class="weui-input__placeholder" data-type="firstFilterPickerValue" data-index="0" value="{{filterCriteria[0].value}}" bindblur="overInput" />
+					</view>
 				</view>
-				<view class="weui-half-screen-dialog__tips">
-					辅助提示内容，可根据实际需要安排
+				<view style="display: flex;">
+					<view class="pickerView weui-cell_select" style="flex:0.4;">
+						<view class="weui-cell__bd ">
+							<picker bindchange="categoryPickerChange" data-index="secondtFilterPickerValue" range="{{filterPicker}}" range-key="key">
+								<view class="weui-select" style="padding-left: 0px;">{{filterPicker[secondtFilterPickerValue].key}}</view>
+							</picker>
+						</view>
+					</view>
+					<view class="pickerView" style="flex:0.6;">
+						<input class="weui-input" type="digit" placeholder="筛选内容" placeholder-class="weui-input__placeholder" data-type="secondtFilterPickerValue" data-index="1" value="{{filterCriteria[1].value}}" bindblur="overInput" />
+					</view>
+				</view>
+				<view style="display: flex;">
+					<view class="pickerView weui-cell_select" style="flex:0.4;">
+						<view class="weui-cell__bd ">
+							<picker bindchange="categoryPickerChange" data-index="threetFilterPickerValue" range="{{filterPicker}}" range-key="key">
+								<view class="weui-select" style="padding-left: 0px;">{{filterPicker[threetFilterPickerValue].key}}</view>
+							</picker>
+						</view>
+					</view>
+					<view class="pickerView" style="flex:0.6;">
+						<input class="weui-input" type="digit" placeholder="筛选内容" placeholder-class="weui-input__placeholder" data-type="threetFilterPickerValue" data-index="2" value="{{filterCriteria[2].value}}" bindblur="overInput" />
+					</view>
 				</view>
 			</view>
 			<view class="weui-half-screen-dialog__ft">

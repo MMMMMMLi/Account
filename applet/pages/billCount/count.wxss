@@ -150,3 +150,15 @@ button.weui-form-preview__btn {
   font-weight: bolder;
   color: var(--weui-LINK)
 }
+
+/* picker选择框样式 */
+.pickerView {
+  flex: 0.5;
+  padding: 0;
+  display: flex;
+  padding-left: 16px;
+  position: relative;
+  align-items: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+}

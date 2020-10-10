@@ -2778,7 +2778,7 @@ a.weui-media-box:active {
   word-wrap: break-word;
   -webkit-hyphens: auto;
   hyphens: auto;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   padding-top: 4px;
   padding-bottom: 40px;
   font-size: 14px;
@@ -2795,7 +2795,7 @@ a.weui-media-box:active {
 .weui-half-screen-dialog__tips {
   padding-top: 16px;
   font-size: 14px;
-  color: var(--weui-FG-2);
+  color: var(--weui-FG-1);
   line-height: 1.4
 }
 
