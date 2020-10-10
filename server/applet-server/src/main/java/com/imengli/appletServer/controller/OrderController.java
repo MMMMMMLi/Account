@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/order")
@@ -37,10 +38,7 @@ public class OrderController {
                                   @RequestParam Integer status,
                                   @RequestParam Integer page,
                                   @RequestParam Integer size,
-                                  @RequestParam Object filterList) {
-        System.out.println(filterList.toString());
-        System.out.println(JSON.parseArray(filterList.toString(), Object.class));
-        System.out.println(JSON.parseArray(filterList.toString(), HashMap.class));
-        return orderService.getOrderList(token, status, page, size);
+                                  @RequestParam String filterList) {
+        return orderService.getOrderList(token, status, page, size,filterList);
     }
 }

@@ -116,7 +116,7 @@
 				<view style="display: flex;">
 					<view class="pickerView weui-cell_select" style="flex:0.4;">
 						<view class="weui-cell__bd ">
-							<picker bindchange="categoryPickerChange" data-index="firstFilterPickerValue" range="{{filterPicker}}" range-key="key">
+							<picker bindchange="categoryPickerChange" data-type="firstFilterPickerValue" data-index="0" range="{{filterPicker}}" range-key="key">
 								<view class="weui-select" style="padding-left: 0px;">{{filterPicker[firstFilterPickerValue].key}}</view>
 							</picker>
 						</view>
@@ -128,7 +128,7 @@
 				<view style="display: flex;">
 					<view class="pickerView weui-cell_select" style="flex:0.4;">
 						<view class="weui-cell__bd ">
-							<picker bindchange="categoryPickerChange" data-index="secondtFilterPickerValue" range="{{filterPicker}}" range-key="key">
+							<picker bindchange="categoryPickerChange" data-type="secondtFilterPickerValue" data-index="1" range="{{filterPicker}}" range-key="key">
 								<view class="weui-select" style="padding-left: 0px;">{{filterPicker[secondtFilterPickerValue].key}}</view>
 							</picker>
 						</view>
@@ -140,7 +140,7 @@
 				<view style="display: flex;">
 					<view class="pickerView weui-cell_select" style="flex:0.4;">
 						<view class="weui-cell__bd ">
-							<picker bindchange="categoryPickerChange" data-index="threetFilterPickerValue" range="{{filterPicker}}" range-key="key">
+							<picker bindchange="categoryPickerChange" data-type="threetFilterPickerValue" data-index="2" range="{{filterPicker}}" range-key="key">
 								<view class="weui-select" style="padding-left: 0px;">{{filterPicker[threetFilterPickerValue].key}}</view>
 							</picker>
 						</view>

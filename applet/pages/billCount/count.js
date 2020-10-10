@@ -47,14 +47,22 @@ Page({
     let data = {};
     // 如果取消筛选的时候,需要将筛选条件数组清空
     if (!e.detail.value) {
+      // 筛选条件数据
       data.filterCriteria = [];
       data.firstFilterPickerValue = 0;
-      data.secondtFilterPickerValue = 4;
+      data.secondtFilterPickerValue = 1;
       data.threetFilterPickerValue = 2;
+     // 清空订单列表
+      data.orderList = [];
     }
+    // 切换筛选条件
     data.needFilter = e.detail.value;
     data.filterFalg = e.detail.value;
-    this.setData(data)
+    this.setData(data);
+    // 如果关掉了筛选,则根据当前标志位重新获取数据
+    if(!e.detail.value) {
+      this.getData(this.data.currentTab, true);
+    }
   },
   // 打开筛选界面
   openFilter() {
@@ -75,7 +83,24 @@ Page({
   // 筛选列表的选择框点击操作
   categoryPickerChange(e) {
     let data = {};
-    data[e.currentTarget.dataset.index] = e.detail.value;
+    // 设置一下当前选择框的选择内容
+    data[e.currentTarget.dataset.type] = e.detail.value;
+    // 修改一下,筛选条件
+    let filterCriteria = this.data.filterCriteria;
+    // 如果没有筛选条件,则不操作.
+    if(filterCriteria.length > 0) {
+      // 看看当前选择框的位置是否已经添加了筛选条件
+      let oldFilter = filterCriteria[e.currentTarget.dataset.index];
+      if(oldFilter != null) {
+        // 修改数据
+        filterCriteria[e.currentTarget.dataset.index] = {
+          key:this.data.filterPicker[e.detail.value].value,
+          value:filterCriteria[e.currentTarget.dataset.index].value
+        };
+        data.filterCriteria = filterCriteria;
+      }
+    }
+    // 设置数据
     this.setData(data);
   },
   // 筛选列表的输入框失去焦点操作
@@ -129,9 +154,7 @@ Page({
       status,
       page: that.data.page,
       size: that.data.size,
-      filterList: that.data.filterFalg ? that.data.filterCriteria : [{
-        'NoFilter': ''
-      }]
+      filterList: JSON.stringify(that.data.filterFalg ? that.data.filterCriteria : [])
     }).then(res => {
       if (res.data.code === 20000) {
         that.setData({
@@ -170,17 +193,17 @@ Page({
           key: '大小',
           value: 'detail.sizeValue'
         },
-        {
-          key: '订单总价钱',
-          value: 'order.totalPrice'
-        },
-        {
-          key: '订单总重量',
-          value: 'order.totalWeight'
-        },
+        // {
+        //   key: '订单总价钱',
+        //   value: 'order.totalPrice'
+        // },
+        // {
+        //   key: '订单总重量',
+        //   value: 'order.totalWeight'
+        // },
         {
           key: '姓名',
-          value: 'user.userName'
+          value: 'user.userName,user.userNameCode'
         },
         {
           key: '手机号',
@@ -188,7 +211,7 @@ Page({
         },
       ],
       firstFilterPickerValue: 0,
-      secondtFilterPickerValue: 4,
+      secondtFilterPickerValue: 1,
       threetFilterPickerValue: 2
     })
   },

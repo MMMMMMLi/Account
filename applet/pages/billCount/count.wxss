@@ -31,7 +31,8 @@
   width: 100%;
   position: absolute;
   bottom: 0;
-  top: 88rpx;
+  /* margin-top: 16px; */
+  top: 225rpx;
   left: 0;
   right: 0;
   text-align: center;

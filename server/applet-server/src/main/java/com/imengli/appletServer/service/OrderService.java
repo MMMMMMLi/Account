@@ -1,5 +1,6 @@
 package com.imengli.appletServer.service;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.imengli.appletServer.common.Constant;
@@ -24,6 +25,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -173,16 +175,21 @@ public class OrderService {
      * @param status
      * @param page
      * @param size
+     * @param filterList
      * @return
      */
-    public ResultDTO getOrderList(String token, Integer status, Integer page, Integer size) {
+    public ResultDTO getOrderList(String token, Integer status, Integer page, Integer size, String filterList) {
         // 校验token
         WechatUserDO wechatUserDO = this.getWechatAuthEntity(token);
         // 根据信息完善度返回
         if (wechatUserDO != null) {
             PageHelper.startPage(page, size);
             // 查询所有订单信息
-            List<OrderInfoDO> orderInfoDOS = orderInfoRepostory.selectAllOrderList(LocalDateTime.of(LocalDate.now().minusDays(status), LocalTime.of(00, 00, 00)), LocalDateTime.now());
+            List<OrderInfoDO> orderInfoDOS =
+                    orderInfoRepostory.selectAllOrderList(
+                            LocalDateTime.of(LocalDate.now().minusDays(status), LocalTime.of(00, 00, 00)),
+                            LocalDateTime.now(),
+                            JSON.parseArray(filterList, HashMap.class));
             PageInfo<OrderInfoDO> orderInfoDOPageInfo = new PageInfo<>(orderInfoDOS);
             orderInfoDOPageInfo.setList(null);
             // 构建返回信息
