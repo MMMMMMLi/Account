@@ -161,7 +161,7 @@ Component({
       const orderInfo = this.properties.orderInfo;
       orderInfo.token = wx.getStorageSync('token');
       // 校验
-      if (orderInfo.applyBox == "" || orderInfo.retreatBox == "") {
+      if ( !orderInfo.applyBox  || !orderInfo.retreatBox ) {
         wx.showModal({
           title: '提示',
           content: '请输入正确的用框和退框数量！',

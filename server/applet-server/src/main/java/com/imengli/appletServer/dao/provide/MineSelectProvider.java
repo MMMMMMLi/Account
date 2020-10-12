@@ -29,7 +29,7 @@ public class MineSelectProvider {
                 "order_info `order` " +
                 "LEFT JOIN order_info_detail detail ON `order`.id = detail.orderId " +
                 "LEFT JOIN sys_user `user` ON `order`.userId = `user`.id " +
-                "WHERE 1 = 1 ");
+                "WHERE createDate BETWEEN #{startDate} AND #{endDate} ");
         if (filterList.size() > 0) {
             filterList.parallelStream()
                     // 去掉空Map
@@ -61,7 +61,8 @@ public class MineSelectProvider {
 
                     });
         }
-        sb.append(" GROUP BY `order`.id");
+        sb.append(" GROUP BY `order`.id ")
+                .append("order by createDate desc");
         return sb.toString();
     }
 }

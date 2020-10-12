@@ -42,6 +42,44 @@ Page({
     // 筛选选择框
     filterPicker: [],
   },
+  // 点击确认收款按钮
+  confirmCollection(e) {
+    let that = this;
+    wx.showModal({
+      title: "提示",
+      content: "确认收到此货款？",
+      showCancel: false,
+      success(res) {
+        if (res.confirm) {
+          REQUEST.request('order/confirmCollection', 'POST', {
+            token: wx.getStorageSync('token'),
+            orderId: e.currentTarget.dataset.index
+          }).then(res => {
+            if (res.data.code == 20008) {
+              wx.showToast({
+                title: '收款成功！',
+              })
+              setTimeout(() => {
+                // 清空订单列表
+                that.setData({
+                  page: 0,
+                  orderList: []
+                })
+                that.getData(that.data.currentTab, true);
+                wx.hideToast()
+              }, 700)
+
+            } else {
+              wx.showToast({
+                icon: 'none',
+                title: '收款失败，请稍后重试！',
+              })
+            }
+          })
+        }
+      }
+    })
+  },
   // 点击是否开启筛选按钮
   switchBoxChange(e) {
     let data = {};
@@ -52,7 +90,7 @@ Page({
       data.firstFilterPickerValue = 0;
       data.secondtFilterPickerValue = 1;
       data.threetFilterPickerValue = 2;
-     // 清空订单列表
+      // 清空订单列表
       data.orderList = [];
     }
     // 切换筛选条件
@@ -60,7 +98,7 @@ Page({
     data.filterFalg = e.detail.value;
     this.setData(data);
     // 如果关掉了筛选,则根据当前标志位重新获取数据
-    if(!e.detail.value) {
+    if (!e.detail.value) {
       this.getData(this.data.currentTab, true);
     }
   },
@@ -88,14 +126,14 @@ Page({
     // 修改一下,筛选条件
     let filterCriteria = this.data.filterCriteria;
     // 如果没有筛选条件,则不操作.
-    if(filterCriteria.length > 0) {
+    if (filterCriteria.length > 0) {
       // 看看当前选择框的位置是否已经添加了筛选条件
       let oldFilter = filterCriteria[e.currentTarget.dataset.index];
-      if(oldFilter != null) {
+      if (oldFilter != null) {
         // 修改数据
         filterCriteria[e.currentTarget.dataset.index] = {
-          key:this.data.filterPicker[e.detail.value].value,
-          value:filterCriteria[e.currentTarget.dataset.index].value
+          key: this.data.filterPicker[e.detail.value].value,
+          value: filterCriteria[e.currentTarget.dataset.index].value
         };
         data.filterCriteria = filterCriteria;
       }
@@ -181,9 +219,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // 获取数据
-    this.getData(this.data.currentTab, false);
-
     this.setData({
       filterPicker: [{
           key: '品种',
@@ -215,6 +250,11 @@ Page({
       threetFilterPickerValue: 2
     })
   },
+  onShow: function (options) {
+    // 获取数据
+     this.getData(this.data.currentTab, true);
+     
+  },
   /**
    * 生命周期函数--监听页面隐藏
    */
@@ -238,8 +278,8 @@ Page({
           scrollTop: 0,
         })
       }
-      // 获取数据
-      that.getData(that.data.currentTab, false);
+      // // 获取数据
+      // that.getData(that.data.currentTab, false);
     })
   },
   /**

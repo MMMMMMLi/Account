@@ -82,7 +82,7 @@
 			</view>
 			<view class="weui-form-preview__ft" wx:if="{{item.status == '待付款'}}">
 				<a class="weui-form-preview__btn weui-form-preview__btn_default">修改订单</a>
-				<a class="weui-form-preview__btn weui-form-preview__btn_primary">确认收款</a>
+				<a class="weui-form-preview__btn weui-form-preview__btn_primary" data-index="{{item.orderListId}}" bindtap="confirmCollection">确认收款</a>
 			</view>
 			<view class="weui-form-preview__ft" wx:else>
 				<a class="weui-form-preview__btn weui-form-preview__btn_primary" style="color:green">收款时间：{{item.collectionTime}}</a>
@@ -92,10 +92,14 @@
 			<text class="weui-loadmore__tips">暂无更多数据</text>
 		</view>
 	</scroll-view>
+
+	<!--  没有订单的显示i页面 -->
 	<view wx:else class="no-order">
 		<image src="/images/no-order.png" class="no-order-img"></image>
 		<view class="text">暂无订单</view>
 	</view>
+	
+	<!-- 筛选的页面 -->
 	<view class="fadeIn" wx:if="{{needFilter}}">
 		<!-- <view class="weui-mask"  bindtap="closeFilter"></view> -->
 		<view class="weui-mask"></view>

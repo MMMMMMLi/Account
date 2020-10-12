@@ -199,6 +199,7 @@ public class OrderService {
                     orderInfoDOS.parallelStream()
                             .map(orderInfoDO ->
                                     AddOrderFormInfoPOJO.builder()
+                                            .orderListId(orderInfoDO.getId().toString())
                                             .userInfo(sysUserRepostory.getUserInfoById(orderInfoDO.getUserId()))
                                             .totalPrice(orderInfoDO.getTotalPrice())
                                             .totalWeight(orderInfoDO.getTotalWeight())
@@ -214,6 +215,23 @@ public class OrderService {
                             .collect(Collectors.toList())
                     , orderInfoDOPageInfo
             );
+        }
+        return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
+    }
+
+    /**
+     * 确认收款
+     * @param token
+     * @param orderId
+     * @return
+     */
+    public ResultDTO confirmCollection(String token, Integer orderId) {
+        // 校验token
+        WechatUserDO wechatUserDO = this.getWechatAuthEntity(token);
+        // 根据信息完善度返回
+        if (wechatUserDO != null) {
+            orderInfoRepostory.confirmCollection(orderId,LocalDateTime.now());
+            return new ResultDTO(ResultStatus.SUCCESS_COLLECTION);
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }

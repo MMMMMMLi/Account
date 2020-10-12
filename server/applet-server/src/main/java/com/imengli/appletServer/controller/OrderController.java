@@ -1,6 +1,5 @@
 package com.imengli.appletServer.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.imengli.appletServer.dto.AddOrderFormInfoPOJO;
 import com.imengli.appletServer.dto.ResultDTO;
 import com.imengli.appletServer.service.OrderService;
@@ -9,9 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.List;
 
 @RestController
 @RequestMapping("/order")
@@ -39,6 +35,12 @@ public class OrderController {
                                   @RequestParam Integer page,
                                   @RequestParam Integer size,
                                   @RequestParam String filterList) {
-        return orderService.getOrderList(token, status, page, size,filterList);
+        return orderService.getOrderList(token, status, page, size, filterList);
+    }
+
+    @RequestMapping("/confirmCollection")
+    public ResultDTO confirmCollection(@RequestParam String token,
+                                       @RequestParam Integer orderId) {
+        return orderService.confirmCollection(token,orderId);
     }
 }
