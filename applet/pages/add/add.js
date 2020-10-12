@@ -1,5 +1,4 @@
 const REQUEST = require('../../utils/request');
-const APP = getApp();
 
 Page({
   /**
@@ -15,16 +14,32 @@ Page({
     hideToast: false,
   },
   onLoad() {
-    this.setData({
-      categoryArray: APP.globalData.categoryArray,
-      sizeArray: APP.globalData.sizeArray
-    })
+
   },
   onShow() {
-    // 页面初始化的时候，获取品种和大小的清单
-    // REQUEST.request('manage/getCategoryAndSizeArray', 'POST', {})
-    // .then(res => {
-    // })
+    this.getServerData();
+  },
+  // 动态获取地瓜品种和大小类别
+  getServerData() {
+    let that = this;
+    // 动态获取一下地瓜品种和大小规格
+    REQUEST.request('applet/getConstant', 'POST', {}).then(res => {
+      if (res.data.code == 20000) {
+        this.setData({
+          categoryArray: res.data.data.category,
+          sizeArray: res.data.data.size
+        })
+      } else {
+        wx.showModal({
+          title: '系统异常，点击重试！',
+          success(res) {
+            if (res.confirm) {
+              that.getServerData()
+            }
+          }
+        })
+      }
+    })
   },
   // 打开搜索input
   showInput: function () {

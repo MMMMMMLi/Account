@@ -1,6 +1,6 @@
 package com.imengli.appletServer.service;
 
-import com.imengli.appletServer.dao.BannerRepostory;
+import com.imengli.appletServer.dao.AppletRepostory;
 import com.imengli.appletServer.daomain.SysBannerDO;
 import com.imengli.appletServer.dto.ResultDTO;
 import com.imengli.appletServer.common.ResultStatus;
@@ -10,13 +10,13 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
-public class BanneService {
+public class AppletService {
 
     @Resource
-    private BannerRepostory bannerRepostory;
+    private AppletRepostory appletRepostory;
 
-    public ResultDTO<List<BannerRepostory>> getBanners() {
-        List<SysBannerDO> sysBannerDOList = bannerRepostory.getBanners();
+    public ResultDTO<List<AppletRepostory>> getBanners() {
+        List<SysBannerDO> sysBannerDOList = appletRepostory.getBanners();
         if(sysBannerDOList.size() == 0) {
             return new ResultDTO(ResultStatus.SUCCESS_SELECT_NOSHOW);
         }

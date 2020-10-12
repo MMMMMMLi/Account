@@ -3,8 +3,8 @@ package com.imengli.appletServer.service;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.imengli.appletServer.common.Constant;
 import com.imengli.appletServer.common.ResultStatus;
+import com.imengli.appletServer.common.SysConstant;
 import com.imengli.appletServer.dao.OrderInfoDetailRepostory;
 import com.imengli.appletServer.dao.OrderInfoRepostory;
 import com.imengli.appletServer.dao.SysUserRepostory;
@@ -56,6 +56,8 @@ public class OrderService {
     private OrderInfoDetailRepostory orderInfoDetailRepostory;
 
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    private final String TYPE = "paidStatus";
 
     public WechatUserDO getWechatAuthEntity(String token) {
         WechatAuthDO wechatAuthDO = null;
@@ -155,7 +157,7 @@ public class OrderService {
                                                 .retreatBox(orderInfoDO.getRetreatBox())
                                                 .createDate(dateTimeFormatter.format(orderInfoDO.getCreateDate()))
                                                 .orders(orderInfoDetailRepostory.select(orderInfoDO.getId()))
-                                                .status(Constant.getMsg(orderInfoDO.getStatus()))
+                                                .status(SysConstant.getValueByTypeAndKey(TYPE, String.valueOf(orderInfoDO.getStatus())).toString())
                                                 .build()
                                 )
                                 .sorted(Comparator.comparing(AddOrderFormInfoPOJO::getCreateDate).reversed())
@@ -163,7 +165,7 @@ public class OrderService {
                         , orderInfoDOPageInfo
                 );
             }
-            return new ResultDTO(ResultStatus.SUCCESS,null);
+            return new ResultDTO(ResultStatus.SUCCESS, null);
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }
@@ -204,7 +206,7 @@ public class OrderService {
                                             .retreatBox(orderInfoDO.getRetreatBox())
                                             .createDate(dateTimeFormatter.format(orderInfoDO.getCreateDate()))
                                             .orders(orderInfoDetailRepostory.select(orderInfoDO.getId()))
-                                            .status(Constant.getMsg(orderInfoDO.getStatus()))
+                                            .status(SysConstant.getValueByTypeAndKey(TYPE, String.valueOf(orderInfoDO.getStatus())).toString())
                                             .collectionTime(orderInfoDO.getCollectionTime() != null ? orderInfoDO.getCollectionTime().format(dateTimeFormatter) : "")
                                             .build()
                             )

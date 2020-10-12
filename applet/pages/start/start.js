@@ -20,9 +20,7 @@ Page({
         url: '/pages/order/index',
       });
     } else {
-      REQUEST.request('applet/getBanners', 'POST', {
-        token: wx.getStorageSync('token'),
-      }).then(res => {
+      REQUEST.request('applet/getBanners', 'POST', {}).then(res => {
         if (res.data.code == 40000) {
           return;
         }
