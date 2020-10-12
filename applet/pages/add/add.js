@@ -1,4 +1,5 @@
 const REQUEST = require('../../utils/request');
+const UTILS = require('../../utils/util.js');
 
 Page({
   /**
@@ -13,11 +14,55 @@ Page({
     toast: false,
     hideToast: false,
   },
-  onLoad() {
-
-  },
+  onLoad() {},
   onShow() {
+    // 每次打开页面,都需要回到顶部。
+    if (wx.pageScrollTo) {
+      wx.pageScrollTo({
+        scrollTop: 0,
+      })
+    }
+    // 获取类型
     this.getServerData();
+    // 查看内存中是否存在 需要修改的 订单信息
+    let orderInfo = wx.getStorageSync('orderInfo');
+    if (orderInfo) {
+      // 获取完毕之后，一定要及时清理
+      wx.removeStorageSync('orderInfo')
+      // 获取旧的订单列表
+      let oldOrderList = this.data.orderList;
+      // 判断是否获取完 品种或者大小列表
+      if (!this.data.categoryArray) {
+        // 没有获取完,则等待1min
+        wx.showLoading({
+          title: '加载中...',
+        })
+        setTimeout(() => {
+          wx.hideLoading();
+          orderInfo.orders.map(order => {
+            order.categoryValue = UTILS.getArrayIndex(this.data.categoryArray, order.categoryValue);
+            order.sizeValue = UTILS.getArrayIndex(this.data.sizeArray, order.sizeValue);
+            return order;
+          });
+          oldOrderList.push(orderInfo)
+          this.setData({
+            orderList: oldOrderList
+          })
+        }, 1000)
+      } else {
+        // 如果获取完直接操作
+        orderInfo.orders.map(order => {
+          order.categoryValue = UTILS.getArrayIndex(this.data.categoryArray, order.categoryValue);
+          order.sizeValue = UTILS.getArrayIndex(this.data.sizeArray, order.sizeValue);
+          return order;
+        });
+        oldOrderList.push(orderInfo)
+        this.setData({
+          orderList: oldOrderList
+        })
+      }
+    }
+
   },
   // 动态获取地瓜品种和大小类别
   getServerData() {
@@ -86,6 +131,7 @@ Page({
       }
     })
   },
+  // 搜索之后，点击 用户信息
   searchClick(e) {
     // 更新一下组件的订单信息到首页
     this.updateOrderInfo();
@@ -139,6 +185,7 @@ Page({
       orderList: orderList.filter(order => order.orderListId != e.detail)
     })
   },
+  // 点击 确定 之后成功的回调提示
   openToast: function () {
     this.setData({
       toast: true

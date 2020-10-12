@@ -42,7 +42,15 @@ Page({
     // 筛选选择框
     filterPicker: [],
   },
-  // 点击确认收款按钮
+  // 每个订单 点击 修改订单 按钮
+  updateOrderInfo(e) {
+    wx.setStorageSync('orderInfo', e.currentTarget.dataset.index);
+    // 跳转到  添加页面
+    wx.switchTab({
+      url: '/pages/add/add',
+    })
+  },
+  // 每个订单 点击 确认收款 按钮
   confirmCollection(e) {
     let that = this;
     wx.showModal({
@@ -252,16 +260,16 @@ Page({
   },
   onShow: function (options) {
     // 获取数据
-     this.getData(this.data.currentTab, true);
-     
+    this.getData(this.data.currentTab, true);
+
   },
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide() {
-    this.hideAsync().then(res => {
-      console.log(res)
-    })
+    setTimeout(() => {
+      this.hideAsync();
+    }, 1000)
   },
   hideAsync() {
     let that = this;

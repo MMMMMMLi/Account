@@ -17,8 +17,8 @@ import java.util.List;
 @Mapper
 public interface OrderInfoRepostory {
 
-    @Insert("INSERT INTO order_info (userId,createBy,createDate,applyBox,retreatBox,totalPrice,totalWeight) " +
-            "VALUES (#{orderInfo.userId},#{orderInfo.createBy},#{orderInfo.createDate},#{orderInfo.applyBox},#{orderInfo.retreatBox},#{orderInfo.totalPrice},#{orderInfo.totalWeight})")
+    @Insert("INSERT INTO order_info (userId,createBy,createDate,updateDate,applyBox,retreatBox,totalPrice,totalWeight) " +
+            "VALUES (#{orderInfo.userId},#{orderInfo.createBy},#{orderInfo.createDate},#{orderInfo.updateDate},#{orderInfo.applyBox},#{orderInfo.retreatBox},#{orderInfo.totalPrice},#{orderInfo.totalWeight})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void save(@Param("orderInfo") OrderInfoDO orderInfo);
 
@@ -30,4 +30,14 @@ public interface OrderInfoRepostory {
 
     @Update("update order_info set collectionTime = #{now},status = 1  where id = #{orderId}")
     void confirmCollection(@Param("orderId") Integer orderId, @Param("now") LocalDateTime now);
+
+    @Select("select count(*) from order_info where id = #{orderId}")
+    Integer getOrderInfoCountByOrderId(@Param("orderId") Integer orderInfoId);
+
+    @Delete("delete " +
+            "order_info,order_info_detail " +
+            "from order_info " +
+            "left join  order_info_detail on order_info.id =  order_info_detail.orderId " +
+            "where order_info.id = #{orderId}")
+    void deleteOrderInfoAndOrderInfoDeatils(@Param("orderId") Integer orderInfoId);
 }

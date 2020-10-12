@@ -88,6 +88,9 @@ public class OrderService {
         // 判断是否异常
         // 根据信息完善度返回
         if (wecharUserDo != null) {
+            // 先删除存在的订单信息
+            orderInfoRepostory.deleteOrderInfoAndOrderInfoDeatils(orderFormInfo.getOrderInfoId());
+
             // 处理Form信息
             // 下订单的用户信息
             SysUserDO userInfo = orderFormInfo.getUserInfo();
@@ -95,7 +98,8 @@ public class OrderService {
             OrderInfoDO orderInfoDO = OrderInfoDO.builder()
                     .userId(userInfo.getId())
                     .createBy(wecharUserDo.getUserId())
-                    .createDate(LocalDateTime.now())
+                    .createDate(orderFormInfo.getCreateDate() == null ? LocalDateTime.now() : LocalDateTime.parse(orderFormInfo.getCreateDate(), dateTimeFormatter))
+                    .updateDate(LocalDateTime.now())
                     .applyBox(orderFormInfo.getApplyBox())
                     .retreatBox(orderFormInfo.getRetreatBox())
                     .totalPrice(orderFormInfo.getTotalPrice())
@@ -122,6 +126,7 @@ public class OrderService {
             if (orders.size() == size) {
                 return new ResultDTO<>(ResultStatus.SUCCESS, orderInfoDO.getId());
             }
+
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }
@@ -199,6 +204,7 @@ public class OrderService {
                     orderInfoDOS.parallelStream()
                             .map(orderInfoDO ->
                                     AddOrderFormInfoPOJO.builder()
+                                            .orderInfoId(orderInfoDO.getId())
                                             .orderListId(orderInfoDO.getId().toString())
                                             .userInfo(sysUserRepostory.getUserInfoById(orderInfoDO.getUserId()))
                                             .totalPrice(orderInfoDO.getTotalPrice())
@@ -221,6 +227,7 @@ public class OrderService {
 
     /**
      * 确认收款
+     *
      * @param token
      * @param orderId
      * @return
@@ -230,7 +237,7 @@ public class OrderService {
         WechatUserDO wechatUserDO = this.getWechatAuthEntity(token);
         // 根据信息完善度返回
         if (wechatUserDO != null) {
-            orderInfoRepostory.confirmCollection(orderId,LocalDateTime.now());
+            orderInfoRepostory.confirmCollection(orderId, LocalDateTime.now());
             return new ResultDTO(ResultStatus.SUCCESS_COLLECTION);
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);

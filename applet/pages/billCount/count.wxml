@@ -81,8 +81,8 @@
 				</view>
 			</view>
 			<view class="weui-form-preview__ft" wx:if="{{item.status == '待付款'}}">
-				<a class="weui-form-preview__btn weui-form-preview__btn_default">修改订单</a>
-				<a class="weui-form-preview__btn weui-form-preview__btn_primary" data-index="{{item.orderListId}}" bindtap="confirmCollection">确认收款</a>
+				<a class="weui-form-preview__btn weui-form-preview__btn_default" data-index="{{item}}" bindtap="updateOrderInfo">修改订单</a>
+				<a class="weui-form-preview__btn weui-form-preview__btn_primary" data-index="{{item.orderInfoId}}" bindtap="confirmCollection">确认收款</a>
 			</view>
 			<view class="weui-form-preview__ft" wx:else>
 				<a class="weui-form-preview__btn weui-form-preview__btn_primary" style="color:green">收款时间：{{item.collectionTime}}</a>

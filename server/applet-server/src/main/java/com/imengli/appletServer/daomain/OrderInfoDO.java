@@ -41,6 +41,11 @@ public class OrderInfoDO {
     private LocalDateTime createDate;
 
     /**
+     * 创建时间
+     */
+    private LocalDateTime updateDate;
+
+    /**
      * 使用框子数量
      */
     private Integer applyBox;

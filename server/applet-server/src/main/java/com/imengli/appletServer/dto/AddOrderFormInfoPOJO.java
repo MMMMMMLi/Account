@@ -30,6 +30,11 @@ public class AddOrderFormInfoPOJO implements Serializable {
     private String orderListId;
 
     /**
+     * 订单Id。
+     */
+    private Integer orderInfoId;
+
+    /**
      * 当前操作的用户Token
      */
     @JsonProperty(value = "token")

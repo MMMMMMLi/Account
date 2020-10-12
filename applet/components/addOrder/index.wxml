@@ -3,7 +3,7 @@
 		<view class="weui-media-box__info">
 			<a class="weui-media-box__info__meta" bindtap="delThisOrder">{{orderInfo.userInfo.userName}}</a>
 			<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{orderInfo.userInfo.phoneNumber}}</view>
-			<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{orderInfo.userInfo.orderDate}}</view>
+			<view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{orderInfo.userInfo.orderDate ? orderInfo.userInfo.orderDate:'修改'}}</view>
 			<view wx:if="{{orderInfo.totalPrice}}" style="float:right;color:red;">￥{{orderInfo.totalPrice}}</view>
 		</view>
 	</view>
@@ -37,7 +37,7 @@
 						<label class="weui-label" style="width: 4em">毛重 ：</label>
 					</view>
 					<view class="weui-cell__bd">
-						<input class="weui-input" type="digit" placeholder="毛重/KG" placeholder-class="weui-input__placeholder" data-index="{{index}}" data-type="gross" value="{{value}}" bindblur="overInput" />
+						<input class="weui-input" type="digit" placeholder="毛重/KG" placeholder-class="weui-input__placeholder" data-index="{{index}}" data-type="gross" value="{{item.gross}}" bindblur="overInput" />
 					</view>
 				</view>
 				<view class="pickerView">
@@ -45,7 +45,7 @@
 						<label class="weui-label" style="width: 4em">皮重 ：</label>
 					</view>
 					<view class="weui-cell__bd">
-						<input class="weui-input" type="digit" placeholder="皮重/KG" placeholder-class="weui-input__placeholder" data-index="{{index}}" data-type="tare" value="{{value}}" bindblur="overInput" />
+						<input class="weui-input" type="digit" placeholder="皮重/KG" placeholder-class="weui-input__placeholder" data-index="{{index}}" data-type="tare" value="{{item.tare}}" bindblur="overInput" />
 					</view>
 				</view>
 			</h4>
@@ -55,7 +55,7 @@
 						<label class="weui-label" style="width: 4em">单价 ：</label>
 					</view>
 					<view class="weui-cell__bd">
-						<input class="weui-input" type="digit" placeholder="元/KG" placeholder-class="weui-input__placeholder" data-index="{{index}}" data-type="unitPrice" value="{{value}}" bindblur="overInput" />
+						<input class="weui-input" type="digit" placeholder="元/KG" placeholder-class="weui-input__placeholder" data-index="{{index}}" data-type="unitPrice" value="{{item.unitPrice}}" bindblur="overInput" />
 					</view>
 				</view>
 				<view class="pickerView">
@@ -74,13 +74,13 @@
 			<view class="weui-cell weui-cell_active " style="flex:0.5">
 				<view class="weui-cell__hd"><label>用框 ：</label></view>
 				<view class="weui-cell__bd">
-					<input class="weui-input" style="padding-left:7px" type="number"placeholder="用框总数量" placeholder-class="weui-input__placeholder" data-type="applyBox" value="{{value}}" bindblur="overInputBox" />
+					<input class="weui-input" style="padding-left:7px" type="number" placeholder="用框总数量" placeholder-class="weui-input__placeholder" data-type="applyBox" value="{{orderInfo.applyBox}}" bindblur="overInputBox" />
 				</view>
 			</view>
 			<view class="weui-cell weui-cell_active " style="flex:0.5">
 				<view class="weui-cell__hd"><label>退框 ：</label></view>
 				<view class="weui-cell__bd">
-					<input class="weui-input" style="padding-left:7px" type="number" placeholder="退框总数量" placeholder-class="weui-input__placeholder" data-type="retreatBox" value="{{value}}" bindblur="overInputBox" />
+					<input class="weui-input" style="padding-left:7px" type="number" placeholder="退框总数量" placeholder-class="weui-input__placeholder" data-type="retreatBox" value="{{orderInfo.retreatBox}}" bindblur="overInputBox" />
 				</view>
 			</view>
 		</view>
