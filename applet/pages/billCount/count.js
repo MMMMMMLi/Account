@@ -28,7 +28,7 @@ Page({
     // 分页信息
     page: 0,
     // 每页显示的条目数
-    size: 2,
+    size: 5,
     // 是否包含下一页
     hasNextPage: false,
     // 订单列表

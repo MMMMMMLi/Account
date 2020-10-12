@@ -25,7 +25,7 @@ Page({
     // 当前选中的 列表值
     currentTab: 0,
     page: 0,
-    size: 2,
+    size: 5,
     hasNextPage: false,
     oldOrderList: []
   },
@@ -88,7 +88,9 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide() {
-    this.hideAsync().then(res => {})
+    setTimeout(() => {
+      this.hideAsync()
+    },1000);
   },
   hideAsync() {
     let that = this;
