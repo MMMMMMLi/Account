@@ -72,7 +72,7 @@ Page({
   getUserApiInfo: function () {
     var that = this;
     REQUEST.request('user/authUserInfo', 'POST', {
-      token:  wx.getStorageSync('token'),
+      token: wx.getStorageSync('token'),
     }).then(res => {
       // 用户信息不需要完善
       if (res.data.code == 20005) {
@@ -149,6 +149,10 @@ Page({
       wx.showToast({
         title: '已取消',
         icon: 'none',
+      })
+      this.setData({
+        wxAuth: true,
+        hasUserInfo: true
       })
       return;
     }

@@ -1,66 +1,183 @@
-// pages/init/index.js
+const APP = getApp();
+const AUTH = require('../../utils/auth');
+const CONFIG = require('../../config.js');
+const REQUEST = require('../../utils/request');
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
+    wxAuth: true,
+    hasUserInfo: false,
+    needUpdateUserInfo: false,
 
+    balance: 0.00, //可用余额
+    freeze: 0, //冻结金额
+    score: 0, //可用积分
+    growth: 0, //当前成长值
+    score_sign_continuous: 0,
+    rechargeOpen: false, // 是否开启充值[预存]功能
   },
+  onShow() {
+    // 每次打开页面,都需要回到顶部。
+    if (wx.pageScrollTo) {
+      wx.pageScrollTo({
+        scrollTop: 0
+      })
+    }
+    // 执行操作
+    const _this = this
+    this.setData({
+      // TODO: 暂时不知道这个有什么用?
+      version: CONFIG.version,
+    })
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-
+    // 校验用户是否登陆
+    AUTH.checkHasLogined().then(isLogined => {
+      if (!isLogined) {
+        this.setData({
+          wxAuth: false
+        })
+      }
+      // 如果已经登陆了话,获取一些基本信息.
+      if (isLogined) {
+        _this.getUserApiInfo();
+        _this.getUserAmount();
+      }
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  // TODO: 可以修改一下展示信息。
+  aboutUs: function () {
+    wx.showModal({
+      title: '关于我们',
+      content: '本系统是兴隆薯业的展示订单平台，祝大家使用愉快！',
+      showCancel: false
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+  loginOut() {
+    AUTH.loginOut()
+    wx.reLaunch({
+      url: '/pages/my/index'
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
+  getPhoneNumber: function (e) {
+    if (!e.detail.errMsg || e.detail.errMsg != "getPhoneNumber:ok") {
+      wx.showModal({
+        title: '提示',
+        content: e.detail.errMsg,
+        showCancel: false
+      })
+      return;
+    }
   },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
+  // 获取用户信息
+  getUserApiInfo: function () {
+    var that = this;
+    REQUEST.request('user/authUserInfo', 'POST', {
+      token: wx.getStorageSync('token'),
+    }).then(res => {
+      // 用户信息不需要完善
+      if (res.data.code == 20005) {
+        that.setData({
+          apiUserInfoMap: res.data.data,
+          wxAuth: true,
+          hasUserInfo: true,
+          needUpdateUserInfo: false
+        });
+        // 保存主进程的用户信息
+        APP.globalData.userInfos = res.data.data;
+        APP.globalData.needUpdateUserInfo = false;
+      }
+      // 用户信息还需要完善
+      if (res.data.code == 40003) {
+        that.setData({
+          apiUserInfoMap: res.data.data,
+          wxAuth: true,
+          needUpdateUserInfo: true,
+          hasUserInfo: true
+        });
+        // 保存主进程的用户信息
+        APP.globalData.needUpdateUserInfo = true;
+      }
+      // 用户未授权
+      if (res.data.code == 40004) {
+        that.setData({
+          apiUserInfoMap: res.data.data,
+          wxAuth: false,
+          needUpdateUserInfo: true,
+          hasUserInfo: false
+        });
+        // 保存主进程的用户信息
+        APP.globalData.needUpdateUserInfo = true;
+      }
+    })
   },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
+  // 获取资产信息（余额、可用积分）
+  getUserAmount: function () {
+    var that = this;
+    // TODO: 后续完善，待定。
   },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
+  handleOrderCount: function (count) {
+    return count > 99 ? '99+' : count;
   },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
+  goAsset: function () {
+    wx.navigateTo({
+      url: "/pages/asset/index"
+    })
+  },
+  goScore: function () {
+    wx.navigateTo({
+      url: "/pages/score/index"
+    })
+  },
+  goOrder: function (e) {
+    wx.navigateTo({
+      url: "/pages/order-list/index?type=" + e.currentTarget.dataset.type
+    })
+  },
+  cancelLogin() {
+    this.setData({
+      wxAuth: true,
+      hasUserInfo: true
+    })
+  },
+  goLogin() {
+    this.setData({
+      wxAuth: false
+    })
+  },
+  processLogin(e) {
+    if (!e.detail.userInfo) {
+      wx.showToast({
+        title: '已取消',
+        icon: 'none',
+      })
+      this.setData({
+        wxAuth: true,
+        hasUserInfo: true
+      })
+      return;
+    }
+    let that = this;
+    REQUEST.request('user/setUserInfo', 'POST', {
+      ...e.detail.userInfo,
+      token: wx.getStorageSync('token'),
+    }).then(res => {
+      if (res.data.code == 20005) {
+        that.setData({
+          apiUserInfoMap: res.data.data,
+          wxAuth: true,
+          hasUserInfo: true,
+          needUpdateUserInfo: true
+        });
+        // 保存主进程的用户信息
+        APP.globalData.needUpdateUserInfo = true;
+      }
+    })
+  },
+  clearStorage() {
+    wx.clearStorageSync()
+    wx.showToast({
+      title: '已清除',
+      icon: 'success'
+    })
+  },
 })
