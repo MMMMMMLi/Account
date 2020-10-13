@@ -1,5 +1,4 @@
 const REQUEST = require('../../utils/request');
-const APP = getApp();
 
 Page({
   /**
@@ -209,8 +208,13 @@ Page({
           hasNextPage: res.data.pageInfo.hasNextPage
         })
       } else {
+         // 校验Token失败，等待1S之后重新拉取数据
         if (res.data.code === 40002) {
-          // do nothing
+          setTimeout(() => {
+            if(wx.getStorageSync('token')) {
+              that.getData(that.data.currentTab, true);
+            }
+          },1000)
           return;
         }
         wx.showModal({
@@ -228,7 +232,12 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      filterPicker: [{
+      filterPicker: [
+        {
+          key: '订单状态',
+          value: 'order.status'
+        },
+        {
           key: '品种',
           value: 'detail.categoryValue'
         },
@@ -261,7 +270,6 @@ Page({
   onShow: function (options) {
     // 获取数据
     this.getData(this.data.currentTab, true);
-
   },
   /**
    * 生命周期函数--监听页面隐藏

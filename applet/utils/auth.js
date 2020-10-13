@@ -3,24 +3,25 @@ const REQUEST = require('./request');
 // 检测登录状态，返回 true / false
 async function checkHasLogined() {
   const token = wx.getStorageSync('token')
-
   if (!token) {
-    return false
+    return false;
   }
   const loggined = await checkSession()
   if (!loggined) {
-    wx.removeStorageSync('token')
-    return false
+    wx.removeStorageSync('token');
+    return false;
   }
-  REQUEST.request('applet/auth/checkToken', 'POST', {
-    token:token
-  }).then(res => {
+  // 同步校验Token
+  let flag = true;
+  await REQUEST.request('applet/auth/checkToken', 'POST', {
+    token: token
+  }).then(async res => {
     if (res.data.code != 20003) {
       wx.removeStorageSync('token')
-      return false
+      flag = false;
     }
   })
-  return true;
+  return flag;
 }
 
 // 校验当前用户是否登陆
@@ -53,7 +54,6 @@ async function login(page) {
           })
           return;
         }
-        console.log("login res",res)
         wx.setStorageSync('token', res.data.data);
         if (page) {
           page.onShow()

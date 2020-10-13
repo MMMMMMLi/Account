@@ -67,6 +67,15 @@ Page({
           hasNextPage: res.data.pageInfo.hasNextPage
         })
       } else {
+        // 校验Token失败，等待1S之后重新拉取数据
+        if (res.data.code === 40002) {
+          setTimeout(() => {
+            if (wx.getStorageSync('token')) {
+              that.getData(that.data.currentTab, true);
+            }
+          }, 1000)
+          return;
+        }
         wx.showModal({
           content: res.data.msg,
           showCancel: false
@@ -90,7 +99,7 @@ Page({
   onHide() {
     setTimeout(() => {
       this.hideAsync()
-    },1000);
+    }, 1000);
   },
   hideAsync() {
     let that = this;

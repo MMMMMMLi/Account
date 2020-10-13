@@ -8,7 +8,7 @@
 		<view class="weui-form-preview" wx:for="{{orderList}}" wx:key="index">
 			<view class="weui-form-preview__ft">
 				<view class="weui-form-preview__btn">{{item.createDate}}</view>
-				<view class="weui-form-preview__btn">{{item.status}}</view>
+				<view class="weui-form-preview__btn" style="color:{{item.status == '待付款' ? 'red':'green'}};font-size:18px;">{{item.status}}</view>
 			</view>
 			<view class="weui-form-preview__bd" wx:for="{{item.orders}}" wx:key="index">
 				<view style="display: flex;">
@@ -53,7 +53,7 @@
 			<view class="weui-form-preview__hd">
 				<view class="weui-form-preview__item">
 					<label class="weui-form-preview__label">付款金额</label>
-					<em class="weui-form-preview__value" style="text-align: right;">¥ {{item.totalPrice}}</em>
+					<em class="weui-form-preview__value" style="text-align: right;color:{{item.status == '待付款' ? 'red':'green'}};">¥ {{item.totalPrice}}</em>
 				</view>
 			</view>
 		</view>

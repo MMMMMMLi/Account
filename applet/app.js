@@ -2,7 +2,7 @@ const AUTH = require('utils/auth');
 
 App({
   // 生命周期回调——监听小程序初始化。
-  onLaunch: function() {
+  onLaunch: function () {
     const that = this;
     // 检测新版本
     const updateManager = wx.getUpdateManager()
@@ -39,7 +39,7 @@ App({
      * 监听网络状态变化
      * 可根据业务需求进行调整
      */
-    wx.onNetworkStatusChange(function(res) {
+    wx.onNetworkStatusChange(function (res) {
       if (!res.isConnected) {
         that.globalData.isConnected = false
         wx.showToast({
@@ -53,10 +53,16 @@ App({
       }
     })
   },
-  onShow (e) {
+  onShow(e) {
+    this.authLogin();
+  },
+  authLogin() {
     // 自动登录
-    AUTH.checkHasLogined().then(async isLogined => {
-      console.log("app onShow",isLogined)
+    return new Promise((res) => {
+      AUTH.checkHasLogined().then(async isLogined => {
+        res(isLogined);
+      });
+    }).then(isLogined => {
       if (!isLogined) {
         AUTH.login()
       }
