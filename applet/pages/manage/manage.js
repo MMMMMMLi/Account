@@ -9,14 +9,18 @@ Page({
     hasUserInfo: false,
     needUpdateUserInfo: false,
 
-    balance: 0.00, //可用余额
-    freeze: 0, //冻结金额
-    score: 0, //可用积分
-    growth: 0, //当前成长值
+    balance: 15, //可用余额
+    freeze: 2525.25, //冻结金额
+    score: 125, //可用积分
+    growth: 9999521.5, //当前成长值
     score_sign_continuous: 0,
     rechargeOpen: false, // 是否开启充值[预存]功能
   },
+  onLoad() {
+
+  },
   onShow() {
+    this.getTitle();
     // 每次打开页面,都需要回到顶部。
     if (wx.pageScrollTo) {
       wx.pageScrollTo({
@@ -41,6 +45,19 @@ Page({
       if (isLogined) {
         _this.getUserApiInfo();
         _this.getUserAmount();
+      }
+    })
+  },
+  getTitle() {
+    //a	动画  b	漫画  c	游戏  d	文学  e	原创  f	来自网络
+    //g	其他  h	影视  i	诗词  j	网易云  k	哲学 
+    wx.request({
+      url: 'https://v1.hitokoto.cn?c=b&c=d&c=h&c=j&c=k',
+      success: res => {
+        this.setData({
+          sentenceContent:res.data.hitokoto,
+          sentenceFrom:res.data.from
+        })
       }
     })
   },

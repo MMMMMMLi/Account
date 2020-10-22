@@ -7,8 +7,7 @@
     "pages/add/add",
     "pages/manage/manage",
     "pages/order/index",
-    "pages/userInfo/index",
-    "pages/init/index"
+    "pages/userInfo/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

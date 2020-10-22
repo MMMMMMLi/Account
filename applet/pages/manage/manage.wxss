@@ -1,69 +1,84 @@
-page,view,image,input {
+page,
+view,
+image,
+input {
   display: block;
   box-sizing: border-box;
 }
 
-.container{
+.container {
   min-height: 100%;
   overflow: hidden;
   overflow-y: hidden;
   padding: 0;
 }
 
+/* 九宫格 */
+.weui-grid__icon {
+  width: 45px;
+  height: 45px;
+  margin: 0 auto;
+}
+
+.weui-grid__icon+.weui-grid__label {
+  margin-top: 8px;
+}
+  
+
 .userinfo {
-	display: flex;
-	/* flex-direction: column; */
-	align-items: center;
-  width: 750rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* width: 750rpx; */
   margin-bottom: 30rpx;
   margin-top: 30rpx;
   margin-left: 50rpx;
 }
-.userinfo-avatar {
-	width: 160rpx;
-	height: 160rpx;
-  border: 1rpx solid #eee;
-  border-radius: 50%;
-}
+
 .userinfo-nickname {
   /* margin-top: 10rpx; */
   /* font-family:"微软雅黑"; */
   font-size: 22px;
-  margin-left: 50rpx;
+  /* margin-left: 50rpx; */
   font-weight: bolder;
 }
-.userNames{
+
+.userNames {
   display: flex;
-	flex-direction: column;
+  flex-direction: column;
 }
+
 .userinfo-phoneNumber {
   margin-top: 10rpx;
   font-size: 14px;
   margin-left: 50rpx;
 }
+
 .asset {
   display: flex;
   border-top: 1px solid #eee;
-  padding-top:20rpx;
-  padding-bottom:20rpx;
+  padding-top: 20rpx;
+  padding-bottom: 20rpx;
 }
+
 .asset .item {
   display: flex;
   flex-direction: column;
-  width:187rpx;
+  width: 187rpx;
   text-align: center;
   font-size: 13px;
   line-height: 20px;
-  color:#333;
+  color: #333;
 }
+
 .asset .right {
   border-left: 1px solid #eee;
 }
 
 .version {
-  width:100vw;
-	font-size: 24rpx;
-	text-align: center;
+  width: 100vw;
+  font-size: 24rpx;
+  text-align: center;
   padding: 32rpx;
 }
 
@@ -72,6 +87,7 @@ page,view,image,input {
   padding-top: 20rpx;
   padding-bottom: 20rpx;
 }
+
 .order-shortcut .item {
   position: relative;
   display: flex;
@@ -79,6 +95,7 @@ page,view,image,input {
   width: 150rpx;
   text-align: center;
 }
+
 .order-shortcut .item .dot {
   position: absolute;
   right: 20rpx;
@@ -93,17 +110,20 @@ page,view,image,input {
   color: #fff;
   text-align: center;
 }
+
 .order-shortcut .item .icon {
   width: 67rpx;
   height: 67rpx;
   margin-left: 45rpx;
 }
+
 .order-shortcut .item .text {
   margin-top: 8rpx;
   font-size: 24rpx;
   color: #666;
 }
-.to-authorize{
+
+.to-authorize {
   padding: 0rpx;
   margin: 0rpx;
   background: none;
@@ -111,11 +131,13 @@ page,view,image,input {
   height: auto;
   line-height: auto;
 }
+
 /* 绑定手机号 */
-.bind-phone-number{
+.bind-phone-number {
   margin: 20rpx;
   width: 100%;
 }
+
 /* flex重新构建菜单 */
 .menu-item {
   width: 100vw;
@@ -126,31 +148,37 @@ page,view,image,input {
   justify-content: space-between;
   align-items: center;
 }
+
 .menu-item .l {
-  font-size:34rpx;
-  color:#333;
-  line-height:104rpx;
+  font-size: 34rpx;
+  color: #333;
+  line-height: 104rpx;
 }
+
 .menu-item .r {
-  font-size:32rpx;
-  color:#999;
-  line-height:104rpx;
+  font-size: 32rpx;
+  color: #999;
+  line-height: 104rpx;
 }
+
 .menu-item .next {
   width: 40rpx;
   height: 40rpx;
 }
+
 .menu-item button {
   margin: 0;
 }
+
 .space {
   width: 100vw;
   height: 16rpx;
   background: #F4F5F9;
 }
+
 .line {
-  width:718px;
-  height:1px;
-  background:#EEEEEE;
+  width: 718px;
+  height: 1px;
+  background: #EEEEEE;
   margin-left: 32rpx;
 }
