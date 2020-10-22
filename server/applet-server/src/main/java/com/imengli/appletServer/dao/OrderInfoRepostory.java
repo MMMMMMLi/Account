@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: Weijia Jiang
@@ -40,4 +41,12 @@ public interface OrderInfoRepostory {
             "left join  order_info_detail on order_info.id =  order_info_detail.orderId " +
             "where order_info.id = #{orderId}")
     void deleteOrderInfoAndOrderInfoDeatils(@Param("orderId") Integer orderInfoId);
+
+    @Select("SELECT " +
+            "COUNT(1) AS orders," +
+            "SUM(totalPrice) AS totalPrice, " +
+            "SUM(totalWeight) AS totalWeight " +
+            "FROM order_info " +
+            "WHERE createDate BETWEEN CONCAT(CURDATE(),' 00:00:00')  AND CONCAT(CURDATE(),' 23:59:59')")
+    Map<String, Double> getSummaryOrderInfo();
 }

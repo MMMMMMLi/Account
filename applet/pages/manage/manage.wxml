@@ -1,28 +1,27 @@
 <view class="page" style="background-color:#FFFFFF">
-	<view class="page__hd">
+	<view class="page__hd" bindtap="switchContent">
 		<view class="page__title">清新小句子</view>
 		<view class="page__desc">{{sentenceContent}}</view>
 		<view class="page__desc" style="text-align: right;">—— {{sentenceFrom}}</view>
 	</view>
 	<view class="asset">
-		<view class='item' bindtap='goAsset'>
-			<view>{{balance}}</view>
+		<view class='item'>
+		<!-- TODO: 这个位置颜色变换的比对值，后期升级到可以在后台动态设置  -->
+			<view style="color: {{orders > 50 ? 'red' : orders > 0 ? 'DeepSkyBlue' : 'black'}};">{{orders}}</view>
 			<view>今日订单数</view>
 		</view>
-		<view class='item right' bindtap='goAsset'>
-			<view>￥{{freeze}}</view>
+		<view class='item right'>
+			<view style="color: {{orders > 50 ? 'red' : orders > 0 ? 'DeepSkyBlue' : 'black'}};">{{totalWeight}} KG</view>
+			<view>今日交易量</view>
+		</view>
+		<view class='item right'>
+			<view style="color: {{orders > 50 ? 'red' : orders > 0 ? 'DeepSkyBlue' : 'black'}};">￥{{totalPrice}}</view>
 			<view>今日交易额</view>
 		</view>
-		<view class='item right' bindtap='goScore'>
-			<view>{{score}}</view>
-			<view>总订单数</view>
+		<view class='item right'>
+			<view style="color:{{surplusStock > 5000 ? 'green' : surplusStock > 1000 ? 'Orange' : 'red' }};">{{surplusStock}} KG</view>
+			<view>剩余库存量</view>
 		</view>
-		<navigator url="/pages/score/growth">
-			<view class='item right'>
-				<view>￥{{growth}}</view>
-				<view>总交易额</view>
-			</view>
-		</navigator>
 	</view>
 	<view class="space"></view>
 	<!-- 九宫格 -->
