@@ -20,6 +20,12 @@ public class ManageController {
     @Autowired
     private ManageService manageService;
 
+    /**
+     * 获取 订单汇总信息
+     *
+     * @param token
+     * @return
+     */
     @RequestMapping("/getSummaryOrderInfo")
     public ResultDTO getSummaryOrderInfo(@RequestParam String token) {
         return manageService.getSummaryOrderInfo(token);

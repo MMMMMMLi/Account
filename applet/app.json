@@ -1,5 +1,5 @@
 {
-  "entryPagePath": "pages/manage/manage",
+  "entryPagePath": "pages/manage/report/day/index",
   "pages": [
     "pages/start/start",
     "pages/my/my",
@@ -7,7 +7,8 @@
     "pages/add/add",
     "pages/manage/manage",
     "pages/order/index",
-    "pages/userInfo/index"
+    "pages/userInfo/index",
+    "pages/manage/report/day/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

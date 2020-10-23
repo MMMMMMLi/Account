@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "每日报告",
+  "usingComponents": {
+    "ec-canvas": "../../../../components/ec-canvas/ec-canvas"
+  }
+}

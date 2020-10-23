@@ -20,7 +20,10 @@ Page({
     rechargeOpen: false, // 是否开启充值[预存]功能
   },
   onLoad() {
-
+    // 顶部 展示信息
+    this.setData({
+      version: CONFIG.version
+    })
   },
   onShow() {
     // 获取订单信息
@@ -60,9 +63,9 @@ Page({
     }).then(res => {
       if (res.data.code == 20000) {
         that.setData({
-          orders: res.data.data.orders,
-          totalPrice: res.data.data.totalPrice,
-          totalWeight: res.data.data.totalWeight,
+          orders: res.data.data.orders || 0,
+          totalPrice: res.data.data.totalPrice || 0,
+          totalWeight: res.data.data.totalWeight || 0,
         })
       }
     })

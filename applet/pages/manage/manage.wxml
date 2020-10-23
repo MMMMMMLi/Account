@@ -6,7 +6,7 @@
 	</view>
 	<view class="asset">
 		<view class='item'>
-		<!-- TODO: 这个位置颜色变换的比对值，后期升级到可以在后台动态设置  -->
+			<!-- TODO: 这个位置颜色变换的比对值，后期升级到可以在后台动态设置  -->
 			<view style="color: {{orders > 50 ? 'red' : orders > 0 ? 'DeepSkyBlue' : 'black'}};">{{orders}}</view>
 			<view>今日订单数</view>
 		</view>
@@ -26,12 +26,14 @@
 	<view class="space"></view>
 	<!-- 九宫格 -->
 	<view class="weui-grids">
-		<view class="weui-grid">
-			<view class="weui-grid__icon" style="height: 37px;">
-				<image src="../../images/icon/a1.png" alt></image>
+		<navigator url="/pages/manage/report/day/index">
+			<view class="weui-grid">
+				<view class="weui-grid__icon" style="height: 37px;">
+					<image src="../../images/icon/a1.png" alt></image>
+				</view>
+				<view class="weui-grid__label">每日报告</view>
 			</view>
-			<view class="weui-grid__label">每日报告</view>
-		</view>
+		</navigator>
 		<view class="weui-grid">
 			<view class="weui-grid__icon" style="height: 37px;">
 				<image src="../../images/icon/a2.png" alt></image>
