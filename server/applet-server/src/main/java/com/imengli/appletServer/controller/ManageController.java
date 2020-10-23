@@ -30,4 +30,19 @@ public class ManageController {
     public ResultDTO getSummaryOrderInfo(@RequestParam String token) {
         return manageService.getSummaryOrderInfo(token);
     }
+
+    /**
+     * 获取报告
+     *
+     * @param token
+     * @param type  category | size | person | time
+     * @param state 0 | 7 | 30
+     * @return
+     */
+    @RequestMapping("/getReport")
+    public ResultDTO getReport(@RequestParam String token,
+                               @RequestParam String type,
+                               @RequestParam Integer state) {
+        return manageService.getReport(token, type, state);
+    }
 }

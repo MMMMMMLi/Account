@@ -3,8 +3,8 @@
 		<view class="page__title">{{dateTime}}</view>
 		<view class="page__desc" style="text-align: right;">{{dateTimeS}}</view>
 	</view>
-	<ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ oneBar }}"></ec-canvas>
-	<ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ twoBar }}"></ec-canvas>
-	<ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ threeBar }}"></ec-canvas>
-  <ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ fourBar }}"></ec-canvas>
+	<ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ categoryBar }}"></ec-canvas>
+	<ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ categoryBar }}"></ec-canvas>
+	<ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ categoryBar }}"></ec-canvas>
+  <ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ categoryBar }}"></ec-canvas>
 </view>
