@@ -148,7 +148,7 @@ public class OrderService {
             if (userInfoById != null) {
                 PageHelper.startPage(page, size);
                 // 查询用户订单
-                List<OrderInfoDO> orderInfoDOS = orderInfoRepostory.select(userInfoById.getId(), LocalDateTime.of(LocalDate.now().minusDays(status), LocalTime.of(00, 00, 00)), LocalDateTime.now());
+                List<OrderInfoDO> orderInfoDOS = orderInfoRepostory.select(userInfoById.getId(), LocalDateTime.of(LocalDate.now(), LocalTime.MIN), LocalDateTime.now());
                 PageInfo<OrderInfoDO> orderInfoDOPageInfo = new PageInfo<>(orderInfoDOS);
                 orderInfoDOPageInfo.setList(null);
                 // 构建返回信息
@@ -194,7 +194,7 @@ public class OrderService {
             // 查询所有订单信息
             List<OrderInfoDO> orderInfoDOS =
                     orderInfoRepostory.selectAllOrderList(
-                            LocalDateTime.of(LocalDate.now().minusDays(status), LocalTime.of(00, 00, 00)),
+                            LocalDateTime.of(LocalDate.now(), LocalTime.MIN),
                             LocalDateTime.now(),
                             JSON.parseArray(filterList, HashMap.class));
             PageInfo<OrderInfoDO> orderInfoDOPageInfo = new PageInfo<>(orderInfoDOS);
