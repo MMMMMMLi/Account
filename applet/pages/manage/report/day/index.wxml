@@ -4,7 +4,7 @@
 		<view class="page__desc" style="text-align: right;">{{dateTimeS}}</view>
 	</view>
 	<ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ categoryBar }}"></ec-canvas>
-	<ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ categoryBar }}"></ec-canvas>
-	<ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ categoryBar }}"></ec-canvas>
-  <ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ categoryBar }}"></ec-canvas>
+	<ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ sizeBar }}"></ec-canvas>
+	<ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ personBar }}"></ec-canvas>
+  <ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ timeBar }}"></ec-canvas>
 </view>

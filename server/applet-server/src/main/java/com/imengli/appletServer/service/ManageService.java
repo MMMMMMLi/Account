@@ -1,6 +1,7 @@
 package com.imengli.appletServer.service;
 
 import com.imengli.appletServer.common.ResultStatus;
+import com.imengli.appletServer.common.SysConstant;
 import com.imengli.appletServer.dao.ManageRepostory;
 import com.imengli.appletServer.dao.WechatUserRepostory;
 import com.imengli.appletServer.daomain.WechatAuthDO;
@@ -18,7 +19,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author: Weijia Jiang
@@ -96,7 +98,7 @@ public class ManageService {
             switch (state) {
                 case 0:
                     // 每日报告,时间配置
-                    startTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+                    startTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN).minusDays(1);
                     break;
                 case 7:
                     // 每周报告,需要设置起始时间为本周一
@@ -112,36 +114,133 @@ public class ManageService {
                     break;
             }
             // 根据不同的 Type类型来获取数据
+            // 返回小程序端的数据结构:
+            // legend_data: 导航名字
+            // xAxis_data:  X栏数据
+            // series[  // 是否存在多个   导航名字
+            //      {
+            //          name: 导航名字[0],
+            //          data: 数据
+            //      }....
+            // ]
+            Map<String, Object> result = new HashMap<>();
             switch (type) {
                 // 各品种销量情况
                 case "category":
-                    Map<String, Object> result = manageRepostory.getReportByCategory(startTime, endTime);
+                    // 获取数据
+                    List<Map<String, Object>> reportByCategory = manageRepostory.getReportByCategory(startTime, endTime);
+                    // 拼装数据
+                    // legend_data
+                    assembleData(result, reportByCategory, "category");
                     break;
                 // 各型号销量情况
                 case "size":
+                    // 获取数据
+                    List<Map<String, Object>> reportBySize = manageRepostory.getReportBySize(startTime, endTime);
+                    // 拼装数据
+                    assembleData(result, reportBySize, "size");
                     break;
                 // 成交量情况
                 case "person":
+                    // 成交量排行,只看当天的即可。
+                    startTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+                    // 获取数据
+                    List<Map<String, Object>> reportByPerson = manageRepostory.getReportByPerson(startTime, endTime);
+                    // 拼装数据
+                    // xAxis_data
+                    result.put("xAxis_data",reportByPerson.stream().map(info -> info.get("userName")).collect(Collectors.toList()));
+
+                    List<Object> seriesInfoList = new ArrayList<>();
+                    Map<String, Object> seriesInfo = new HashMap<>();
+                    // 这个只有一个柱状图,所有表头提示就省略掉了.
+                    seriesInfo.put("name", "");
+                    Map<String, Object> totalPriceInfo = new HashMap<>();
+                    seriesInfo.put("data", reportByPerson.stream().map(info -> info.get("totalPrice")).collect(Collectors.toList()));
+
+                    seriesInfoList.add(seriesInfo);
+
+                    result.put("series", seriesInfoList);
                     break;
                 // 各个时间段的交易情况
                 case "time":
+//                    SELECT
+//                    SUM(oi.totalPrice) AS sumPrice,
+//                    SUM(gross - tare) AS sumWeight,
+//                    DATE_FORMAT(oi.createDate, '%H') AS dateTime
+//                    FROM
+//                    order_info_detail oid
+//                    LEFT JOIN order_info oi ON oid.orderId = oi.id
+//                    WHERE
+//                    oi.createDate BETWEEN '2020-10-26T00:00'
+//                    AND '2020-10-26T23:45:00.369'
+//                    GROUP BY
+//                    DATE_FORMAT(oi.createDate, '%Y-%m-%d %H')
+//                    ORDER BY
+//                    sumWeight DESC
                     break;
                 default:
                     break;
             }
-//            SELECT categoryValue,SUM(gross - tare),DATE_FORMAT(oi.createDate,'%Y-%m-%d') FROM order_info_detail oid
-//            LEFT JOIN order_info oi ON oid.orderId = oi.id
-//            WHERE oi.createDate BETWEEN '2020-10-21 00:00:00' AND '2020-10-22 23:59:59'
-//            GROUP BY categoryValue,DATE_FORMAT(oi.createDate,'%Y-%m-%d')
+            if (result.size() > 0) {
+                return new ResultDTO(ResultStatus.SUCCESS, result);
+            }
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }
 
+    /**
+     * 根据不同的参数组装 前端 图标的 数据信息
+     *
+     * @param result
+     * @param reportBySize
+     * @param type
+     */
+    private void assembleData(Map<String, Object> result, List<Map<String, Object>> reportBySize, String type) {
+        // legend_data
+        result.put("legend_data", reportBySize.parallelStream().map(info -> info.get("dateTime")).collect(Collectors.toSet()));
+        // xAxis_data
+        result.put("xAxis_data", SysConstant.getValueByTypeAndKey("web", type));
+        // series
+        reportBySize
+                .parallelStream()
+                .collect(Collectors.groupingBy(e -> e.get("dateTime")))
+                .forEach((k, v) -> {
+                    List<Object> series = new ArrayList<>();
+                    if (result.containsKey("series")) {
+                        series = (ArrayList) result.get("series");
+                    }
+                    Map<String, Object> info = new HashMap<>();
+                    info.put("name", k);
+                    info.put("data",
+                            ((ArrayList) SysConstant.getValueByTypeAndKey("web", type))
+                                    .stream()
+                                    .map(value -> {
+                                        List<Object> weight = v.parallelStream()
+                                                .filter(vInfo -> vInfo.get(type).equals(value))
+                                                .map(vInfo -> vInfo.get("sumWeight"))
+                                                .collect(Collectors.toList());
+                                        if (weight.size() > 0) {
+                                            return weight.get(0);
+                                        }
+                                        return 0;
+                                    }).collect(Collectors.toList()));
+                    series.add(info);
+                    result.put("series", series);
+                });
+    }
+
     public static void main(String[] args) {
-        LocalDateTime startTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        LocalDateTime startTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN).minusDays(1);
         LocalDateTime endTime = LocalDateTime.now();
         System.out.println(startTime);
 
         System.out.println(endTime);
+
+        Set<Integer> haha = new HashSet<>();
+        haha.add(1);
+        haha.add(2);
+        haha.add(3);
+        haha.add(1);
+        System.out.println(haha);
     }
 }

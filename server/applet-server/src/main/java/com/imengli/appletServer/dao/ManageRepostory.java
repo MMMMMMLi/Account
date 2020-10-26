@@ -2,9 +2,11 @@ package com.imengli.appletServer.dao;
 
 import com.imengli.appletServer.common.SysConstant;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,5 +26,36 @@ public interface ManageRepostory {
             " WHERE createDate BETWEEN CONCAT(CURDATE(),' 00:00:00')  AND CONCAT(CURDATE(),' 23:59:59')")
     Map<String, Double> getSummaryOrderInfo();
 
-    Map<String, Object> getReportByCategory(LocalDateTime startTime, LocalDateTime endTime);
+    @Select(" SELECT " +
+            " categoryValue as category, " +
+            " SUM(gross - tare) as sumWeight, " +
+            " DATE_FORMAT(oi.createDate,'%m-%d') as dateTime " +
+            " FROM " + SysConstant.ORDER_INFO_DEATIL_TABLE_NAME + " oid " +
+            " LEFT JOIN " + SysConstant.ORDER_INFO_TABLE_NAME + " oi ON oid.orderId = oi.id " +
+            " WHERE oi.createDate BETWEEN #{startTime} AND #{endTime} " +
+            " GROUP BY categoryValue,DATE_FORMAT(oi.createDate,'%Y-%m-%d') " +
+            " ORDER BY DATE_FORMAT(oi.createDate, '%Y-%m-%d'),sumWeight DESC")
+    List<Map<String, Object>> getReportByCategory(@Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
+
+    @Select(" SELECT " +
+            " sizeValue as size, " +
+            " SUM(gross - tare) as sumWeight, " +
+            " DATE_FORMAT(oi.createDate,'%m-%d') as dateTime " +
+            " FROM " + SysConstant.ORDER_INFO_DEATIL_TABLE_NAME + " oid " +
+            " LEFT JOIN " + SysConstant.ORDER_INFO_TABLE_NAME + " oi ON oid.orderId = oi.id " +
+            " WHERE oi.createDate BETWEEN #{startTime} AND #{endTime} " +
+            " GROUP BY sizeValue,DATE_FORMAT(oi.createDate,'%Y-%m-%d') " +
+            " ORDER BY DATE_FORMAT(oi.createDate, '%Y-%m-%d'),sumWeight DESC")
+    List<Map<String, Object>> getReportBySize(@Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
+
+    @Select(" SELECT " +
+            " su.userName, " +
+            " SUM(oi.totalPrice) AS totalPrice " +
+            " FROM " + SysConstant.ORDER_INFO_TABLE_NAME + " oi " +
+            " LEFT JOIN " + SysConstant.USER_TABLE_NAME + " su ON oi.userId = su.id " +
+            " WHERE oi.createDate BETWEEN #{startTime} AND #{endTime} " +
+            " GROUP BY su.userName " +
+            " ORDER BY totalPrice DESC " +
+            " LIMIT 10 ")
+    List<Map<String, Object>> getReportByPerson(@Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
 }
