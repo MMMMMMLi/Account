@@ -1,5 +1,6 @@
 package com.imengli.appletServer.dao;
 
+import com.imengli.appletServer.common.SysConstant;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -15,6 +16,6 @@ import java.util.Map;
 @Mapper
 public interface SysConstantRepostory {
 
-    @Select("select type,`key`,`value`,sortFlag from sys_constant where status = 1 order by type,`key`,sortFlag desc")
-    List<Map<String,Object>> getConstant();
+    @Select("select type,`key`,`value`,sortFlag from " + SysConstant.CONSTANT_TABLE_NAME + " where status = 1 order by type,`key`,sortFlag desc")
+    List<Map<String, Object>> getConstant();
 }

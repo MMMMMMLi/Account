@@ -1,5 +1,6 @@
 package com.imengli.appletServer.dao.provide;
 
+import com.imengli.appletServer.common.SysConstant;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,10 +16,6 @@ import java.util.List;
  */
 public class MineSelectProvider {
 
-    private final String SYS_USER_TABLE_NAME = "sys_user";
-    private final String ORDER_INFO_TABLE_NAME = "order_info";
-    private final String ORDER_INFO_DETAIL_TABLE_NAME = "order_info_detail";
-
     public String selectOrderInfo(@Param("startDate") LocalDateTime startDate,
                                   @Param("endDate") LocalDateTime endDate,
                                   @Param("filterList") List<HashMap> filterList) {
@@ -26,9 +23,10 @@ public class MineSelectProvider {
         sb.append("SELECT " +
                 "`order`.* " +
                 "FROM " +
-                "order_info `order` " +
-                "LEFT JOIN order_info_detail detail ON `order`.id = detail.orderId " +
-                "LEFT JOIN sys_user `user` ON `order`.userId = `user`.id " +
+                SysConstant.ORDER_INFO_TABLE_NAME +
+                " `order` " +
+                "LEFT JOIN " + SysConstant.ORDER_INFO_DEATIL_TABLE_NAME + " detail ON `order`.id = detail.orderId " +
+                "LEFT JOIN " + SysConstant.USER_TABLE_NAME + " `user` ON `order`.userId = `user`.id " +
                 "WHERE createDate BETWEEN #{startDate} AND #{endDate} ");
         if (filterList.size() > 0) {
             filterList.parallelStream()

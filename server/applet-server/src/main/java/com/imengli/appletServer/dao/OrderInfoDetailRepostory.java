@@ -1,5 +1,6 @@
 package com.imengli.appletServer.dao;
 
+import com.imengli.appletServer.common.SysConstant;
 import com.imengli.appletServer.dao.provide.MineInsertProvider;
 import com.imengli.appletServer.daomain.OrderInfoDetailDO;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -21,6 +22,6 @@ public interface OrderInfoDetailRepostory {
     @InsertProvider(value = MineInsertProvider.class, method = "insertOrderInfoDetail")
     Integer save(@Param("orders") List<OrderInfoDetailDO> orders);
 
-    @Select("SELECT * FROM order_info_detail WHERE orderId = #{orderId}")
+    @Select("SELECT * FROM " + SysConstant.ORDER_INFO_DEATIL_TABLE_NAME + " WHERE orderId = #{orderId}")
     List<OrderInfoDetailDO> select(@Param("orderId") Integer id);
 }

@@ -19,6 +19,18 @@ import java.util.stream.Collectors;
 @Component
 public class SysConstant {
 
+    // 常用的常量
+
+    // 表名
+    public static final String BANNERS_TABLE_NAME = "sys_banners";
+    public static final String USER_TABLE_NAME = "sys_user";
+    public static final String ROLE_TABLE_NAME = "sys_role";
+    public static final String ORDER_INFO_TABLE_NAME = "order_info";
+    public static final String ORDER_INFO_DEATIL_TABLE_NAME = "order_info_detail";
+    public static final String CONSTANT_TABLE_NAME = "sys_constant";
+    public static final String WECHAT_USER_TABLE_NAME = "wechat_user";
+
+
     @Resource
     private SysConstantRepostory sysConstantRepostory;
 

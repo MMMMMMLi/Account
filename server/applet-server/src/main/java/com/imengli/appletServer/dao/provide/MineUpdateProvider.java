@@ -1,16 +1,15 @@
 package com.imengli.appletServer.dao.provide;
 
+import com.imengli.appletServer.common.SysConstant;
 import com.imengli.appletServer.daomain.SysUserDO;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.jdbc.SQL;
 
 public class MineUpdateProvider {
 
-    private final String SYS_USER_TABLE_NAME = "sys_user";
-
     public String updateSysUserInfo(SysUserDO sysUserDO) {
         return new SQL(){{
-            UPDATE(SYS_USER_TABLE_NAME);
+            UPDATE(SysConstant.USER_TABLE_NAME);
             if (!StringUtils.isEmpty(sysUserDO.getUserName())) {
                 SET("userName = #{sysUserDO.userName}");
             }
