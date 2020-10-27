@@ -137,7 +137,7 @@ Page({
     this.updateOrderInfo();
     let oldOrderList = this.data.orderList;
     const clickUserInfo = e.currentTarget.dataset.info;
-    clickUserInfo.orderDate = new Date().toLocaleTimeString();
+    clickUserInfo.orderDate = UTILS.formatTime(new Date());
     if (oldOrderList.filter(order => order.userInfo.id == clickUserInfo.id).length == 0) {
       oldOrderList.push({
         orderListId: this.data.orderListId++,

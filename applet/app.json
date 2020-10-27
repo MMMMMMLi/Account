@@ -1,5 +1,5 @@
 {
-  "entryPagePath": "pages/manage/report/day/index",
+  "entryPagePath": "pages/manage/manage",
   "pages": [
     "pages/start/start",
     "pages/my/my",

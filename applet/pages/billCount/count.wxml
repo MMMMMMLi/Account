@@ -126,7 +126,7 @@
 						</view>
 					</view>
 					<view class="pickerView" style="flex:0.6;">
-						<input class="weui-input" type="digit" placeholder="筛选内容" placeholder-class="weui-input__placeholder" data-type="firstFilterPickerValue" data-index="0" value="{{filterCriteria[0].value}}" bindblur="overInput" />
+						<input class="weui-input" placeholder="筛选内容" placeholder-class="weui-input__placeholder" data-type="firstFilterPickerValue" data-index="0" value="{{filterCriteria[0].value}}" bindblur="overInput" />
 					</view>
 				</view>
 				<view style="display: flex;">
@@ -138,7 +138,7 @@
 						</view>
 					</view>
 					<view class="pickerView" style="flex:0.6;">
-						<input class="weui-input" type="digit" placeholder="筛选内容" placeholder-class="weui-input__placeholder" data-type="secondtFilterPickerValue" data-index="1" value="{{filterCriteria[1].value}}" bindblur="overInput" />
+						<input class="weui-input" placeholder="筛选内容" placeholder-class="weui-input__placeholder" data-type="secondtFilterPickerValue" data-index="1" value="{{filterCriteria[1].value}}" bindblur="overInput" />
 					</view>
 				</view>
 				<view style="display: flex;">
@@ -150,7 +150,7 @@
 						</view>
 					</view>
 					<view class="pickerView" style="flex:0.6;">
-						<input class="weui-input" type="digit" placeholder="筛选内容" placeholder-class="weui-input__placeholder" data-type="threetFilterPickerValue" data-index="2" value="{{filterCriteria[2].value}}" bindblur="overInput" />
+						<input class="weui-input" placeholder="筛选内容" placeholder-class="weui-input__placeholder" data-type="threetFilterPickerValue" data-index="2" value="{{filterCriteria[2].value}}" bindblur="overInput" />
 					</view>
 				</view>
 			</view>

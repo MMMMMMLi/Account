@@ -21,3 +21,20 @@ ec-canvas {
 .page__hd {
   padding: 30px 10px 40px 10px;
 }
+
+#categoryBar {
+  position: absolute;
+  top: 20%;
+}
+#sizeBar {
+  position: absolute;
+  top: 60%;
+}
+#personBar {
+  position: absolute;
+  top: 100%;
+}
+#timeBar {
+  position: absolute;
+  top: 140%;
+}

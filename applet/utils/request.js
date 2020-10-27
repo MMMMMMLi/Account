@@ -1,5 +1,5 @@
-const preUrl = 'http://localhost:11001/api/'
-// const preUrl = 'https://imengli.com/api/'
+// const preUrl = 'http://localhost:11001/api/'
+const preUrl = 'https://imengli.com/api/'
 let header = {
   'content-type': 'application/x-www-form-urlencoded',
   'token': ''

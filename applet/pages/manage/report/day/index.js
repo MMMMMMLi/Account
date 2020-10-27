@@ -5,13 +5,15 @@ const REQUEST = require('../../../../utils/request');
 Page({
 
   data: {
+    // 是否启用老版本
+    enableOldEchars: false,
     // 下面为四个 图表 信息
     categoryBar: {
       onInit: function (canvas, width, height, dpr) {
         const barChart = echarts.init(canvas, null, {
           width: width,
           height: height,
-          devicePixelRatio: dpr // new
+          devicePixelRatio: dpr 
         });
         canvas.setChart(barChart);
         getBarOption('category').then(res => {
@@ -137,6 +139,8 @@ async function getBarOption(type) {
         legend: {
           data: optionData.legend_data,
           orient: 'vertical', // 布局方式，默认为水平布局 // 'horizontal' ¦ 'vertical
+        },grid: {
+          x: 50,
         },
         xAxis: {
           data: optionData.xAxis_data,
