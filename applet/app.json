@@ -6,9 +6,10 @@
     "pages/billCount/count",
     "pages/add/add",
     "pages/manage/manage",
-    "pages/order/index",
-    "pages/userInfo/index",
-    "pages/manage/report/day/index"
+    "pages/order/order",
+    "pages/userInfo/userInfo",
+    "pages/manage/report/day/day",
+    "pages/manage/report/week/week"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
@@ -23,7 +24,7 @@
     "backgroundColor": "#fff",
     "list": [
       {
-        "pagePath": "pages/order/index",
+        "pagePath": "pages/order/order",
         "iconPath": "images/tabBar/bill.png",
         "selectedIconPath": "images/tabBar/bill_select.png",
         "text": "订单列表"

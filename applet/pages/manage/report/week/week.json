@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "每周报告",
+  "usingComponents": {
+    "ec-canvas": "../../../../components/ec-canvas/ec-canvas"
+  }
+}

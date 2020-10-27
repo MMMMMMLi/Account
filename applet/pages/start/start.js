@@ -17,7 +17,7 @@ Page({
     // 当前版本如果用户已经看过了,则不需要再看了。
     if (app_show_pic_version && app_show_pic_version == CONFIG.version) {
       wx.switchTab({
-        url: '/pages/order/index',
+        url: '/pages/order/order',
       });
     } else {
       REQUEST.request('applet/getBanners', 'POST', {}).then(res => {
@@ -26,7 +26,7 @@ Page({
         }
         if (res.data.code == 20001) {
           wx.switchTab({
-            url: '/pages/order/index',
+            url: '/pages/order/order',
           });
         } else {
           _this.setData({
@@ -68,7 +68,7 @@ Page({
         if (res.data.code == 20005) {
           // 如果用户信息全换 ，则直接跳转订单页面即可。
           wx.switchTab({
-            url: '/pages/order/index',
+            url: '/pages/order/order',
           });
         } else if (res.data.code == 40003 || res.data.code == 40004) {
           // 假如当前用户是第一次使用小程序，则用户信息应该不完善，则跳转到个人信息页

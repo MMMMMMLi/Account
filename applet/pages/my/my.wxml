@@ -2,7 +2,7 @@
 
 <view class="container">
 	<view wx:if="{{apiUserInfoMap}}" class="userinfo">
-		<navigator url="/pages/userInfo/index">
+		<navigator url="/pages/userInfo/userInfo">
 			<image wx:if="{{apiUserInfoMap.avatarUrl}}" class="userinfo-avatar" src="{{ apiUserInfoMap.avatarUrl }}" background-size="cover"></image>
 			<image wx:else class="userinfo-avatar" src="/images/nologin.png" background-size="cover"></image>
 		</navigator>
@@ -39,7 +39,7 @@
 	</view>
 	<view class="space"></view>
 
-	<navigator wx:if="{{needUpdateUserInfo}}" url="/pages/userInfo/index">
+	<navigator wx:if="{{needUpdateUserInfo}}" url="/pages/userInfo/userInfo">
 		<view class="menu-item" style="background-color:red">
 			<view class="l">完善信息</view>
 			<image class="next" src="/images/icon/next.png"></image>
@@ -166,7 +166,7 @@
 	<view class="line"></view>
 
 	<view class="space"></view>
-	<navigator url="/pages/userInfo/index">
+	<navigator url="/pages/userInfo/userInfo">
 		<view class="menu-item">
 			<view class="l">个人信息</view>
 			<image class="next" src="/images/icon/next.png"></image>

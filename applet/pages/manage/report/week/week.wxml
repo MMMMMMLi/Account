@@ -1,0 +1,10 @@
+<view class="container">
+	<view class="page__hd">
+		<view class="page__title">{{dateTime}}</view>
+		<view class="page__desc" style="text-align: right;">{{dateTimeS}}</view>
+	</view>
+	<ec-canvas id="categoryBar" canvas-id="categoryBar" ec="{{ categoryBar }}" force-use-old-canvas="{{ enableOldEchars }}"></ec-canvas>
+	<ec-canvas id="sizeBar" canvas-id="sizeBar" ec="{{ sizeBar }}" force-use-old-canvas="{{ enableOldEchars }}"></ec-canvas>
+	<ec-canvas id="personBar" canvas-id="personBar" ec="{{ personBar }}" force-use-old-canvas="{{ enableOldEchars }}"></ec-canvas>
+  <ec-canvas id="timeBar" canvas-id="timeBar" ec="{{ timeBar }}" force-use-old-canvas="{{ enableOldEchars }}"></ec-canvas>
+</view>
