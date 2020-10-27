@@ -14,11 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -81,38 +79,19 @@ public class ManageService {
      *
      * @param token
      * @param type  category | size | person | time
-     * @param state 0 | 7 | 30
      * @return
      */
-    public ResultDTO getReport(String token, String type, Integer state) {
+    public ResultDTO getReportByDay(String token, String type) {
         // 校验token
         WechatUserDO wechatUserDO = this.getWechatAuthEntity(token);
         // 根据信息完善度返回
         if (wechatUserDO != null) {
             // TODO: 后续添加管理员校验
 
+            // 设置起始时间
+            LocalDateTime startTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN).minusDays(1);
             // 结束时间都是当前时间
             LocalDateTime endTime = LocalDateTime.now();
-            // 设置起始时间
-            LocalDateTime startTime;
-            switch (state) {
-                case 0:
-                    // 每日报告,时间配置
-                    startTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN).minusDays(1);
-                    break;
-                case 7:
-                    // 每周报告,需要设置起始时间为本周一
-                    startTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN).with(DayOfWeek.MONDAY);
-                    break;
-                case 30:
-                    // 每月报告,需要设置起始时间为本月一号
-                    startTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN).with(TemporalAdjusters.firstDayOfMonth());
-                    break;
-                default:
-                    // 什么也没有就取当前时间
-                    startTime = LocalDateTime.now();
-                    break;
-            }
             // 根据不同的 Type类型来获取数据
             // 返回小程序端的数据结构:
             // legend_data: 导航名字
@@ -257,20 +236,5 @@ public class ManageService {
                     series.add(info);
                     result.put("series", series);
                 });
-    }
-
-    public static void main(String[] args) {
-        LocalDateTime startTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN).minusDays(1);
-        LocalDateTime endTime = LocalDateTime.now();
-        System.out.println(startTime);
-
-        System.out.println(endTime);
-
-        Set<Integer> haha = new HashSet<>();
-        haha.add(1);
-        haha.add(2);
-        haha.add(3);
-        haha.add(1);
-        System.out.println(haha);
     }
 }

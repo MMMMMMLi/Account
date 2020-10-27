@@ -32,17 +32,28 @@ public class ManageController {
     }
 
     /**
-     * 获取报告
+     * 获取每日报告
      *
      * @param token
      * @param type  category | size | person | time
-     * @param state 0 | 7 | 30
      * @return
      */
-    @RequestMapping("/getReport")
-    public ResultDTO getReport(@RequestParam String token,
-                               @RequestParam String type,
-                               @RequestParam Integer state) {
-        return manageService.getReport(token, type, state);
+    @RequestMapping("/getReportByDay")
+    public ResultDTO getReportByDay(@RequestParam String token,
+                                    @RequestParam String type) {
+        return manageService.getReportByDay(token, type);
+    }
+
+    /**
+     * 获取每周报告
+     *
+     * @param token
+     * @param type  category | size | person | order
+     * @return
+     */
+    @RequestMapping("/getReportByWeek")
+    public ResultDTO getReportByWeek(@RequestParam String token,
+                                    @RequestParam String type) {
+        return manageService.getReportByDay(token, type);
     }
 }
