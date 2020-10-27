@@ -58,4 +58,14 @@ public interface ManageRepostory {
             " ORDER BY totalPrice DESC " +
             " LIMIT 10 ")
     List<Map<String, Object>> getReportByPerson(@Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
+
+    @Select(" SELECT " +
+            " SUM(oi.totalPrice) AS sumPrice, " +
+            " SUM(oi.totalWeight) AS sumWeight, " +
+            " DATE_FORMAT(oi.createDate, '%H') AS dateTime " +
+            " FROM " + SysConstant.ORDER_INFO_TABLE_NAME + " oi " +
+            " WHERE oi.createDate BETWEEN #{startTime} AND #{endTime} " +
+            " GROUP BY DATE_FORMAT(oi.createDate, '%Y-%m-%d %H') " +
+            " ORDER BY dateTime ")
+    List<Map<String, Object>> getReportByTime(LocalDateTime startTime, LocalDateTime endTime);
 }

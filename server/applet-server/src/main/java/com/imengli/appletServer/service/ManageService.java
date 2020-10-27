@@ -129,16 +129,20 @@ public class ManageService {
                 case "category":
                     // 获取数据
                     List<Map<String, Object>> reportByCategory = manageRepostory.getReportByCategory(startTime, endTime);
-                    // 拼装数据
-                    // legend_data
-                    assembleData(result, reportByCategory, "category");
+                    if (reportByCategory.size() > 0) {
+                        // 拼装数据
+                        // legend_data
+                        assembleData(result, reportByCategory, "category");
+                    }
                     break;
                 // 各型号销量情况
                 case "size":
                     // 获取数据
                     List<Map<String, Object>> reportBySize = manageRepostory.getReportBySize(startTime, endTime);
-                    // 拼装数据
-                    assembleData(result, reportBySize, "size");
+                    if (reportBySize.size() > 0) {
+                        // 拼装数据
+                        assembleData(result, reportBySize, "size");
+                    }
                     break;
                 // 成交量情况
                 case "person":
@@ -146,37 +150,62 @@ public class ManageService {
                     startTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
                     // 获取数据
                     List<Map<String, Object>> reportByPerson = manageRepostory.getReportByPerson(startTime, endTime);
-                    // 拼装数据
-                    // xAxis_data
-                    result.put("xAxis_data",reportByPerson.stream().map(info -> info.get("userName")).collect(Collectors.toList()));
+                    if (reportByPerson.size() > 0) {
+                        // 拼装数据
+                        // xAxis_data
+                        result.put("xAxis_data", reportByPerson.stream().map(info -> info.get("userName")).collect(Collectors.toList()));
+                        // series
+                        List<Object> seriesInfoList = new ArrayList<>();
+                        Map<String, Object> seriesInfo = new HashMap<>();
+                        // 这个只有一个柱状图,所有表头提示就省略掉了.
+                        seriesInfo.put("name", "");
+                        Map<String, Object> totalPriceInfo = new HashMap<>();
+                        seriesInfo.put("data", reportByPerson.stream().map(info -> info.get("totalPrice")).collect(Collectors.toList()));
 
-                    List<Object> seriesInfoList = new ArrayList<>();
-                    Map<String, Object> seriesInfo = new HashMap<>();
-                    // 这个只有一个柱状图,所有表头提示就省略掉了.
-                    seriesInfo.put("name", "");
-                    Map<String, Object> totalPriceInfo = new HashMap<>();
-                    seriesInfo.put("data", reportByPerson.stream().map(info -> info.get("totalPrice")).collect(Collectors.toList()));
+                        seriesInfoList.add(seriesInfo);
 
-                    seriesInfoList.add(seriesInfo);
-
-                    result.put("series", seriesInfoList);
+                        result.put("series", seriesInfoList);
+                    }
                     break;
                 // 各个时间段的交易情况
                 case "time":
-//                    SELECT
-//                    SUM(oi.totalPrice) AS sumPrice,
-//                    SUM(gross - tare) AS sumWeight,
-//                    DATE_FORMAT(oi.createDate, '%H') AS dateTime
-//                    FROM
-//                    order_info_detail oid
-//                    LEFT JOIN order_info oi ON oid.orderId = oi.id
-//                    WHERE
-//                    oi.createDate BETWEEN '2020-10-26T00:00'
-//                    AND '2020-10-26T23:45:00.369'
-//                    GROUP BY
-//                    DATE_FORMAT(oi.createDate, '%Y-%m-%d %H')
-//                    ORDER BY
-//                    sumWeight DESC
+                    // 时间段排行,只看当天的即可。
+                    startTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+                    // 获取数据
+                    List<Map<String, Object>> reportByTime = manageRepostory.getReportByTime(startTime, endTime);
+                    if (reportByTime.size() > 0) {
+                        // 拼装数据
+                        // legend_data
+                        List<String> legendDataList = Arrays.asList("价钱/元", "重量/KG");
+                        result.put("legend_data", legendDataList);
+                        // List<String> timeList = Arrays.asList("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23");
+                        List<Object> timeList = reportByTime.stream().map(report -> report.get("dateTime")).collect(Collectors.toList());
+                        // xAxis_data
+                        result.put("xAxis_data", timeList);
+                        // series
+                        List<Object> seriesList = new ArrayList<>();
+                        legendDataList.stream().forEach(k -> {
+                            Map<String, Object> infos = new HashMap<>();
+                            infos.put("name", k);
+                            infos.put("data", timeList.stream().map(time -> {
+                                List<Object> collect = reportByTime.stream()
+                                        .filter(report -> time.equals(report.get("dateTime").toString()))
+                                        .map(report -> {
+                                            String flag = "sumPrice";
+                                            if (k.equals("重量/KG")) {
+                                                flag = "sumWeight";
+                                            }
+                                            return report.getOrDefault(flag, 0);
+                                        }).collect(Collectors.toList());
+                                if(collect.size() > 0) {
+                                    return collect.get(0);
+                                }
+                                return 0;
+                            }).collect(Collectors.toList()));
+                            seriesList.add(infos);
+                        });
+                        result.put("series", seriesList);
+                    }
                     break;
                 default:
                     break;
@@ -184,6 +213,7 @@ public class ManageService {
             if (result.size() > 0) {
                 return new ResultDTO(ResultStatus.SUCCESS, result);
             }
+            return new ResultDTO(ResultStatus.NULL, result);
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }

@@ -87,10 +87,10 @@ async function getBarOption(type) {
     category: '各品种销量情况/KG',
     size: '各型号销量情况/KG',
     person: '交易额排行/元',
-    time: '各个时间段的交易情况'
+    time: '时间段销售情况'
   };
   // 颜色列表
-  const colorArray = Array('DeepSkyBlue','Orange','LightPink','DarkTurquoise','LemonChiffon','Snow');
+  const colorArray = Array('DeepSkyBlue','Orange','LightPink','DarkTurquoise','IndianRed');
   let option = '';
   await REQUEST.request('manage/getReport', 'POST', {
     token: wx.getStorageSync('token'),
@@ -103,18 +103,25 @@ async function getBarOption(type) {
       // 拼装数据集
       for (let index = 0; index < optionData.series.length; index++) {
         const data = optionData.series[index];
+        let color = colorArray[index];
+        if(type == "person") {
+          color = colorArray[index + 2];
+        }
+        if(type == "time") {
+          color = colorArray[index + 3];
+        }
         optionSeries.push({
           name: data.name,
           type: 'bar',
           data: data.data,
-          color: colorArray[index],
+          color: color,
           itemStyle: {
             normal: {
               label: {
                 show: true, //开启显示
                 position: 'top', //在上方显示
                 textStyle: { //数值样式
-                  color: colorArray[index],
+                  color: color,
                 }
               }
             }
@@ -145,6 +152,9 @@ async function getBarOption(type) {
         }],
         series: optionSeries
       }
+    }
+    if(res.data.code == 10000) {
+      option = '';
     }
   })
   return option;
