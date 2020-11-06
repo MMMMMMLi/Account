@@ -1,9 +1,12 @@
 package com.imengli.appletServer.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.imengli.appletServer.common.ResultStatus;
 import com.imengli.appletServer.common.SysConstant;
 import com.imengli.appletServer.dao.ManageRepostory;
 import com.imengli.appletServer.dao.WechatUserRepostory;
+import com.imengli.appletServer.daomain.SysUserDO;
 import com.imengli.appletServer.daomain.WechatAuthDO;
 import com.imengli.appletServer.daomain.WechatUserDO;
 import com.imengli.appletServer.dto.ResultDTO;
@@ -176,7 +179,7 @@ public class ManageService {
                                             }
                                             return report.getOrDefault(flag, 0);
                                         }).collect(Collectors.toList());
-                                if(collect.size() > 0) {
+                                if (collect.size() > 0) {
                                     return collect.get(0);
                                 }
                                 return 0;
@@ -236,5 +239,19 @@ public class ManageService {
                     series.add(info);
                     result.put("series", series);
                 });
+    }
+
+    public ResultDTO getUserList(String token, Integer page, Integer size, String searchType, String searchValue) {
+        // 校验token
+        WechatUserDO wechatUserDO = this.getWechatAuthEntity(token);
+        // 根据信息完善度返回
+        if (wechatUserDO != null) {
+            // TODO: 后续添加管理员校验
+            PageHelper.startPage(page, size);
+            List<SysUserDO> sysUserDOList = manageRepostory.getUserList();
+            PageInfo<SysUserDO> sysUserDOPageInfo = new PageInfo<>(sysUserDOList);
+            return new ResultDTO(ResultStatus.SUCCESS, null, sysUserDOPageInfo);
+        }
+        return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }
 }

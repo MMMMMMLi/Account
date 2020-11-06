@@ -1,6 +1,7 @@
 package com.imengli.appletServer.dao;
 
 import com.imengli.appletServer.common.SysConstant;
+import com.imengli.appletServer.daomain.SysUserDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -68,4 +69,7 @@ public interface ManageRepostory {
             " GROUP BY DATE_FORMAT(oi.createDate, '%Y-%m-%d %H') " +
             " ORDER BY dateTime ")
     List<Map<String, Object>> getReportByTime(LocalDateTime startTime, LocalDateTime endTime);
+
+    @Select("select * from " + SysConstant.USER_TABLE_NAME)
+    List<SysUserDO> getUserList();
 }

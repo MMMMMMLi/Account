@@ -48,12 +48,14 @@
 			</view>
 			<view class="weui-grid__label">每月报告</view>
 		</view>
-		<view class="weui-grid">
-			<view class="weui-grid__icon">
-				<image src="../../images/icon/b1.png" alt></image>
+		<navigator url="/pages/manage/user/user">
+			<view class="weui-grid">
+				<view class="weui-grid__icon">
+					<image src="../../images/icon/b1.png" alt></image>
+				</view>
+				<view class="weui-grid__label">客户管理</view>
 			</view>
-			<view class="weui-grid__label">客户管理</view>
-		</view>
+		</navigator>
 		<view class="weui-grid">
 			<view class="weui-grid__icon">
 				<image src="../../images/icon/b2.png" alt></image>

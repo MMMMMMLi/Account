@@ -1,15 +1,16 @@
 {
-  "entryPagePath": "pages/manage/manage",
+  "entryPagePath": "pages/manage/user/user",
   "pages": [
     "pages/start/start",
     "pages/my/my",
     "pages/billCount/count",
     "pages/add/add",
-    "pages/manage/manage",
     "pages/order/order",
     "pages/userInfo/userInfo",
+    "pages/manage/manage",
     "pages/manage/report/day/day",
-    "pages/manage/report/week/week"
+    "pages/manage/report/week/week",
+    "pages/manage/user/user"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

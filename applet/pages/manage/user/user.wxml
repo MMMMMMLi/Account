@@ -1,0 +1,57 @@
+<view class="page">
+	<view class="{{ inputVal.length > 0 ? 'mask' : '' }}">
+		<view class="weui-search-bar {{inputShowed ? 'weui-search-bar_focusing' : ''}}" id="searchBar">
+			<form class="weui-search-bar__form">
+				<label class="weui-search-bar__label" bindtap="showInput">
+					<i class="weui-icon-search"></i>
+					<span class="weui-search-bar__text">搜索</span>
+				</label>
+				<view class="weui-search-bar__box">
+					<i class="weui-icon-search"></i>
+					<input type="text" class="weui-search-bar__input" confirm-type="search" placeholder="支持输入姓名/拼音/手机号；至多展示20位" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" />
+					<span class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" bindtap="clearInput"></span>
+				</view>
+			</form>
+			<view class="weui-search-bar__cancel-btn" bindtap="hideInput">取消</view>
+		</view>
+		<view wx:if="{{inputVal.length > 0}}">
+			<view class="weui-cells searchbar-result" wx:if="{{inputUserInfo.length > 0}}">
+				<view class="weui-cell weui-cell_active weui-cell_access" wx:for="{{inputUserInfo}}" wx:key="id" data-info="{{item}}" bindtap="searchClick">
+					<view class="weui-cell__bd weui-cell_primary">
+						<view class="weui-media-box__info__meta" style="width:3em">{{item.userName}}</view>
+						<view class="weui-media-box__info__meta weui-media-box__info__meta_extra" style="width:3em">{{item.userNameCode}}</view>
+						<view class="weui-media-box__info__meta weui-media-box__info__meta_extra" style="width:3em">{{item.phoneNumber}}</view>
+					</view>
+				</view>
+			</view>
+			<view class="weui-cells searchbar-result" wx:else>
+				<view class="weui-cell weui-cell_active weui-cell_access">
+					<view class="weui-cell__bd weui-cell_primary">
+						<view>暂无匹配数据</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+	<view class="button-sp-area">
+		<a class="weui-btn weui-btn_mini {{clickButton == 'money' ? 'weui-btn_primary':' weui-btn_default'}}" data-value="money" bindtap="clickButton">总金额</a>
+		<a class="weui-btn weui-btn_mini {{clickButton == 'order' ? 'weui-btn_primary':' weui-btn_default'}}" data-value="order" bindtap="clickButton">总订单</a>
+		<a class="weui-btn weui-btn_mini {{clickButton == 'time' ? 'weui-btn_primary':' weui-btn_default'}}" data-value="time" bindtap="clickButton">交易时间</a>
+		<a class="weui-btn weui-btn_mini {{clickButton == 'phone' ? 'weui-btn_primary':' weui-btn_default'}}" data-value="phone" bindtap="clickButton">手机号</a>
+		<a class="weui-btn weui-btn_mini weui-btn_warn" bindtap="addUser">新增</a>
+	</view>
+	<view class="page__bd">
+		<view class="weui-cells__title">客户列表</view>
+		<scroll-view scroll-y>
+			<view wx:for="{{userList}}" wx:key="id" class="weui-cells weui-cells_after-title">
+				<navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+					<view class="weui-cell__hd">
+						<image src="{{item.avatarUrl}}" style="margin-right: 16px;vertical-align: middle;width:20px; height: 20px;"></image>
+					</view>
+					<view class="weui-cell__bd">{{item.userName}}</view>
+					<view class="weui-cell__ft weui-cell__ft_in-access"></view>
+				</navigator>
+			</view>
+		</scroll-view>
+	</view>
+</view>

@@ -53,7 +53,24 @@ public class ManageController {
      */
     @RequestMapping("/getReportByWeek")
     public ResultDTO getReportByWeek(@RequestParam String token,
-                                    @RequestParam String type) {
+                                     @RequestParam String type) {
         return manageService.getReportByDay(token, type);
+    }
+
+    /**
+     * 获取用户列表
+     *
+     * @param token
+     * @param searchType
+     * @param searchValue
+     * @return
+     */
+    @RequestMapping("/getUserList")
+    public ResultDTO getUserList(@RequestParam String token,
+                                 @RequestParam Integer page,
+                                 @RequestParam Integer size,
+                                 @RequestParam(value = "searchType",required = false) String searchType,
+                                 @RequestParam(value = "searchValue",required = false) String searchValue) {
+        return manageService.getUserList(token,page,size,searchType,searchValue);
     }
 }
