@@ -89,15 +89,14 @@ async function getBarOption(type) {
     category: '各品种销量情况/KG',
     size: '各型号销量情况/KG',
     person: '交易额排行/元',
-    time: '时间段销售情况'
+    order: '每日订单量',
   };
   // 颜色列表
   const colorArray = Array('DeepSkyBlue','Orange','LightPink','DarkTurquoise','IndianRed');
   let option = '';
-  await REQUEST.request('manage/getReport', 'POST', {
+  await REQUEST.request('manage/getReportByWeek', 'POST', {
     token: wx.getStorageSync('token'),
     type: type,
-    state: 0
   }).then(res => {
     if (res.data.code == 20000) {
       const optionData = res.data.data;
@@ -109,7 +108,7 @@ async function getBarOption(type) {
         if(type == "person") {
           color = colorArray[index + 2];
         }
-        if(type == "time") {
+        if(type == "order") {
           color = colorArray[index + 3];
         }
         optionSeries.push({

@@ -94,10 +94,9 @@ async function getBarOption(type) {
   // 颜色列表
   const colorArray = Array('DeepSkyBlue','Orange','LightPink','DarkTurquoise','IndianRed');
   let option = '';
-  await REQUEST.request('manage/getReport', 'POST', {
+  await REQUEST.request('manage/getReportByDay', 'POST', {
     token: wx.getStorageSync('token'),
-    type: type,
-    state: 0
+    type: type
   }).then(res => {
     if (res.data.code == 20000) {
       const optionData = res.data.data;
