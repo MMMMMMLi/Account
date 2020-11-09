@@ -1,13 +1,13 @@
 package com.imengli.appletServer.service;
 
 
+import com.imengli.appletServer.common.ResultStatus;
 import com.imengli.appletServer.dao.SysUserRepostory;
 import com.imengli.appletServer.dao.WechatUserRepostory;
 import com.imengli.appletServer.daomain.SysUserDO;
 import com.imengli.appletServer.daomain.WechatAuthDO;
 import com.imengli.appletServer.daomain.WechatUserDO;
 import com.imengli.appletServer.dto.ResultDTO;
-import com.imengli.appletServer.common.ResultStatus;
 import com.imengli.appletServer.utils.PinyinUtil;
 import com.imengli.appletServer.utils.RedisUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -58,8 +58,8 @@ public class UserService {
                     return new ResultDTO(ResultStatus.ERROR_UN_AUTHORIZED);
                 } else {
                     SysUserDO info = sysUserRepostory.getUserInfoById(wechatUserDOByOpenId.getUserId());
-                    if(StringUtils.isAnyBlank(info.getAddress(),info.getUserName(),info.getPhoneNumber())) {
-                        return new ResultDTO(ResultStatus.ERROR_USERINFO,info);
+                    if (StringUtils.isAnyBlank(info.getAddress(), info.getUserName(), info.getPhoneNumber())) {
+                        return new ResultDTO(ResultStatus.ERROR_USERINFO, info);
                     }
                     return new ResultDTO(ResultStatus.SUCCESS_USERINFO, info);
                 }
@@ -97,6 +97,28 @@ public class UserService {
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }
 
+    public ResultDTO updateWechatUserInfo(String token, String nickName, Integer gender, String city, String province, String country, String avatarUrl, String userInfoId) {
+        // 校验Token
+        WechatAuthDO wechatAuthDO = this.getWechatAuthEntity(token);
+        // 判断是否异常
+        if (wechatAuthDO != null) {
+            // 如果没有异常,则更新用户信息
+            sysUserRepostory.update(
+                    SysUserDO.builder()
+                            .id(userInfoId)
+                            .avatarUrl(avatarUrl)
+                            .nickName(nickName)
+                            .gender(gender)
+                            .city(city)
+                            .province(province)
+                            .country(country)
+                            .build());
+            return new ResultDTO(ResultStatus.SUCCESS,sysUserRepostory.getUserInfoById(userInfoId));
+
+        }
+        return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
+    }
+
     public ResultDTO updateUserInfo(String token, String address, String name, String phone) {
         // 校验Token
         WechatAuthDO wechatAuthDO = this.getWechatAuthEntity(token);
@@ -113,13 +135,13 @@ public class UserService {
     }
 
 
-    public ResultDTO getUserInfoBySearch(String token, String searchValue,Integer size) {
+    public ResultDTO getUserInfoBySearch(String token, String searchValue, Integer size) {
         // 校验Token
         WechatAuthDO wechatAuthDO = this.getWechatAuthEntity(token);
         // 判断是否异常
         if (wechatAuthDO != null) {
-            List<SysUserDO> userEntityList = sysUserRepostory.getUserInfoBySearch(searchValue,size);
-            return new ResultDTO(ResultStatus.SUCCESS_SEARCH_USERINFO,userEntityList);
+            List<SysUserDO> userEntityList = sysUserRepostory.getUserInfoBySearch(searchValue, size);
+            return new ResultDTO(ResultStatus.SUCCESS_SEARCH_USERINFO, userEntityList);
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }

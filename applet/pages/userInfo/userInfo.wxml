@@ -1,3 +1,5 @@
+<import src="/template/update/update.wxml" />
+
 <view class="page">
 	<view wx:if="{{topTips}}" class="weui-toptips weui-toptips_warn fadeIn" style="display:block">{{tipMsg}}</view>
 	<view class="weui-form">
@@ -16,7 +18,14 @@
 								<image class="userinfo-avatar" style="width:88px;height:88px" src="{{userInfos.avatarUrl}}" />
 							</view>
 						</view>
+						<view class="weui-cell weui-cell_active">
+							<view class="weui-cell__hd"><label class="weui-label">微信昵称</label></view>
+							<view class="weui-cell__bd">
+								<input class="weui-input" disabled="{{hasUserInfo}}" placeholder="{{userInfos.nickName}}" placeholder-class="weui-input__placeholder" />
+							</view>
+						</view>
 					</view>
+					<view wx:if="{{hasUserInfo}}" class="weui-cells__title" style="margin-bottom: 20px;color:red;" bindtap="updateInfo">微信信息已过期？点击此处更新</view>
 					<view class="weui-cells__title">基本信息</view>
 					<view class="weui-cells weui-cells_form">
 						<view class="weui-cell weui-cell_active">
@@ -72,3 +81,5 @@
 		</view> -->
 	</view>
 </view>
+<!--  -->
+<template is="apifmUpdate" data="{{updateFlag:updateFlag,avatarUrl:avatarUrl}}" />

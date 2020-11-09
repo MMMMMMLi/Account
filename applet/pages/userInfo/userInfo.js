@@ -14,7 +14,11 @@ Page({
 
     // 用户基本信息
     hasUserInfo: true,
-    userInfos: []
+    userInfos: [],
+
+    // 是否更新微信信息
+    updateFlag: false,
+    avatarUrl: '/images/nologin.png'
   },
   /**
    * 生命周期函数--监听页面加载
@@ -22,7 +26,7 @@ Page({
   onLoad: function (options) {
     this.setData({
       hasUserInfo: !APP.globalData.needUpdateUserInfo,
-      userInfos: APP.globalData.userInfos
+      userInfos: APP.globalData.userInfos,
     })
   },
   // 校验手机号状态
@@ -58,7 +62,7 @@ Page({
       name: e.detail.value.name,
       phone: e.detail.value.phone
     }).then(res => {
-      if(res.data.code == 20006) {
+      if (res.data.code == 20006) {
         wx.showModal({
           content: '提交成功',
           showCancel: false,
@@ -70,7 +74,7 @@ Page({
             });
           }
         })
-      }else {
+      } else {
         wx.showModal({
           content: res.data.msg,
           showCancel: false,
@@ -105,5 +109,44 @@ Page({
   },
   back() {
     wx.navigateBack()
-  }
+  },
+  // 更新微信信息
+  updateInfo() {
+    this.setData({
+      updateFlag: true,
+      avatarUrl: this.data.userInfos ? this.data.userInfos.avatarUrl : '/images/nologin.png'
+    })
+  },
+  // 同意更新
+  processLogin(e) {
+    if (!e.detail.userInfo) {
+      wx.showToast({
+        title: '已取消',
+        icon: 'none',
+      })
+      this.setData({
+        updateFlag: false
+      })
+      return;
+    }
+    let that = this;
+    REQUEST.request('user/updateWechatUserInfo', 'POST', {
+      ...e.detail.userInfo,
+      userInfoId: this.data.userInfos ? this.data.userInfos.id : '9999999',
+      token: wx.getStorageSync('token'),
+    }).then(res => {
+      if (res.data.code == 20000) {
+        that.setData({
+          updateFlag: false,
+          userInfos: res.data.data
+        });
+      }
+    })
+  },
+  // 拒绝更新
+  cancelLogin() {
+    this.setData({
+      updateFlag: false,
+    })
+  },
 })

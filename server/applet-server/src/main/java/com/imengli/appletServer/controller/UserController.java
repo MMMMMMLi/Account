@@ -37,6 +37,19 @@ public class UserController {
         return userService.setUserInfo(token, nickName, gender, city, province, country, avatarUrl);
     }
 
+    @RequestMapping("/updateWechatUserInfo")
+    public ResultDTO updateWechatUserInfo(@RequestParam String token,
+                                          @RequestParam String nickName,
+                                          @RequestParam Integer gender,
+                                          @RequestParam String language,
+                                          @RequestParam String city,
+                                          @RequestParam String province,
+                                          @RequestParam String country,
+                                          @RequestParam String avatarUrl,
+                                          @RequestParam String userInfoId) {
+        return userService.updateWechatUserInfo(token, nickName, gender, city, province, country, avatarUrl,userInfoId);
+    }
+
     @RequestMapping("/updateUserInfo")
     public ResultDTO updateUserInfo(@RequestParam String token,
                                     @RequestParam String address,
@@ -50,7 +63,7 @@ public class UserController {
     public ResultDTO getUserInfoBySearch(@RequestParam String token,
                                          @RequestParam String searchValue,
                                          @RequestParam Integer size) {
-        return userService.getUserInfoBySearch(token,searchValue,size);
+        return userService.getUserInfoBySearch(token, searchValue, size);
     }
 
 }

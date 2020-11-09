@@ -1,0 +1,20 @@
+<template name="apifmUpdate">
+  <view class="apifmLogin" hidden="{{!updateFlag}}">
+    <view class="s-b">
+      <view class="s-l-b">
+        <image src="{{avatarUrl}}" style="margin-bottom: 10px" />
+        <text>授权更新</text>
+      </view>
+      <view class="s-t-b">
+        <view class="s-t-i">
+          <text>·</text>请授权小程序更新用户信息</view>
+        <view class="s-t-i">
+          <text>·</text>我们不会公布您的这些信息</view>
+        <view class="s-t-i">
+          <text>·</text>只是为了给您提供更好的服务</view>
+      </view>
+      <button class="l" open-type="getUserInfo" bindgetuserinfo="processLogin">允许更新</button>
+      <button class="c" bindtap="cancelLogin" type="default">暂不更新</button>
+    </view>
+  </view>
+</template>
