@@ -1,4 +1,5 @@
 <view class="page">
+<!-- 搜索框 -->
 	<view class="{{ inputVal.length > 0 ? 'mask' : '' }}">
 		<view class="weui-search-bar {{inputShowed ? 'weui-search-bar_focusing' : ''}}" id="searchBar">
 			<form class="weui-search-bar__form">
@@ -14,32 +15,16 @@
 			</form>
 			<view class="weui-search-bar__cancel-btn" bindtap="hideInput">取消</view>
 		</view>
-		<view wx:if="{{inputVal.length > 0}}">
-			<view class="weui-cells searchbar-result" wx:if="{{inputUserInfo.length > 0}}">
-				<view class="weui-cell weui-cell_active weui-cell_access" wx:for="{{inputUserInfo}}" wx:key="id" data-info="{{item}}" bindtap="searchClick">
-					<view class="weui-cell__bd weui-cell_primary">
-						<view class="weui-media-box__info__meta" style="width:3em">{{item.userName}}</view>
-						<view class="weui-media-box__info__meta weui-media-box__info__meta_extra" style="width:3em">{{item.userNameCode}}</view>
-						<view class="weui-media-box__info__meta weui-media-box__info__meta_extra" style="width:3em">{{item.phoneNumber}}</view>
-					</view>
-				</view>
-			</view>
-			<view class="weui-cells searchbar-result" wx:else>
-				<view class="weui-cell weui-cell_active weui-cell_access">
-					<view class="weui-cell__bd weui-cell_primary">
-						<view>暂无匹配数据</view>
-					</view>
-				</view>
-			</view>
-		</view>
 	</view>
+	<!-- 排序框 -->
 	<view class="button-sp-area">
 		<a class="weui-btn weui-btn_mini {{clickButton == 'money' ? 'weui-btn_primary':' weui-btn_default'}}" data-value="money" bindtap="clickButton">总金额</a>
-		<a class="weui-btn weui-btn_mini {{clickButton == 'order' ? 'weui-btn_primary':' weui-btn_default'}}" data-value="order" bindtap="clickButton">总订单</a>
+		<a class="weui-btn weui-btn_mini {{clickButton == 'orders' ? 'weui-btn_primary':' weui-btn_default'}}" data-value="orders" bindtap="clickButton">总订单</a>
 		<a class="weui-btn weui-btn_mini {{clickButton == 'time' ? 'weui-btn_primary':' weui-btn_default'}}" data-value="time" bindtap="clickButton">交易时间</a>
 		<a class="weui-btn weui-btn_mini {{clickButton == 'phone' ? 'weui-btn_primary':' weui-btn_default'}}" data-value="phone" bindtap="clickButton">手机号</a>
 		<a class="weui-btn weui-btn_mini weui-btn_warn" bindtap="addUser">新增</a>
 	</view>
+	<!-- 列表 -->
 	<view class="page__bd">
 		<view class="weui-cells__title">客户列表</view>
 		<scroll-view scroll-y>
