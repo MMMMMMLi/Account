@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 /**
  * 用户实体类
  */
@@ -47,18 +49,25 @@ public class SysUserDO {
     // 用户地址
     private String address;
 
+    // 创建时间
+    private LocalDateTime createTime;
+
+    // 更新时间
+    private LocalDateTime updateTime;
+
     // 最后一次登陆时间
     private Long lastLoginTimeStamp;
 
-    public SysUserDO(String id, String userName, String userNameCode, String phoneNumber, String address) {
+    public SysUserDO(String id, String userName, String userNameCode, String phoneNumber, String address, LocalDateTime updateTime) {
         this.id = id;
         this.userName = userName;
         this.userNameCode = userNameCode;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.updateTime = updateTime;
     }
 
-    public SysUserDO(String id, String nickName, String avatarUrl, int gender, String country, String province, String city) {
+    public SysUserDO(String id, String nickName, String avatarUrl, int gender, String country, String province, String city, LocalDateTime createTime, LocalDateTime updateTime) {
         this.id = id;
         this.nickName = nickName;
         this.avatarUrl = avatarUrl;
@@ -66,6 +75,8 @@ public class SysUserDO {
         this.country = country;
         this.province = province;
         this.city = city;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
     }
 
 }

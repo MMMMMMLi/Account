@@ -28,6 +28,12 @@ public class MineUpdateProvider {
             if (!StringUtils.isEmpty(sysUserDO.getAvatarUrl())) {
                 SET("avatarUrl= #{sysUserDO.avatarUrl}");
             }
+            if (sysUserDO.getCreateTime() != null) {
+                SET("createTime = #{sysUserDO.createTime}");
+            }
+            if (sysUserDO.getUpdateTime() != null) {
+                SET("updateTime= #{sysUserDO.updateTime}");
+            }
             if (sysUserDO.getLastLoginTimeStamp() != null) {
                 SET("lastLoginTimeStamp= #{sysUserDO.lastLoginTimeStamp}");
             }

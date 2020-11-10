@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -82,7 +83,8 @@ public class UserService {
                 if (StringUtils.isBlank(userId)) {
                     // 生成用户ID
                     String userID = UUID.randomUUID().toString();
-                    SysUserDO sysUserDO = new SysUserDO(userID, nickName, avatarUrl, gender, country, province, city);
+                    LocalDateTime now = LocalDateTime.now();
+                    SysUserDO sysUserDO = new SysUserDO(userID, nickName, avatarUrl, gender, country, province, city,now,now);
                     // 关联
                     wechatUserDOByOpenId.setUserId(userID);
                     // 保存
@@ -112,6 +114,7 @@ public class UserService {
                             .city(city)
                             .province(province)
                             .country(country)
+                            .updateTime(LocalDateTime.now())
                             .build());
             return new ResultDTO(ResultStatus.SUCCESS,sysUserRepostory.getUserInfoById(userInfoId));
 
@@ -127,7 +130,7 @@ public class UserService {
             WechatUserDO userEntityByOpenId = wechatUserRepostory.getUserEntityByOpenId(wechatAuthDO.getOpenId());
             if (userEntityByOpenId != null) {
                 // 更新
-                sysUserRepostory.update(new SysUserDO(userEntityByOpenId.getUserId(), name, PinyinUtil.ToFirstChar(name), phone, address));
+                sysUserRepostory.update(new SysUserDO(userEntityByOpenId.getUserId(), name, PinyinUtil.ToFirstChar(name), phone, address,LocalDateTime.now()));
                 return new ResultDTO(ResultStatus.SUCCESS_UPDATE_USERINFO);
             }
         }

@@ -14,8 +14,8 @@ public interface SysUserRepostory {
     SysUserDO getUserInfoById(@Param("userId") String userId);
 
     @Insert("INSERT INTO " + SysConstant.USER_TABLE_NAME +
-            " (id,nickName, avatarUrl, gender, country, province, city) " +
-            "VALUES (#{sysUserEntity.id},#{sysUserEntity.nickName},#{sysUserEntity.avatarUrl},#{sysUserEntity.gender},#{sysUserEntity.country},#{sysUserEntity.province},#{sysUserEntity.city})")
+            " (id,nickName, avatarUrl, gender, country, province, city, createTime, updateTime) " +
+            "VALUES (#{sysUserEntity.id},#{sysUserEntity.nickName},#{sysUserEntity.avatarUrl},#{sysUserEntity.gender},#{sysUserEntity.country},#{sysUserEntity.province},#{sysUserEntity.city},#{sysUserEntity.createTime},#{sysUserEntity.updateTime})")
     void save(@Param("sysUserEntity") SysUserDO sysUserDO);
 
     @UpdateProvider(type = MineUpdateProvider.class, method = "updateSysUserInfo")
