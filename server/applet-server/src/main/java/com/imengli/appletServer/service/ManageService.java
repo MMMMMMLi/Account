@@ -6,11 +6,11 @@ import com.imengli.appletServer.common.ResultStatus;
 import com.imengli.appletServer.common.SysConstant;
 import com.imengli.appletServer.dao.ManageRepostory;
 import com.imengli.appletServer.dao.WechatUserRepostory;
-import com.imengli.appletServer.daomain.SysUserDO;
 import com.imengli.appletServer.daomain.WechatAuthDO;
 import com.imengli.appletServer.daomain.WechatUserDO;
 import com.imengli.appletServer.dto.ResultDTO;
 import com.imengli.appletServer.utils.RedisUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +20,7 @@ import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,6 +43,8 @@ public class ManageService {
 
     @Resource
     private ManageRepostory manageRepostory;
+
+    private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public WechatUserDO getWechatAuthEntity(String token) {
         WechatAuthDO wechatAuthDO = null;
@@ -241,15 +244,48 @@ public class ManageService {
                 });
     }
 
+    /**
+     * 获取用户列表
+     *
+     * @param token
+     * @param page
+     * @param size
+     * @param searchType  查询类型  order 排序 | search 搜索 | .... 搜索和排序都存在的情况
+     * @param searchValue
+     * @return
+     */
     public ResultDTO getUserList(String token, Integer page, Integer size, String searchType, String searchValue) {
         // 校验token
         WechatUserDO wechatUserDO = this.getWechatAuthEntity(token);
         // 根据信息完善度返回
         if (wechatUserDO != null) {
             // TODO: 后续添加管理员校验
+            // 构建分页信息
             PageHelper.startPage(page, size);
-            List<SysUserDO> sysUserDOList = manageRepostory.getUserList();
-            PageInfo<SysUserDO> sysUserDOPageInfo = new PageInfo<>(sysUserDOList);
+            // 构建查询Map
+            Map<String, String> searchMap = new HashMap<>();
+            // 如果搜索信息有一个为空,则走普通查询
+            if (StringUtils.isNoneBlank(searchType, searchValue)) {
+                if (searchType.equals("order") || searchType.equals("search")) {
+                    // 如果是标准的查询,则直接构建查询Map即可
+                    searchMap.put(searchType, searchValue);
+                } else {
+                    // 如果不是,则需要构建Map
+                    searchMap.put("order", searchType);
+                    searchMap.put("search", searchValue);
+                }
+            }
+            // 普通查询
+            List<Map<String, Object>> sysUserDOList = manageRepostory.getUserList(searchMap);
+            // 完善页面展示信息
+            sysUserDOList.parallelStream().forEach(userInfo -> {
+                if (searchMap.containsKey("order")) {
+                    userInfo.put("showInfo", userInfo.get(searchMap.get("order")));
+                }
+            });
+            // 构建分页信息
+            PageInfo<Map<String, Object>> sysUserDOPageInfo = new PageInfo<>(sysUserDOList);
+            // 返回
             return new ResultDTO(ResultStatus.SUCCESS, null, sysUserDOPageInfo);
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);

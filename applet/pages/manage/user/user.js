@@ -21,7 +21,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.getUserList(null, null)
+    this.getUserList('', '')
   },
   // 打开搜索input
   showInput: function () {
@@ -65,7 +65,7 @@ Page({
       if (inputVal) {
         this.getUserList(this.data.clickButton, inputVal);
       } else {
-        this.getUserList('order', inputthis.data.clickButtonVal);
+        this.getUserList('order', this.data.clickButtonVal);
       }
     } else {
       this.getUserList('search', inputVal);
@@ -106,12 +106,25 @@ Page({
         that.setData({
           userList: res.data.pageInfo.list
         })
+      } // 校验Token失败，等待1S之后重新拉取数据
+      if (res.data.code === 40002) {
+        setTimeout(() => {
+          if (wx.getStorageSync('token')) {
+            setTimeout(() => {
+              that.getUserList(searchType, searchValue);
+            }, 1000)
+          }
+        }, 1000)
+        return;
       }
     })
   },
   // 手动新增用户
   addUser() {
-
+    wx.showModal({
+      content: '暂未实现此功能',
+      showCancel: false
+    })
   },
   onHide() {
     // this.setData({

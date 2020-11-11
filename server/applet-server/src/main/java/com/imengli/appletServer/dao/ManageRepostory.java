@@ -1,10 +1,11 @@
 package com.imengli.appletServer.dao;
 
 import com.imengli.appletServer.common.SysConstant;
-import com.imengli.appletServer.daomain.SysUserDO;
+import com.imengli.appletServer.dao.provide.MineSelectProvider;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -68,8 +69,8 @@ public interface ManageRepostory {
             " WHERE oi.createDate BETWEEN #{startTime} AND #{endTime} " +
             " GROUP BY DATE_FORMAT(oi.createDate, '%Y-%m-%d %H') " +
             " ORDER BY dateTime ")
-    List<Map<String, Object>> getReportByTime(LocalDateTime startTime, LocalDateTime endTime);
+    List<Map<String, Object>> getReportByTime(@Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
 
-    @Select("select * from " + SysConstant.USER_TABLE_NAME)
-    List<SysUserDO> getUserList();
+    @SelectProvider(value = MineSelectProvider.class, method = "getUserList")
+    List<Map<String,Object>> getUserList(Map<String, String> searchMap);
 }
