@@ -290,4 +290,23 @@ public class ManageService {
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }
+
+    /**
+     * 获取系统一些变量
+     *
+     * @param token
+     * @return
+     */
+    public ResultDTO getSysInfo(String token) {
+        // 校验token
+        WechatUserDO wechatUserDO = this.getWechatAuthEntity(token);
+        // 根据信息完善度返回
+        if (wechatUserDO != null) {
+            // TODO: 后续添加管理员校验}
+
+            // 返回
+            return new ResultDTO(ResultStatus.SUCCESS, SysConstant.getValuesByType("web"));
+        }
+        return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
+    }
 }

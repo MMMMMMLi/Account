@@ -37,6 +37,9 @@
 					<view class="weui-cell__ft weui-cell__ft_in-access">{{clickButton == 'money' ? '￥ ':''}}{{item.showInfo}}{{clickButton == 'orders' ? ' 笔':''}}</view>
 				</navigator>
 			</view>
+			<view wx:if="{{!hasNextPage}}" class="weui-loadmore weui-loadmore_line">
+			<text class="weui-loadmore__tips">暂无更多数据</text>
+		</view>
 		</scroll-view>
 	</view>
 </view>

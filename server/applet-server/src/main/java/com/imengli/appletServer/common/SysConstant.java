@@ -44,6 +44,10 @@ public class SysConstant {
                 .collect(Collectors.groupingBy(e -> e.get("type")));
     }
 
+    public void update() {
+        this.init();
+    }
+
     /**
      * 获取指定type和key的数据
      *

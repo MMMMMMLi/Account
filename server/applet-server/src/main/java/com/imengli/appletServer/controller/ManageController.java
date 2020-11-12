@@ -20,6 +20,8 @@ public class ManageController {
     @Autowired
     private ManageService manageService;
 
+    // ----------------------------------------订单信息----------------------------------------------------
+
     /**
      * 获取 订单汇总信息
      *
@@ -31,6 +33,7 @@ public class ManageController {
         return manageService.getSummaryOrderInfo(token);
     }
 
+    // ----------------------------------------报告系列----------------------------------------------------
     /**
      * 获取每日报告
      *
@@ -57,6 +60,8 @@ public class ManageController {
         return manageService.getReportByDay(token, type);
     }
 
+
+    // ----------------------------------------客户管理----------------------------------------------------
     /**
      * 获取用户列表
      *
@@ -73,4 +78,20 @@ public class ManageController {
                                  @RequestParam(value = "searchValue",required = false) String searchValue) {
         return manageService.getUserList(token,page,size,searchType,searchValue);
     }
+
+    // ----------------------------------------系统管理----------------------------------------------------
+    /**
+     *  获取系统管理数据
+     *
+     * @param token
+     * @return
+     */
+    @RequestMapping("/getSysInfo")
+    public ResultDTO getSysInfo(@RequestParam String token) {
+        return manageService.getSysInfo(token);
+    }
+
+    // ----------------------------------------库存管理----------------------------------------------------
+    // ----------------------------------------订单分析----------------------------------------------------
+    // ----------------------------------------告警信息----------------------------------------------------
 }
