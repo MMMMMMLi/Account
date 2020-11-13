@@ -11,7 +11,8 @@
     "pages/manage/report/day/day",
     "pages/manage/report/week/week",
     "pages/manage/user/user",
-    "pages/manage/system/system"
+    "pages/manage/system/system",
+    "pages/manage/user/detail/detail"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

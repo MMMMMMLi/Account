@@ -1,0 +1,62 @@
+<view class="page">
+	<view style="padding:20px 20px 10px 20px">
+		<view class="page__title" style="font-weight:bolder;">{{userName}}</view>
+		<view class="page__desc">总订单：{{orders}} | 总金额：￥{{money}}</view>
+	</view>
+	<view class="weui-cells__title" style="margin-top:0px;padding-top: 20px;color: black;font-weight:bolder;font-size: 18px;">用户基本信息</view>
+	<view class="page__bd" style="padding-bottom:0px">
+		<view class="weui-cells weui-cells_form">
+			<view class="weui-cell weui-cell_active weui-cell_disabled">
+				<view class="weui-cell__hd">
+					<label class="weui-label">联系方式</label>
+				</view>
+				<view class="weui-cell__bd">
+					<input class="weui-input" value="{{phoneNumber}}" disabled />
+				</view>
+			</view>
+			<view class="weui-cell weui-cell_active weui-cell_disabled">
+				<view class="weui-cell__hd">
+					<label class="weui-label">常用地址</label>
+				</view>
+				<view class="weui-cell__bd">
+					<input class="weui-input" value="{{address}}" disabled />
+				</view>
+			</view>
+			<view class="weui-cell weui-cell_active weui-cell_disabled">
+				<view class="weui-cell__hd">
+					<label class="weui-label">性别</label>
+				</view>
+				<view class="weui-cell__bd">
+					<input class="weui-input" value="{{gender}}" disabled />
+				</view>
+			</view>
+			<view class="weui-cell weui-cell_active weui-cell_disabled">
+				<view class="weui-cell__hd">
+					<label class="weui-label">更新日期</label>
+				</view>
+				<view class="weui-cell__bd">
+					<input class="weui-input" value="{{updateTime}}" disabled />
+				</view>
+			</view>
+		</view>
+	</view>
+	<view class="weui-cells__title" style="color: black;font-weight:bolder;font-size: 18px;">用户订单信息</view>
+	<view class="page__bd">
+		<scroll-view scroll-y>
+			<view wx:for="{{detailsMap}}" wx:key="index" wx:for-index="key" wx:for-item="value">
+				<view class="weui-cells__title" style="font-weight:bolder;">{{key}}</view>
+				<view wx:for="{{value}}" wx:key="index" class="weui-cells weui-cells_after-title">
+					<view class="weui-cell">
+						<view class="weui-cell__bd" style="flex:1">{{item.createTime}} </view>
+						<view class="weui-cell__ft" style="flex:1"> ￥{{item.totalPrice}} </view>
+						<view class="weui-cell__ft" style="flex:1"> {{item.totalWeight}}KG </view>
+						<view class="weui-cell__ft" style="flex:1;color:{{item.status == 0? 'red':'green'}}"> {{item.status == 0? '未付款':'已付款'}}</view>
+					</view>
+				</view>
+			</view>
+			<view wx:if="{{!hasNextPage}}" class="weui-loadmore weui-loadmore_line">
+				<text class="weui-loadmore__tips">暂无更多数据</text>
+			</view>
+		</scroll-view>
+	</view>
+</view>

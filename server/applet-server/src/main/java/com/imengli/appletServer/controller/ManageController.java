@@ -34,6 +34,7 @@ public class ManageController {
     }
 
     // ----------------------------------------报告系列----------------------------------------------------
+
     /**
      * 获取每日报告
      *
@@ -62,6 +63,7 @@ public class ManageController {
 
 
     // ----------------------------------------客户管理----------------------------------------------------
+
     /**
      * 获取用户列表
      *
@@ -74,14 +76,25 @@ public class ManageController {
     public ResultDTO getUserList(@RequestParam String token,
                                  @RequestParam Integer page,
                                  @RequestParam Integer size,
-                                 @RequestParam(value = "searchType",required = false) String searchType,
-                                 @RequestParam(value = "searchValue",required = false) String searchValue) {
-        return manageService.getUserList(token,page,size,searchType,searchValue);
+                                 @RequestParam(value = "searchType", required = false) String searchType,
+                                 @RequestParam(value = "searchValue", required = false) String searchValue) {
+        return manageService.getUserList(token, page, size, searchType, searchValue);
     }
 
+
+    @RequestMapping("/getUserDetails")
+    public ResultDTO getUserDetails(@RequestParam String token,
+                                    @RequestParam String userId,
+                                    @RequestParam Integer page,
+                                    @RequestParam Integer size) {
+        return manageService.getUserDetails(token, userId, page, size);
+    }
+
+
     // ----------------------------------------系统管理----------------------------------------------------
+
     /**
-     *  获取系统管理数据
+     * 获取系统管理数据
      *
      * @param token
      * @return

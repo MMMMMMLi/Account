@@ -291,6 +291,25 @@ public class ManageService {
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }
 
+    public ResultDTO getUserDetails(String token, String userId, Integer page, Integer size) {
+        // 校验token
+        WechatUserDO wechatUserDO = this.getWechatAuthEntity(token);
+        // 根据信息完善度返回
+        if (wechatUserDO != null) {
+            // TODO: 后续添加管理员校验}
+
+            // 构建分页信息
+            PageHelper.startPage(page, size);
+            // 查询
+            List<Map<String, Object>> userDetails = manageRepostory.getUserDetails(userId);
+            // 构建分页信息
+            PageInfo<Map<String, Object>> userDetailsPageInfo = new PageInfo<>(userDetails);
+            // 返回
+            return new ResultDTO(ResultStatus.SUCCESS, null, userDetailsPageInfo);
+        }
+        return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
+    }
+
     /**
      * 获取系统一些变量
      *

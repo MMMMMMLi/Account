@@ -72,5 +72,25 @@ public interface ManageRepostory {
     List<Map<String, Object>> getReportByTime(@Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
 
     @SelectProvider(value = MineSelectProvider.class, method = "getUserList")
-    List<Map<String,Object>> getUserList(Map<String, String> searchMap);
+    List<Map<String, Object>> getUserList(Map<String, String> searchMap);
+
+    @Select(" SELECT " +
+            " 	su.userName, " +
+            " 	su.phoneNumber, " +
+            "   su.address, " +
+            "   CASE su.gender WHEN '1' THEN '男' WHEN '2' THEN '女' END AS gender, " +
+            "   DATE_FORMAT(su.updateTime, '%Y-%m-%d %H:%i:%s') AS updateTime," +
+            " 	DATE_FORMAT(oi.createDate, '%Y-%m-%d') AS createDate, " +
+            " 	DATE_FORMAT(oi.createDate, '%H:%i:%s') AS createTime, " +
+            " 	oi.applyBox, " +
+            " 	oi.retreatBox, " +
+            " 	oi.totalPrice, " +
+            " 	oi.totalWeight, " +
+            " 	oi.`status` " +
+            " FROM " + SysConstant.USER_TABLE_NAME + " su " +
+            " LEFT JOIN " + SysConstant.ORDER_INFO_TABLE_NAME + " oi ON su.id = oi.userId " +
+            " WHERE " +
+            " 	su.id = #{userId} " +
+            " ORDER BY oi.createDate DESC")
+    List<Map<String, Object>> getUserDetails(@Param("userId") String userId);
 }

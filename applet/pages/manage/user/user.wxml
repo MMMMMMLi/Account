@@ -29,7 +29,7 @@
 		<view class="weui-cells__title">客户列表</view>
 		<scroll-view scroll-y>
 			<view wx:for="{{userList}}" wx:key="id" class="weui-cells weui-cells_after-title">
-				<navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+				<navigator url="./detail/detail?userId={{item.id}}&orders={{item.orders}}&money={{item.money}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
 					<view class="weui-cell__hd">
 						<image src="{{item.avatarUrl}}" style="margin-right: 16px;vertical-align: middle;width:20px; height: 20px;"></image>
 					</view>

@@ -179,15 +179,4 @@ Page({
       this.getUserList(this.data.searchType, this.data.searchValue);
     }
   },
-  onHide() {
-    that.setData({
-      inputVal:'',
-      page: 0,
-      hasNextPage: false,
-      searchType: '',
-      searchValue: '',
-      clickButton : '',
-      userList:[]
-    })
-  },
 })
