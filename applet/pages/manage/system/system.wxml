@@ -33,7 +33,7 @@
 		<view class="weui-form__opr-area" style="margin:15px 0px 25px 0px;display:flex">
 			<a wx:if="{{isDisabled}}" class="weui-btn weui-btn_default" style="margin:15px 0px 25px 0px;flex:1;width:80%" bindtap="inputDisable">编辑</a>
 			<a wx:else class="weui-btn weui-btn_default" style="margin:15px 0px 25px 0px;flex:1;width:80%" bindtap="inputDisable">完成</a>
-			<a class="weui-btn weui-btn_primary" style="margin:15px 0px 25px 0px;flex:1;width:80%" bindtap="updateInfo">提交</a>
+			<a class="weui-btn weui-btn_primary" style="margin:15px 0px 25px 0px;flex:1;width:80%" bindtap="submitInfo">提交</a>
 		</view>
 	</view>
 </view>

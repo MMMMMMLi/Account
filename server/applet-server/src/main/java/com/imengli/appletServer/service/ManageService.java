@@ -1,5 +1,6 @@
 package com.imengli.appletServer.service;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.imengli.appletServer.common.ResultStatus;
@@ -15,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
@@ -329,5 +331,37 @@ public class ManageService {
                             .collect(Collectors.groupingBy(e -> e.get("key"))));
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
+    }
+
+    /**
+     * 修改系统变量
+     *
+     * @param sysInfo
+     * @return
+     */
+    @Transactional
+    public ResultDTO updateSystemInfo(String sysInfo) {
+
+        // 此处就不校验Token了.
+        // 格式化一下参数
+        Map<String,List<Map<String ,Object>>> parseArrayInfo = JSON.parseObject(sysInfo, HashMap.class);
+        // 将所有的参数都归并到一个集合中
+        Map<String,List<Map<String,Object>>> updateInfos = new HashMap<>();
+        parseArrayInfo.forEach((k,infoList) -> {
+            updateInfos.put("insert",
+                    infoList.parallelStream()
+                            .filter(info -> StringUtils.isBlank(String.valueOf(info.get("id"))))
+                            .collect(Collectors.toList())
+            );
+            updateInfos.put("update",
+                    infoList.parallelStream()
+                            .filter(info -> StringUtils.isNotBlank(String.valueOf(info.get("id"))))
+                            .collect(Collectors.toList())
+            );
+        });
+        // 更新数据库
+        manageRepostory.updateOrInsertSystemInfo(updateInfos);
+
+        return new ResultDTO(ResultStatus.SUCCESS);
     }
 }

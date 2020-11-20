@@ -107,9 +107,8 @@ public class ManageController {
     }
 
     @RequestMapping("/updateSystemInfo")
-    public ResultDTO updateSystemInfo(@RequestParam(value = "sysInfo") Map<String, Object> sysInfo) {
-        System.out.println(sysInfo);
-        return null;
+    public ResultDTO updateSystemInfo(@RequestParam String sysInfo) {
+        return manageService.updateSystemInfo(sysInfo);
     }
 
     // ----------------------------------------库存管理----------------------------------------------------

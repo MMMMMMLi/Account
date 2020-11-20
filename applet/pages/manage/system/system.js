@@ -47,12 +47,21 @@ Page({
     if (param.value == "add") {
       sysInfo[param.type].push({
         id: "",
+        key:param.type,
         value: "新增",
         status: false
       })
     } else {
       if (sysInfo[param.type].length > 1) {
-        sysInfo[param.type].pop();
+        let delInfo = sysInfo[param.type].pop();
+        console.log(delInfo);
+        if(delInfo.id) {
+          wx.showModal({
+            content: '只能删除新增数据！',
+            showCancel: false
+          })
+          sysInfo[param.type].push(delInfo);
+        }
       } else {
         wx.showModal({
           content: '参数列表不可为空！',
@@ -79,7 +88,7 @@ Page({
     })
   },
   // 提交
-  updateInfo() {
+  submitInfo() {
     let that = this;
     // 提交
     wx.showModal({
@@ -87,8 +96,8 @@ Page({
       success(res) {
         if (res.confirm) {
           REQUEST.request('manage/updateSystemInfo', 'POST', {
-            sysInfo: that.data.sysInfo
-          },{}).then(res => {
+            sysInfo: JSON.stringify(that.data.sysInfo)
+          }).then(res => {
             if (res.data.code == 20000) {
               wx.navigateBack()
             }
