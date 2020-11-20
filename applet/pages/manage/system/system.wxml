@@ -1,2 +1,39 @@
-<!--pages/manage/system/system.wxml-->
-<text>pages/manage/system/system.wxml</text>
+<view class="page">
+	<view class="weui-form">
+		<view class="weui-form__text-area">
+			<h2 class="weui-form__title">系统参数设置</h2>
+		</view>
+		<view wx:for="{{sysInfo}}" wx:key="index" wx:for-index="key" wx:for-item="value" class="weui-form__control-area" style="margin:10px 0">
+			<view class="weui-cells__title">{{key == "size" ? "大小":"品种"}}</view>
+			<view wx:for="{{value}}" wx:key="index" class="weui-cells__group weui-cells__group_form">
+				<view class="weui-cells weui-cells_form">
+					<view class="weui-cell weui-cell_active weui-cell_switch">
+						<input id="{{key}}-{{index}}" class="weui-cell__bd" value="{{item.value}}" disabled="{{isDisabled}}" bindblur="updateInfo" data-key="{{key}}" data-index="{{index}}"></input>
+						<!-- <view class="weui-cell__ft" style="display: flex;"> -->
+						<!-- <view style="width:32px;height:32px;margin-right: 10px;border-radius: 5px;">
+								<image class="weui-slideview__btn__icon" src="../../../images/icon/update.png" bindtap="updateValue" data-id="{{key}}-{{index}}"></image>
+							</view> -->
+						<label class="weui-switch-cp">
+							<switch class="weui-switch-cp__input" checked="{{item.status}}" data-key="{{key}}" data-index="{{index}}" bindchange="switchBoxChange" />
+							<view class="weui-switch-cp__box"></view>
+						</label>
+						<!-- </view> -->
+					</view>
+				</view>
+			</view>
+			<view class="weui-panel__ft" style="display:flex;">
+				<a class="weui-cell weui-cell_active weui-cell_access weui-cell_link" style="padding: 0;flex:0.5;">
+					<view class="weui-cell__bd" style="text-align: center;" bindtap="addOrDelInfo" data-type="{{key}}" data-value="del">-</view>
+				</a>
+				<a class="weui-cell weui-cell_active weui-cell_access weui-cell_link" style="padding: 0;flex:0.5;">
+					<view class="weui-cell__bd" style="text-align: center;" bindtap="addOrDelInfo" data-type="{{key}}" data-value="add">+</view>
+				</a>
+			</view>
+		</view>
+		<view class="weui-form__opr-area" style="margin:15px 0px 25px 0px;display:flex">
+			<a wx:if="{{isDisabled}}" class="weui-btn weui-btn_default" style="margin:15px 0px 25px 0px;flex:1;width:80%" bindtap="inputDisable">编辑</a>
+			<a wx:else class="weui-btn weui-btn_default" style="margin:15px 0px 25px 0px;flex:1;width:80%" bindtap="inputDisable">完成</a>
+			<a class="weui-btn weui-btn_primary" style="margin:15px 0px 25px 0px;flex:1;width:80%" bindtap="updateInfo">提交</a>
+		</view>
+	</view>
+</view>

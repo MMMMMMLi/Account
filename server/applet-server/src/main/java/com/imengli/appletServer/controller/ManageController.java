@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 /**
  * @author: Weijia Jiang
  * @date: Created in 2020/10/22 15:25
@@ -102,6 +104,12 @@ public class ManageController {
     @RequestMapping("/getSysInfo")
     public ResultDTO getSysInfo(@RequestParam String token) {
         return manageService.getSysInfo(token);
+    }
+
+    @RequestMapping("/updateSystemInfo")
+    public ResultDTO updateSystemInfo(@RequestParam(value = "sysInfo") Map<String, Object> sysInfo) {
+        System.out.println(sysInfo);
+        return null;
     }
 
     // ----------------------------------------库存管理----------------------------------------------------

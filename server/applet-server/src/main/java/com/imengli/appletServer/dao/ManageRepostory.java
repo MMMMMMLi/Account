@@ -93,4 +93,7 @@ public interface ManageRepostory {
             " 	su.id = #{userId} " +
             " ORDER BY oi.createDate DESC")
     List<Map<String, Object>> getUserDetails(@Param("userId") String userId);
+
+    @Select("SELECT id,`key`,`value`,`status` FROM " + SysConstant.CONSTANT_TABLE_NAME + " WHERE type = 'web' ORDER BY `key`, id;")
+    List<Map<String, Object>> getSysContant();
 }

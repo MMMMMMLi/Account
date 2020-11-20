@@ -322,9 +322,11 @@ public class ManageService {
         // 根据信息完善度返回
         if (wechatUserDO != null) {
             // TODO: 后续添加管理员校验}
-
             // 返回
-            return new ResultDTO(ResultStatus.SUCCESS, SysConstant.getValuesByType("web"));
+            return new ResultDTO(ResultStatus.SUCCESS,
+                    manageRepostory.getSysContant()
+                            .parallelStream()
+                            .collect(Collectors.groupingBy(e -> e.get("key"))));
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }

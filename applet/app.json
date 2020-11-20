@@ -1,5 +1,5 @@
 {
-  "entryPagePath": "pages/manage/manage",
+  "entryPagePath": "pages/manage/system/system",
   "pages": [
     "pages/start/start",
     "pages/my/my",

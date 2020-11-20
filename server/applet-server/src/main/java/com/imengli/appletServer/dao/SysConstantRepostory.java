@@ -16,6 +16,6 @@ import java.util.Map;
 @Mapper
 public interface SysConstantRepostory {
 
-    @Select("select type,`key`,`value`,sortFlag from " + SysConstant.CONSTANT_TABLE_NAME + " where status = 1 order by type,`key`,sortFlag desc")
+    @Select("select type,`key`,`value`,id from " + SysConstant.CONSTANT_TABLE_NAME + " where status = 1 order by type,`key`,id")
     List<Map<String, Object>> getConstant();
 }
