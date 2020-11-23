@@ -36,7 +36,7 @@
 			<a wx:if="{{isDisabled}}" class="weui-btn weui-btn_mini weui-btn_default" bindtap="inputDisable" style="margin-right:24px;font-size: 18px;">编辑</a>
 			<a wx:else class="weui-btn weui-btn_mini weui-btn_default" bindtap="inputDisable" style="margin-right:24px;font-size: 18px;">完成</a>
 			<a class="weui-btn weui-btn_mini weui-btn_warn" style="margin-right:24px;font-size: 18px;" bindtap="rollback">返回</a>
-			<a class="weui-btn weui-btn_mini weui-btn_primary" bindtap="submitInfo" style="font-size: 18px;">提交</a>
+			<a wx:if="{{isDisabled}}" class="weui-btn weui-btn_mini weui-btn_primary" bindtap="submitInfo" style="font-size: 18px;">提交</a>
 		</view>
 		<template is="footer" />
 	</view>
