@@ -46,6 +46,9 @@ public class ManageService {
     @Resource
     private ManageRepostory manageRepostory;
 
+    @Autowired
+    private SysConstant sysConstant;
+
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public WechatUserDO getWechatAuthEntity(String token) {
@@ -344,23 +347,35 @@ public class ManageService {
 
         // 此处就不校验Token了.
         // 格式化一下参数
-        Map<String,List<Map<String ,Object>>> parseArrayInfo = JSON.parseObject(sysInfo, HashMap.class);
+        Map<String, List<Map<String, Object>>> parseArrayInfo = JSON.parseObject(sysInfo, HashMap.class);
         // 将所有的参数都归并到一个集合中
-        Map<String,List<Map<String,Object>>> updateInfos = new HashMap<>();
-        parseArrayInfo.forEach((k,infoList) -> {
-            updateInfos.put("insert",
+        List<Map<String, Object>> updateInfos = new ArrayList<>();
+        List<Map<String, Object>> insertInfos = new ArrayList<>();
+        parseArrayInfo.forEach((k, infoList) -> {
+            insertInfos.addAll(
                     infoList.parallelStream()
                             .filter(info -> StringUtils.isBlank(String.valueOf(info.get("id"))))
                             .collect(Collectors.toList())
             );
-            updateInfos.put("update",
+            updateInfos.addAll(
                     infoList.parallelStream()
                             .filter(info -> StringUtils.isNotBlank(String.valueOf(info.get("id"))))
+                            .filter(info -> info.containsKey("flag"))
                             .collect(Collectors.toList())
             );
         });
         // 更新数据库
-        manageRepostory.updateOrInsertSystemInfo(updateInfos);
+        // 新建参数
+        if (insertInfos.size() > 0) {
+            manageRepostory.insertSystemInfo(insertInfos);
+        }
+        // 更新参数
+        updateInfos.parallelStream().forEach(info -> {
+            manageRepostory.updateSystemInfo(info);
+        });
+
+        // 每次更新完数据库之后,都需要更新一下当前系统保存的常用系统列表
+        sysConstant.update();
 
         return new ResultDTO(ResultStatus.SUCCESS);
     }

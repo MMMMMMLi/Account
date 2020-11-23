@@ -36,6 +36,7 @@ Page({
   switchBoxChange(e) {
     let sysInfo = this.data.sysInfo;
     sysInfo[e.currentTarget.dataset.key][e.currentTarget.dataset.index].status = e.detail.value;
+    sysInfo[e.currentTarget.dataset.key][e.currentTarget.dataset.index].flag = 1;
     this.setData({
       sysInfo
     })
@@ -47,15 +48,15 @@ Page({
     if (param.value == "add") {
       sysInfo[param.type].push({
         id: "",
-        key:param.type,
+        key: param.type,
+        type: "web",
         value: "新增",
         status: false
       })
     } else {
       if (sysInfo[param.type].length > 1) {
         let delInfo = sysInfo[param.type].pop();
-        console.log(delInfo);
-        if(delInfo.id) {
+        if (delInfo.id) {
           wx.showModal({
             content: '只能删除新增数据！',
             showCancel: false
@@ -82,6 +83,9 @@ Page({
   // 输入框失去焦点
   updateInfo(e) {
     let sysInfo = this.data.sysInfo;
+    if (sysInfo[e.currentTarget.dataset.key][e.currentTarget.dataset.index].value != e.detail.value) {
+      sysInfo[e.currentTarget.dataset.key][e.currentTarget.dataset.index].flag = 1;
+    }
     sysInfo[e.currentTarget.dataset.key][e.currentTarget.dataset.index].value = e.detail.value;
     this.setData({
       sysInfo

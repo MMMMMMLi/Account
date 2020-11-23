@@ -1,8 +1,8 @@
 package com.imengli.appletServer.dao;
 
 import com.imengli.appletServer.common.SysConstant;
+import com.imengli.appletServer.dao.provide.MineInsertProvider;
 import com.imengli.appletServer.dao.provide.MineSelectProvider;
-import com.imengli.appletServer.dao.provide.MineUpdateProvider;
 import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDateTime;
@@ -95,6 +95,11 @@ public interface ManageRepostory {
     @Select("SELECT id,`key`,`value`,`status` FROM " + SysConstant.CONSTANT_TABLE_NAME + " WHERE type = 'web' ORDER BY `key`, id;")
     List<Map<String, Object>> getSysContant();
 
-    @UpdateProvider(value = MineUpdateProvider.class,method = "")
-    void updateOrInsertSystemInfo(Map<String,List<Map<String,Object>>> updateInfos);
+    @InsertProvider(value = MineInsertProvider.class, method = "insertSystemInfo")
+    void insertSystemInfo(List<Map<String, Object>> insertInfos);
+
+    @Update(" update " + SysConstant.CONSTANT_TABLE_NAME +
+            " set `value` = #{info.value}, updateDate = now(), `status` = #{info.status}" +
+            " where id = #{info.id}")
+    void updateSystemInfo(@Param("info") Map<String, Object> info);
 }
