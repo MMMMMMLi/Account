@@ -32,12 +32,11 @@
 				</a>
 			</view>
 		</view>
-		<view class="weui-form__opr-area" style="margin-bottom: 10px;">
-			<button wx:if="{{isDisabled}}" class="weui-btn weui-btn_default" bindtap="inputDisable">编辑</button>
-			<button wx:else class="weui-btn weui-btn_default" bindtap="inputDisable">完成</button>
-		</view>
-		<view class="weui-form__opr-area">
-			<button class="weui-btn weui-btn_primary" bindtap="submitInfo">提交</button>
+		<view class="button-sp-area">
+			<a wx:if="{{isDisabled}}" class="weui-btn weui-btn_mini weui-btn_default" bindtap="inputDisable" style="margin-right:24px;font-size: 18px;">编辑</a>
+			<a wx:else class="weui-btn weui-btn_mini weui-btn_default" bindtap="inputDisable" style="margin-right:24px;font-size: 18px;">完成</a>
+			<a class="weui-btn weui-btn_mini weui-btn_warn" style="margin-right:24px;font-size: 18px;" bindtap="rollback">返回</a>
+			<a class="weui-btn weui-btn_mini weui-btn_primary" bindtap="submitInfo" style="font-size: 18px;">提交</a>
 		</view>
 		<template is="footer" />
 	</view>

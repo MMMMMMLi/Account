@@ -91,6 +91,10 @@ Page({
       sysInfo
     })
   },
+  // 返回
+  rollback() {
+    wx.navigateBack()
+  },
   // 提交
   submitInfo() {
     let that = this;
