@@ -1,13 +1,13 @@
 {
-  "entryPagePath": "pages/manage/manage",
+  "entryPagePath": "pages/manage/index/manage",
   "pages": [
     "pages/start/start",
     "pages/my/my",
-    "pages/billCount/count",
+    "pages/count/count",
     "pages/add/add",
     "pages/order/order",
     "pages/userInfo/userInfo",
-    "pages/manage/manage",
+    "pages/manage/index/manage",
     "pages/manage/report/day/day",
     "pages/manage/report/week/week",
     "pages/manage/user/user",
@@ -39,7 +39,7 @@
         "text": "我的"
       },
       {
-        "pagePath": "pages/billCount/count",
+        "pagePath": "pages/count/count",
         "iconPath": "images/tabBar/billcount.png",
         "selectedIconPath": "images/tabBar/billcount_select.png",
         "text": "订单汇总"
@@ -51,7 +51,7 @@
         "text": "添加"
       },
       {
-        "pagePath": "pages/manage/manage",
+        "pagePath": "pages/manage/index/manage",
         "iconPath": "images/tabBar/manage.png",
         "selectedIconPath": "images/tabBar/manage_select.png",
         "text": "管理"

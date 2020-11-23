@@ -1,5 +1,5 @@
-const CONFIG = require('../../config.js');
-const REQUEST = require('../../utils/request');
+const CONFIG = require('../../../config.js');
+const REQUEST = require('../../../utils/request');
 
 Page({
   data: {
