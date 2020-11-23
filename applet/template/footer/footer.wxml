@@ -1,0 +1,10 @@
+<template name="footer">
+	<view class="weui-form__extra-area">
+		<view class="weui-footer">
+			<view class="weui-footer__links">
+				<!-- <a href="javascript:" class="weui-footer__link">底部链接文本</a> -->
+			</view>
+			<view class="weui-footer__text">Copyright © 2019-2020 兴隆薯业</view>
+		</view>
+	</view>
+</template>

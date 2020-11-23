@@ -1,4 +1,5 @@
 <import src="/template/update/update.wxml" />
+<import src="/template/footer/footer.wxml" />
 
 <view class="page">
 	<view wx:if="{{topTips}}" class="weui-toptips weui-toptips_warn fadeIn" style="display:block">{{tipMsg}}</view>
@@ -71,14 +72,7 @@
 				<button class="weui-btn weui-btn_primary" bindtap="back">返回</button>
 			</view>
 		</form>
-		<!-- <view class="weui-form__extra-area">
-			<view class="weui-footer">
-				<view class="weui-footer__links">
-					<a href="javascript:" class="weui-footer__link">底部链接文本</a>
-				</view>
-				<view class="weui-footer__text">Copyright © 2008-2019 weui.io</view>
-			</view>
-		</view> -->
+		<template is="footer" />
 	</view>
 </view>
 <!--  -->

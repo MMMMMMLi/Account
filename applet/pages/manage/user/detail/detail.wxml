@@ -1,3 +1,5 @@
+<import src="/template/footer/footer.wxml" />
+
 <view class="page">
 	<view style="padding:20px 20px 10px 20px">
 		<view class="page__title" style="font-weight:bolder;">{{userName}}</view>
@@ -59,4 +61,5 @@
 			</view>
 		</scroll-view>
 	</view>
+    <template is="footer" />
 </view>

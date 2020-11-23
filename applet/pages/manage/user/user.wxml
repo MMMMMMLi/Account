@@ -1,3 +1,5 @@
+<import src="/template/footer/footer.wxml" />
+
 <view class="page">
 <!-- 搜索框 -->
 	<view class="{{ inputVal.length > 0 ? 'mask' : '' }}">
@@ -42,4 +44,5 @@
 		</view>
 		</scroll-view>
 	</view>
+	<template is="footer" />
 </view>

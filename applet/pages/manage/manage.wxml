@@ -1,3 +1,5 @@
+<import src="/template/footer/footer.wxml" />
+
 <view class="page" style="background-color:#FFFFFF">
 	<view class="page__hd" bindtap="switchContent">
 		<view class="page__title">清新小句子</view>
@@ -105,15 +107,12 @@
 		</view>
 	</navigator>
 	<view class="line"></view>
-	<navigator url="/pages/asset/index">
+	<navigator url="/pages/asset/index" style="margin-bottom:30px">
 		<view class="menu-item">
 			<view class="l">资金明细</view>
 			<image class="next" src="/images/icon/next.png"></image>
 		</view>
 	</navigator>
-	<view class="line"></view>
 
-	<view class="space"></view>
-	<view class="version">@兴隆薯业 v {{version}}</view>
-	<view class="space"></view>
+	<template is="footer" />
 </view>

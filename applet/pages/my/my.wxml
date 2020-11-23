@@ -1,4 +1,5 @@
 <import src="/template/login/index.wxml" />
+<import src="/template/footer/footer.wxml" />
 
 <view class="container">
 	<view wx:if="{{apiUserInfoMap}}" class="userinfo">
@@ -192,24 +193,20 @@
 		<image class="next" src="/images/icon/next.png"></image>
 	</view>
 	<view class="line"></view>
-	<view wx:if="{{apiUserInfoMap}}" class="menu-item" bindtap="loginOut">
+	<view wx:if="{{apiUserInfoMap}}" class="menu-item" bindtap="loginOut" style="margin-bottom:30px">
 		<view class="l">退出登录</view>
 		<image class="next" src="/images/icon/next.png"></image>
 	</view>
-	<view wx:else class="menu-item" bindtap="goLogin">
+	<view wx:else class="menu-item" bindtap="goLogin" style="margin-bottom:30px">
 		<view class="l">授权登录</view>
 		<image class="next" src="/images/icon/next.png"></image>
 	</view>
-
 	<!-- <view class="line"></view>
   <view class="menu-item">
     <view class="l">绑定官网账号</view>
     <image class="next" src="/images/icon/next.png"></image>
   </view> -->
-
-	<view class="space"></view>
-	<view class="version">@兴隆薯业 v {{version}}</view>
-	<view class="space"></view>
+	<template is="footer" />
 </view>
 
 <template is="apifmLogin" data="{{wxAuth: wxAuth}}" />
