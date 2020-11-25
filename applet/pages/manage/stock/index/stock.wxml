@@ -2,63 +2,52 @@
 
 <view class="page">
 	<view class="weui-form__text-area" style="padding: 45px 32px 10px 32px">
-			<h2 class="weui-form__title">库存信息</h2>
-		</view>
-		<view class="weui-cell weui-cell_active weui-cell_disabled">
-			可体验表单输入样式，当输入位数不等于16位的时候点击按钮可看到报错样式。
-		</view>
-	<!-- <view style="padding:20px 20px 10px 20px">
-		<view class="page__title" style="font-weight:bolder;">{{userName}}</view>
-		<view class="page__desc">总订单：{{orders}} | 总金额：￥{{money}}</view>
-	</view> -->
-	<view class="weui-cells__title" style="margin-top:0px;padding-top: 20px;color: black;font-weight:bolder;font-size: 18px;">最新库存记录</view>
+		<h2 class="weui-form__title">剩余库存：9999KG</h2>
+	</view>
+	<view class="weui-cells__title"
+		style="margin-top:0px;padding-top: 20px;color: black;font-weight:bolder;font-size: 18px;">库存详情</view>
 	<view class="page__bd" style="padding-bottom:0px">
 		<view class="weui-cells weui-cells_form">
 			<view class="weui-cell weui-cell_active weui-cell_disabled">
 				<view class="weui-cell__hd">
-					<label class="weui-label">联系方式</label>
+					<label class="weui-label">西瓜红</label>
 				</view>
 				<view class="weui-cell__bd">
-					<input class="weui-input" value="{{phoneNumber}}" disabled />
+					<input class="weui-input" value="9999KG" disabled />
 				</view>
 			</view>
 			<view class="weui-cell weui-cell_active weui-cell_disabled">
 				<view class="weui-cell__hd">
-					<label class="weui-label">常用地址</label>
+					<label class="weui-label">西瓜红</label>
 				</view>
 				<view class="weui-cell__bd">
-					<input class="weui-input" value="{{address}}" disabled />
+					<input class="weui-input" value="9999KG" disabled />
 				</view>
-			</view>
-			<view class="weui-cell weui-cell_active weui-cell_disabled">
+			</view><view class="weui-cell weui-cell_active weui-cell_disabled">
 				<view class="weui-cell__hd">
-					<label class="weui-label">性别</label>
+					<label class="weui-label">西瓜红</label>
 				</view>
 				<view class="weui-cell__bd">
-					<input class="weui-input" value="{{gender}}" disabled />
+					<input class="weui-input" value="9999KG" disabled />
 				</view>
-			</view>
-			<view class="weui-cell weui-cell_active weui-cell_disabled">
+			</view><view class="weui-cell weui-cell_active weui-cell_disabled">
 				<view class="weui-cell__hd">
-					<label class="weui-label">更新日期</label>
+					<label class="weui-label">烟薯26</label>
 				</view>
 				<view class="weui-cell__bd">
-					<input class="weui-input" value="{{updateTime}}" disabled />
+					<input class="weui-input" value="360KG" disabled />
 				</view>
 			</view>
 		</view>
-		<view style="display:flex;align-items: center;margin-right:10px">
-			<view style="color: var(--weui-FG-1);font-size:14px;flex:1;text-align:right;">查看全部</view>
-			<image class="next" src="/images/icon/next.png" style="text-align:right;"></image>
-		</view>
+		
 	</view>
-	<view class="weui-cells__title" style="color: black;font-weight:bolder;font-size: 18px;">更多操作</view>
-	<view class="weui-grids" style="margin:10px 0 55px 0;display:flex;padding:3%;position:unset;background:#FFF">
+	<view class="weui-cells__title" style="color: black;font-weight:bolder;font-size: 18px;">库存操作</view>
+	<view class="weui-grids" style="display:flex;padding:3%;position:unset;background:#FFF">
 		<navigator url="/pages/manage/report/week/week" style="flex:1;">
 			<view class="weui-grid__icon">
 				<image src="/images/icon/stock1.png" alt></image>
 			</view>
-			<view class="weui-grid__label">增加库存</view>
+			<view class="weui-grid__label">新增库存</view>
 		</navigator>
 		<navigator url="/pages/manage/report/week/week" style="flex:1;">
 			<view class="weui-grid__icon">
@@ -67,5 +56,51 @@
 			<view class="weui-grid__label">库存校准</view>
 		</navigator>
 	</view>
+	<view class="weui-cells__title"
+		style="margin-top:0px;padding-top: 20px;color: black;font-weight:bolder;font-size: 18px;">日志记录</view>
+	<view class="page__bd" style="padding-bottom:0px;margin:10px 0 55px 0;">
+		<view class="weui-cells weui-cells_form" style="font-size:14px;">
+			<view class="weui-cell weui-cell_active weui-cell_disabled">
+				<view class="weui-cell__bd">
+					<input class="weui-input"  value="2020-11-25 17:09:13 | 姜伟加 | 西瓜红 | 小 | -2365KG" disabled />
+				</view>
+			</view>
+			<view class="weui-cell weui-cell_active weui-cell_disabled">
+				<view class="weui-cell__bd">
+					<input class="weui-input"  value="2020-11-25 17:09:13 | 姜伟加 | 西瓜红 | 小 | -2365KG" disabled />
+				</view>
+			</view>
+			<view class="weui-cell weui-cell_active weui-cell_disabled">
+				<view class="weui-cell__bd">
+					<input class="weui-input"  value="2020-11-25 17:09:13 | 姜伟加 | 西瓜红 | 小 | -2365KG" disabled />
+				</view>
+			</view>
+			<view class="weui-cell weui-cell_active weui-cell_disabled">
+				<view class="weui-cell__bd">
+					<input class="weui-input"  value="2020-11-25 17:09:13 | 姜伟加 | 西瓜红 | 小 | -2365KG" disabled />
+				</view>
+			</view>
+			<view class="weui-cell weui-cell_active weui-cell_disabled">
+				<view class="weui-cell__bd">
+					<input class="weui-input"  value="2020-11-25 17:09:13 | 姜伟加 | 西瓜红 | 小 | -2365KG" disabled />
+				</view>
+			</view>
+			<view class="weui-cell weui-cell_active weui-cell_disabled">
+				<view class="weui-cell__bd">
+					<input class="weui-input"  value="2020-11-25 17:09:13 | 姜伟加 | 西瓜红 | 小 | -2365KG" disabled />
+				</view>
+			</view>
+			<view class="weui-cell weui-cell_active weui-cell_disabled">
+				<view class="weui-cell__bd">
+					<input class="weui-input"  value="2020-11-25 17:09:13 | 姜伟加 | 西瓜红 | 小 | -2365KG" disabled />
+				</view>
+			</view>
+		</view>
+		<view style="display:flex;align-items: center;margin-right:10px">
+			<view style="color: var(--weui-FG-1);font-size:14px;flex:1;text-align:right;">查看全部</view>
+			<image class="next" src="/images/icon/next.png" style="text-align:right;"></image>
+		</view>
+	</view>
+
 	<template is="footer" />
 </view>
