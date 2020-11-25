@@ -66,7 +66,7 @@
 				<view class="weui-grid__label">系统管理</view>
 			</view>
 		</navigator>
-		<navigator url="/pages/manage/stock/stock">
+		<navigator url="/pages/manage/stock/index/stock">
 			<view class="weui-grid">
 				<view class="weui-grid__icon">
 					<image src="/images/icon/b3.png" alt></image>
