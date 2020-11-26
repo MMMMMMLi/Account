@@ -7,6 +7,7 @@ import com.imengli.appletServer.common.ResultStatus;
 import com.imengli.appletServer.common.SysConstant;
 import com.imengli.appletServer.dao.ManageRepostory;
 import com.imengli.appletServer.dao.WechatUserRepostory;
+import com.imengli.appletServer.daomain.StockInfoDO;
 import com.imengli.appletServer.daomain.WechatAuthDO;
 import com.imengli.appletServer.daomain.WechatUserDO;
 import com.imengli.appletServer.dto.ResultDTO;
@@ -378,5 +379,36 @@ public class ManageService {
         sysConstant.update();
 
         return new ResultDTO(ResultStatus.SUCCESS);
+    }
+
+    /**
+     * 添加库存
+     *
+     * @param stockKey 0: 货物 / 1: 框子
+     * @param category
+     * @param number
+     * @return
+     */
+    @Transactional
+    public ResultDTO insertStock(Integer stockKey, String category, Double number, String token) {
+        // 如果添加库存的标识为框子的话,则品种置为空
+        if (stockKey == 1) {
+            category = "";
+        }
+        // 查询当前库存相关库存的数量
+        StockInfoDO stockInfoDO = manageRepostory.getStockInfo(stockKey, category);
+        // 如果已经存在,则修改库存量
+        if (stockInfoDO != null) {
+            number += stockInfoDO.getNumber();
+        }
+        // 保存入库
+        manageRepostory.insertStock(StockInfoDO.builder()
+                .key(stockKey)
+                .category(category)
+                .number(number)
+                .updateDate(LocalDateTime.now())
+                .build());
+        // 保存日志
+        return null;
     }
 }

@@ -23,14 +23,16 @@
 				<view class="weui-cell__bd">
 					<input class="weui-input" value="9999KG" disabled />
 				</view>
-			</view><view class="weui-cell weui-cell_active weui-cell_disabled">
+			</view>
+			<view class="weui-cell weui-cell_active weui-cell_disabled">
 				<view class="weui-cell__hd">
 					<label class="weui-label">西瓜红</label>
 				</view>
 				<view class="weui-cell__bd">
 					<input class="weui-input" value="9999KG" disabled />
 				</view>
-			</view><view class="weui-cell weui-cell_active weui-cell_disabled">
+			</view>
+			<view class="weui-cell weui-cell_active weui-cell_disabled">
 				<view class="weui-cell__hd">
 					<label class="weui-label">烟薯26</label>
 				</view>
@@ -39,21 +41,27 @@
 				</view>
 			</view>
 		</view>
-		
+
 	</view>
 	<view class="weui-cells__title" style="color: black;font-weight:bolder;font-size: 18px;">库存操作</view>
 	<view class="weui-grids" style="display:flex;padding:3%;position:unset;background:#FFF">
-		<navigator url="/pages/manage/report/week/week" style="flex:1;">
+		<view style="flex:1;" bindtap="addStock">
 			<view class="weui-grid__icon">
 				<image src="/images/icon/stock1.png" alt></image>
 			</view>
 			<view class="weui-grid__label">新增库存</view>
-		</navigator>
+		</view>
 		<navigator url="/pages/manage/report/week/week" style="flex:1;">
 			<view class="weui-grid__icon">
 				<image src="/images/icon/stock2.png" alt></image>
 			</view>
 			<view class="weui-grid__label">库存校准</view>
+		</navigator>
+		<navigator url="/pages/manage/report/week/week" style="flex:1;">
+			<view class="weui-grid__icon">
+				<image src="/images/icon/box.png" alt></image>
+			</view>
+			<view class="weui-grid__label">框信息</view>
 		</navigator>
 	</view>
 	<view class="weui-cells__title"
@@ -62,37 +70,37 @@
 		<view class="weui-cells weui-cells_form" style="font-size:14px;">
 			<view class="weui-cell weui-cell_active weui-cell_disabled">
 				<view class="weui-cell__bd">
-					<input class="weui-input"  value="2020-11-25 17:09:13 | 姜伟加 | 西瓜红 | 小 | -2365KG" disabled />
+					<input class="weui-input" value="2020-11-25 17:09:13 | 姜伟加 | 西瓜红 | 小 | -2365KG" disabled />
 				</view>
 			</view>
 			<view class="weui-cell weui-cell_active weui-cell_disabled">
 				<view class="weui-cell__bd">
-					<input class="weui-input"  value="2020-11-25 17:09:13 | 姜伟加 | 西瓜红 | 小 | -2365KG" disabled />
+					<input class="weui-input" value="2020-11-25 17:09:13 | 姜伟加 | 西瓜红 | 小 | -2365KG" disabled />
 				</view>
 			</view>
 			<view class="weui-cell weui-cell_active weui-cell_disabled">
 				<view class="weui-cell__bd">
-					<input class="weui-input"  value="2020-11-25 17:09:13 | 姜伟加 | 西瓜红 | 小 | -2365KG" disabled />
+					<input class="weui-input" value="2020-11-25 17:09:13 | 姜伟加 | 西瓜红 | 小 | -2365KG" disabled />
 				</view>
 			</view>
 			<view class="weui-cell weui-cell_active weui-cell_disabled">
 				<view class="weui-cell__bd">
-					<input class="weui-input"  value="2020-11-25 17:09:13 | 姜伟加 | 西瓜红 | 小 | -2365KG" disabled />
+					<input class="weui-input" value="2020-11-25 17:09:13 | 姜伟加 | 西瓜红 | 小 | -2365KG" disabled />
 				</view>
 			</view>
 			<view class="weui-cell weui-cell_active weui-cell_disabled">
 				<view class="weui-cell__bd">
-					<input class="weui-input"  value="2020-11-25 17:09:13 | 姜伟加 | 西瓜红 | 小 | -2365KG" disabled />
+					<input class="weui-input" value="2020-11-25 17:09:13 | 姜伟加 | 西瓜红 | 小 | -2365KG" disabled />
 				</view>
 			</view>
 			<view class="weui-cell weui-cell_active weui-cell_disabled">
 				<view class="weui-cell__bd">
-					<input class="weui-input"  value="2020-11-25 17:09:13 | 姜伟加 | 西瓜红 | 小 | -2365KG" disabled />
+					<input class="weui-input" value="2020-11-25 17:09:13 | 姜伟加 | 西瓜红 | 小 | -2365KG" disabled />
 				</view>
 			</view>
 			<view class="weui-cell weui-cell_active weui-cell_disabled">
 				<view class="weui-cell__bd">
-					<input class="weui-input"  value="2020-11-25 17:09:13 | 姜伟加 | 西瓜红 | 小 | -2365KG" disabled />
+					<input class="weui-input" value="2020-11-25 17:09:13 | 姜伟加 | 西瓜红 | 小 | -2365KG" disabled />
 				</view>
 			</view>
 		</view>
@@ -103,4 +111,41 @@
 	</view>
 
 	<template is="footer" />
+</view>
+
+<view class="addStock" hidden="{{ addStockFlag }}">
+	<view class="s-b">
+		<view class="s-l-b">
+			<text>添加库存</text>
+		</view>
+		<view class="weui-cells__group weui-cells__group_form">
+			<view class="weui-cells weui-cells_form">
+				<view class="weui-cell weui-cell_active">
+					<view class="weui-cell__hd"><label class="weui-label" style="width:unset;">类型</label></view>
+					<view class="weui-cell__bd">
+						<picker bindchange="bindPickerChange" range="{{addStockKeys}}">
+							<view style="color: var(--weui-FG-1);">{{addStockKeys[keysValue]}}</view>
+						</picker>
+					</view>
+				</view>
+				<view wx:if="{{keysValue == 0}}" class="weui-cell weui-cell_active">
+					<view class="weui-cell__hd"><label class="weui-label" style="width:unset;">品种</label></view>
+					<view class="weui-cell__bd">
+						<picker bindchange="bindPickerCategoryChange" range="{{categoryArray}}">
+							<view style="color: var(--weui-FG-1);">{{categoryArray[categoryValue]}}</view>
+						</picker>
+					</view>
+				</view>
+				<view class="weui-cell weui-cell_active">
+					<view class="weui-cell__hd"><label class="weui-label" style="width:unset;">数量</label></view>
+					<view class="weui-cell__bd">
+						<input class="weui-input" style="color: var(--weui-FG-1);" type="{{keysValue == 0 ? 'digit':'number'}}"
+							placeholder="0" bindinput="addNumberInput" value="{{addNumber}}" />
+					</view>
+				</view>
+			</view>
+		</view>
+		<button class="l" bindtap="processAdd">添加</button>
+		<button class="c" bindtap="cancelAdd" type="default">取消</button>
+	</view>
 </view>

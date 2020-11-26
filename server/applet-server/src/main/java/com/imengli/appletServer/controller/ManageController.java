@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
 /**
  * @author: Weijia Jiang
  * @date: Created in 2020/10/22 15:25
@@ -112,6 +110,14 @@ public class ManageController {
     }
 
     // ----------------------------------------库存管理----------------------------------------------------
+
+    @RequestMapping("/insertStock")
+    public ResultDTO insertStock(@RequestParam Integer stockKey,
+                                 @RequestParam String category,
+                                 @RequestParam Double number,
+                                 @RequestParam String token) {
+        return manageService.insertStock(stockKey,category,number,token);
+    }
     // ----------------------------------------订单分析----------------------------------------------------
     // ----------------------------------------告警信息----------------------------------------------------
 }

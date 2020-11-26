@@ -3,6 +3,7 @@ package com.imengli.appletServer.dao;
 import com.imengli.appletServer.common.SysConstant;
 import com.imengli.appletServer.dao.provide.MineInsertProvider;
 import com.imengli.appletServer.dao.provide.MineSelectProvider;
+import com.imengli.appletServer.daomain.StockInfoDO;
 import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDateTime;
@@ -102,4 +103,11 @@ public interface ManageRepostory {
             " set `value` = #{info.value}, updateDate = now(), `status` = #{info.status}" +
             " where id = #{info.id}")
     void updateSystemInfo(@Param("info") Map<String, Object> info);
+
+    @Insert("REPLACE INTO " + SysConstant.STOCK_INFO_TABLE_NAME + "()")
+    void insertStock(StockInfoDO stockInfoDO);
+
+    @Select("SELECT * FROM" + SysConstant.STOCK_INFO_TABLE_NAME +
+            " Where key = #{key} and category = #{category}")
+    StockInfoDO getStockInfo(@Param("key") Integer stockKey,@Param("category") String category);
 }

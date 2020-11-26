@@ -29,6 +29,8 @@ public class SysConstant {
     public static final String ORDER_INFO_DEATIL_TABLE_NAME = "order_info_detail";
     public static final String CONSTANT_TABLE_NAME = "sys_constant";
     public static final String WECHAT_USER_TABLE_NAME = "wechat_user";
+    public static final String STOCK_INFO_TABLE_NAME = "stock_info";
+    public static final String STOCK_INFO_DEATIL_TABLE_NAME = "stock_info_detail";
 
 
     @Resource
@@ -62,7 +64,7 @@ public class SysConstant {
             return list.get(0).get("value").toString();
         } else if (list.size() > 1) {
             return list.parallelStream()
-                    .sorted((o1, o2) -> o2.get("sortFlag").toString().compareTo(o1.get("sortFlag").toString()))
+                    .sorted((o1, o2) -> o1.get("id").toString().compareTo(o2.get("id").toString()))
                     .map(o -> o.get("value"))
                     .collect(Collectors.toList());
         } else {
