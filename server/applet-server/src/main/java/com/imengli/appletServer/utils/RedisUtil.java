@@ -1,6 +1,8 @@
 package com.imengli.appletServer.utils;
 
+import com.imengli.appletServer.dao.WechatUserRepostory;
 import com.imengli.appletServer.daomain.WechatAuthDO;
+import com.imengli.appletServer.daomain.WechatUserDO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -29,6 +32,27 @@ public class RedisUtil {
     private Long DEFAULT_TIMEOUT;
 
     private TimeUnit timeUnit = TimeUnit.HOURS;
+
+    // 校验Token的工具类
+
+    @Resource
+    private WechatUserRepostory wechatUserRepostory;
+
+    public WechatUserDO getWechatAuthEntity(String token) {
+        WechatAuthDO wechatAuthDO = null;
+        WechatUserDO wechatUserDOByOpenId = null;
+        // 检验Token是否正常
+        if (this.containsWechat(token)) {
+            // 获取Token对应的对象信息
+            wechatAuthDO = this.getWechat(token);
+        }
+        // 判断是否异常
+        if (wechatAuthDO != null) {
+            // 获取对应的用户信息
+            wechatUserDOByOpenId = wechatUserRepostory.getUserEntityByOpenId(wechatAuthDO.getOpenId());
+        }
+        return wechatUserDOByOpenId;
+    }
 
 
     // --------------------String : WechatAuthEntity ----------------------------------------

@@ -8,8 +8,10 @@ import com.imengli.appletServer.common.SysConstant;
 import com.imengli.appletServer.dao.OrderInfoDetailRepostory;
 import com.imengli.appletServer.dao.OrderInfoRepostory;
 import com.imengli.appletServer.dao.SysUserRepostory;
-import com.imengli.appletServer.dao.WechatUserRepostory;
-import com.imengli.appletServer.daomain.*;
+import com.imengli.appletServer.daomain.OrderInfoDO;
+import com.imengli.appletServer.daomain.OrderInfoDetailDO;
+import com.imengli.appletServer.daomain.SysUserDO;
+import com.imengli.appletServer.daomain.WechatUserDO;
 import com.imengli.appletServer.dto.AddOrderFormInfoPOJO;
 import com.imengli.appletServer.dto.ResultDTO;
 import com.imengli.appletServer.utils.RedisUtil;
@@ -44,9 +46,6 @@ public class OrderService {
     private RedisUtil redisUtil;
 
     @Resource
-    private WechatUserRepostory wechatUserRepostory;
-
-    @Resource
     private SysUserRepostory sysUserRepostory;
 
     @Resource
@@ -59,22 +58,6 @@ public class OrderService {
 
     private final String TYPE = "paidStatus";
 
-    public WechatUserDO getWechatAuthEntity(String token) {
-        WechatAuthDO wechatAuthDO = null;
-        WechatUserDO wechatUserDOByOpenId = null;
-        // 检验Token是否正常
-        if (redisUtil.containsWechat(token)) {
-            // 获取Token对应的对象信息
-            wechatAuthDO = redisUtil.getWechat(token);
-        }
-        // 判断是否异常
-        if (wechatAuthDO != null) {
-            // 获取对应的用户信息
-            wechatUserDOByOpenId = wechatUserRepostory.getUserEntityByOpenId(wechatAuthDO.getOpenId());
-        }
-        return wechatUserDOByOpenId;
-    }
-
     /**
      * 保存订单信息
      *
@@ -84,7 +67,7 @@ public class OrderService {
     @Transactional
     public ResultDTO insertOrderInfo(AddOrderFormInfoPOJO orderFormInfo) {
         // 校验token
-        WechatUserDO wecharUserDo = this.getWechatAuthEntity(orderFormInfo.getToken());
+        WechatUserDO wecharUserDo = redisUtil.getWechatAuthEntity(orderFormInfo.getToken());
         // 判断是否异常
         // 根据信息完善度返回
         if (wecharUserDo != null) {
@@ -140,7 +123,7 @@ public class OrderService {
      */
     public ResultDTO getMyOrderList(String token, Integer status, Integer page, Integer size) {
         // 校验token
-        WechatUserDO wechatUserDO = this.getWechatAuthEntity(token);
+        WechatUserDO wechatUserDO = redisUtil.getWechatAuthEntity(token);
         // 根据信息完善度返回
         if (wechatUserDO != null) {
             // 获取用户信息
@@ -187,7 +170,7 @@ public class OrderService {
      */
     public ResultDTO getOrderList(String token, Integer status, Integer page, Integer size, String filterList) {
         // 校验token
-        WechatUserDO wechatUserDO = this.getWechatAuthEntity(token);
+        WechatUserDO wechatUserDO = redisUtil.getWechatAuthEntity(token);
         // 根据信息完善度返回
         if (wechatUserDO != null) {
             PageHelper.startPage(page, size);
@@ -234,7 +217,7 @@ public class OrderService {
      */
     public ResultDTO confirmCollection(String token, Integer orderId) {
         // 校验token
-        WechatUserDO wechatUserDO = this.getWechatAuthEntity(token);
+        WechatUserDO wechatUserDO = redisUtil.getWechatAuthEntity(token);
         // 根据信息完善度返回
         if (wechatUserDO != null) {
             orderInfoRepostory.confirmCollection(orderId, LocalDateTime.now());

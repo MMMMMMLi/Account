@@ -6,9 +6,6 @@ import com.github.pagehelper.PageInfo;
 import com.imengli.appletServer.common.ResultStatus;
 import com.imengli.appletServer.common.SysConstant;
 import com.imengli.appletServer.dao.ManageRepostory;
-import com.imengli.appletServer.dao.WechatUserRepostory;
-import com.imengli.appletServer.daomain.StockInfoDO;
-import com.imengli.appletServer.daomain.WechatAuthDO;
 import com.imengli.appletServer.daomain.WechatUserDO;
 import com.imengli.appletServer.dto.ResultDTO;
 import com.imengli.appletServer.utils.RedisUtil;
@@ -42,9 +39,6 @@ public class ManageService {
     private RedisUtil redisUtil;
 
     @Resource
-    private WechatUserRepostory wechatUserRepostory;
-
-    @Resource
     private ManageRepostory manageRepostory;
 
     @Autowired
@@ -52,21 +46,6 @@ public class ManageService {
 
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    public WechatUserDO getWechatAuthEntity(String token) {
-        WechatAuthDO wechatAuthDO = null;
-        WechatUserDO wechatUserDOByOpenId = null;
-        // 检验Token是否正常
-        if (redisUtil.containsWechat(token)) {
-            // 获取Token对应的对象信息
-            wechatAuthDO = redisUtil.getWechat(token);
-        }
-        // 判断是否异常
-        if (wechatAuthDO != null) {
-            // 获取对应的用户信息
-            wechatUserDOByOpenId = wechatUserRepostory.getUserEntityByOpenId(wechatAuthDO.getOpenId());
-        }
-        return wechatUserDOByOpenId;
-    }
 
     /**
      * 获取当日的订单汇总信息
@@ -76,7 +55,7 @@ public class ManageService {
      */
     public ResultDTO getSummaryOrderInfo(String token) {
         // 校验token
-        WechatUserDO wechatUserDO = this.getWechatAuthEntity(token);
+        WechatUserDO wechatUserDO = redisUtil.getWechatAuthEntity(token);
         // 根据信息完善度返回
         if (wechatUserDO != null) {
             // TODO: 后续添加管理员校验
@@ -95,7 +74,7 @@ public class ManageService {
      */
     public ResultDTO getReportByDay(String token, String type) {
         // 校验token
-        WechatUserDO wechatUserDO = this.getWechatAuthEntity(token);
+        WechatUserDO wechatUserDO = redisUtil.getWechatAuthEntity(token);
         // 根据信息完善度返回
         if (wechatUserDO != null) {
             // TODO: 后续添加管理员校验
@@ -262,7 +241,7 @@ public class ManageService {
      */
     public ResultDTO getUserList(String token, Integer page, Integer size, String searchType, String searchValue) {
         // 校验token
-        WechatUserDO wechatUserDO = this.getWechatAuthEntity(token);
+        WechatUserDO wechatUserDO = redisUtil.getWechatAuthEntity(token);
         // 根据信息完善度返回
         if (wechatUserDO != null) {
             // TODO: 后续添加管理员校验
@@ -299,7 +278,7 @@ public class ManageService {
 
     public ResultDTO getUserDetails(String token, String userId, Integer page, Integer size) {
         // 校验token
-        WechatUserDO wechatUserDO = this.getWechatAuthEntity(token);
+        WechatUserDO wechatUserDO = redisUtil.getWechatAuthEntity(token);
         // 根据信息完善度返回
         if (wechatUserDO != null) {
             // TODO: 后续添加管理员校验}
@@ -324,7 +303,7 @@ public class ManageService {
      */
     public ResultDTO getSysInfo(String token) {
         // 校验token
-        WechatUserDO wechatUserDO = this.getWechatAuthEntity(token);
+        WechatUserDO wechatUserDO = redisUtil.getWechatAuthEntity(token);
         // 根据信息完善度返回
         if (wechatUserDO != null) {
             // TODO: 后续添加管理员校验}
@@ -379,36 +358,5 @@ public class ManageService {
         sysConstant.update();
 
         return new ResultDTO(ResultStatus.SUCCESS);
-    }
-
-    /**
-     * 添加库存
-     *
-     * @param stockKey 0: 货物 / 1: 框子
-     * @param category
-     * @param number
-     * @return
-     */
-    @Transactional
-    public ResultDTO insertStock(Integer stockKey, String category, Double number, String token) {
-        // 如果添加库存的标识为框子的话,则品种置为空
-        if (stockKey == 1) {
-            category = "";
-        }
-        // 查询当前库存相关库存的数量
-        StockInfoDO stockInfoDO = manageRepostory.getStockInfo(stockKey, category);
-        // 如果已经存在,则修改库存量
-        if (stockInfoDO != null) {
-            number += stockInfoDO.getNumber();
-        }
-        // 保存入库
-        manageRepostory.insertStock(StockInfoDO.builder()
-                .key(stockKey)
-                .category(category)
-                .number(number)
-                .updateDate(LocalDateTime.now())
-                .build());
-        // 保存日志
-        return null;
     }
 }

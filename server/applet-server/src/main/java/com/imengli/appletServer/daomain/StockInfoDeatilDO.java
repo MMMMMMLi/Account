@@ -36,7 +36,7 @@ public class StockInfoDeatilDO {
 
     private Integer type;
 
-    private LocalDateTime createDate;
+    private LocalDateTime operationDate;
 
-    private String createBy;
+    private String operationBy;
 }

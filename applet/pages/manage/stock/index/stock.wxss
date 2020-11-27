@@ -17,7 +17,7 @@
 .addStock .s-b {
   width: 70%;
   margin: 0 auto;
-  height: 600rpx;
+  height: 100rpx;
   background-color: #fff;
   margin-top: 40%;
   border-radius: 10rpx;

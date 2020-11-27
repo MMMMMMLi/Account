@@ -109,15 +109,6 @@ public class ManageController {
         return manageService.updateSystemInfo(sysInfo);
     }
 
-    // ----------------------------------------库存管理----------------------------------------------------
-
-    @RequestMapping("/insertStock")
-    public ResultDTO insertStock(@RequestParam Integer stockKey,
-                                 @RequestParam String category,
-                                 @RequestParam Double number,
-                                 @RequestParam String token) {
-        return manageService.insertStock(stockKey,category,number,token);
-    }
     // ----------------------------------------订单分析----------------------------------------------------
     // ----------------------------------------告警信息----------------------------------------------------
 }
