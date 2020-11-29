@@ -39,8 +39,6 @@ public class StockController {
     @RequestMapping("/alignStockInfo")
     public ResultDTO alignStockInfo(@RequestParam String jsonList,
                                   @RequestParam String token) {
-        System.out.println(jsonList);
-        System.out.println(token);
-        return null;
+        return stockService.alignStockInfo(jsonList,token);
     }
 }

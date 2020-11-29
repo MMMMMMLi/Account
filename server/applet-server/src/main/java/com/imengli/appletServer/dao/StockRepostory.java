@@ -3,10 +3,7 @@ package com.imengli.appletServer.dao;
 import com.imengli.appletServer.common.SysConstant;
 import com.imengli.appletServer.daomain.StockInfoDO;
 import com.imengli.appletServer.daomain.StockInfoDeatilDO;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Map;
@@ -47,4 +44,8 @@ public interface StockRepostory {
             " LEFT JOIN " + SysConstant.USER_TABLE_NAME + " su ON sid.userId = su.id " +
             " WHERE sid.`key` = #{key} ORDER BY sid.operationDate DESC")
     List<Map<String,Object>> getStockInfoDetailByKey(@Param("key") Integer stockKey);
+
+    @Update("UPDATE " + SysConstant.STOCK_INFO_TABLE_NAME +
+            " set `number` = #{info.number}, updateDate = #{info.updateDate}, updateBy = #{info.updateBy} where category = #{info.category} and `key` = 0")
+    void updateStockInfoByItem(@Param("info") StockInfoDO info);
 }

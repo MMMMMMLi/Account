@@ -1,5 +1,6 @@
 package com.imengli.appletServer.service;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.imengli.appletServer.common.ResultStatus;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,8 +120,9 @@ public class StockService {
             List<StockInfoDO> stockInfoDOList = stockRepostory.getStockInfoByKey(stockKey);
             // 获取操作详情
             PageHelper.startPage(pageNum, pageSize);
-            List<Map<String,Object>> stockInfoDeatilDOList = stockRepostory.getStockInfoDetailByKey(stockKey);
-            PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(stockInfoDeatilDOList);
+            List<Map<String, Object>> stockInfoDeatilDOList = stockRepostory.getStockInfoDetailByKey(stockKey);
+            System.out.println(stockInfoDeatilDOList);
+            PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(stockInfoDeatilDOList);
 
             // 库存信息
             result.put("stockInfo", stockInfoDOList);
@@ -129,6 +132,57 @@ public class StockService {
             result.put("stockInfoDeatil", pageInfo.getList());
 
             return new ResultDTO(ResultStatus.SUCCESS, result);
+        }
+        return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
+    }
+
+    /**
+     * 校准库存信息
+     *
+     * @param jsonList
+     * @param token
+     * @return
+     */
+    @Transactional
+    public ResultDTO alignStockInfo(String jsonList, String token) {
+        // 校验token
+        WechatUserDO wechatUserDO = redisUtil.getWechatAuthEntity(token);
+        // 根据信息完善度返回
+        if (wechatUserDO != null) {
+            // 格式化信息
+            ArrayList<Map<String, String>> alignStockInfo = JSON.parseObject(jsonList, ArrayList.class);
+            System.out.println(alignStockInfo);
+            // 如果信息为空,则返回空
+            if (alignStockInfo.size() > 0) {
+                // 如果不是空,则迭代循环更新
+                alignStockInfo.parallelStream().forEach(info -> {
+                    // 获取当前时间
+                    LocalDateTime now = LocalDateTime.now();
+                    // 获取当前操作用户
+                    String userId = wechatUserDO.getUserId();
+                    // 更新库存信息
+                    stockRepostory.updateStockInfoByItem(StockInfoDO.builder()
+                            .category(info.get("category"))
+                            .number(Double.valueOf(info.get("number")))
+                            .updateDate(now)
+                            .updateBy(userId)
+                            .build());
+                    // 更新库存详情信息
+                    this.addStockInfoDetail(StockInfoDeatilDO
+                            .builder()
+                            .userId(userId)
+                            .key(0)
+                            .category(info.get("category"))
+                            .number(Double.valueOf(info.get("number")))
+                            .type(2)
+                            .operationDate(now)
+                            .operationBy(userId)
+                            .build());
+                });
+                // 不知道怎么校验,就直接返回成功就行
+                return new ResultDTO(ResultStatus.SUCCESS);
+            }
+            return new ResultDTO(ResultStatus.NULL);
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }
