@@ -200,8 +200,13 @@ Page({
       alignStockFlag: true,
       alignNumberList: []
     })
-  }
+  },
   // --------------------------------框信息
-
+  notImpl() {
+    wx.showModal({
+      content:'暂未实现!',
+      showCancel:false
+    })
+  }
   
 })

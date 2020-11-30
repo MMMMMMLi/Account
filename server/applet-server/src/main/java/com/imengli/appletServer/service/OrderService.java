@@ -9,7 +9,10 @@ import com.imengli.appletServer.common.SysConstant;
 import com.imengli.appletServer.dao.OrderInfoDetailRepostory;
 import com.imengli.appletServer.dao.OrderInfoRepostory;
 import com.imengli.appletServer.dao.SysUserRepostory;
-import com.imengli.appletServer.daomain.*;
+import com.imengli.appletServer.daomain.OrderInfoDO;
+import com.imengli.appletServer.daomain.OrderInfoDetailDO;
+import com.imengli.appletServer.daomain.SysUserDO;
+import com.imengli.appletServer.daomain.WechatUserDO;
 import com.imengli.appletServer.dto.AddOrderFormInfoPOJO;
 import com.imengli.appletServer.dto.ResultDTO;
 import com.imengli.appletServer.utils.RedisUtil;
@@ -18,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
@@ -125,6 +129,9 @@ public class OrderService {
             // 判断是否插入正常
             if (orders.size() == size) {
                 return new ResultDTO<>(ResultStatus.SUCCESS, orderInfoDO.getId());
+            }else {
+                // 如果不正常则回滚
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }
 
         }

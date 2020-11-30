@@ -1,5 +1,9 @@
-const preUrl = 'http://localhost:11001/api/'
-// const preUrl = 'https://imengli.com/api/'
+// 本地测试微服务版
+// const preUrl = 'http://localhost:11001/api/'
+// 本地测试单节点版本
+// const preUrl = 'http://localhost:11003/api/'
+// 远程调用版本
+const preUrl = 'https://imengli.com/api/'
 let header = {
   'content-type': 'application/x-www-form-urlencoded',
   'token': ''

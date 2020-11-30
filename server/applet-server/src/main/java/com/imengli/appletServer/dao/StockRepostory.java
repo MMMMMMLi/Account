@@ -39,7 +39,7 @@ public interface StockRepostory {
 
     @Select("SELECT " +
             "   DATE_FORMAT(sid.operationDate,'%Y-%m-%d %H:%i:%s') AS operationDate," +
-            "   su.userName,sid.category,sid.`key`,sid.type,sid.number " +
+            "   su.userName,sid.category,sid.`key`,sid.type,sid.number,sid.`size` " +
             " FROM " + SysConstant.STOCK_INFO_DEATIL_TABLE_NAME + " sid " +
             " LEFT JOIN " + SysConstant.USER_TABLE_NAME + " su ON sid.userId = su.id " +
             " WHERE sid.`key` = #{key} ORDER BY sid.operationDate DESC")

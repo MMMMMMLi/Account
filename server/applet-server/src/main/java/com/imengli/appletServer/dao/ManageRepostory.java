@@ -21,8 +21,9 @@ public interface ManageRepostory {
     @Select("SELECT " +
             "COUNT(1) AS orders," +
             "SUM(totalPrice) AS totalPrice, " +
-            "SUM(totalWeight) AS totalWeight " +
-            "FROM  " + SysConstant.ORDER_INFO_TABLE_NAME +
+            "SUM(totalWeight) AS totalWeight, " +
+            "(SELECT SUM(number) from " + SysConstant.STOCK_INFO_TABLE_NAME + " where `key` = 0 ) AS totalStock " +
+            " FROM " + SysConstant.ORDER_INFO_TABLE_NAME +
             " WHERE createDate BETWEEN CONCAT(CURDATE(),' 00:00:00')  AND CONCAT(CURDATE(),' 23:59:59')")
     Map<String, Double> getSummaryOrderInfo();
 
