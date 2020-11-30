@@ -27,7 +27,7 @@ public interface StockRepostory {
     StockInfoDO getStockInfoByKeyAndCategory(@Param("key") Integer stockKey, @Param("category") String category);
 
     @Select("SELECT * FROM " + SysConstant.STOCK_INFO_TABLE_NAME +
-            " Where `key` = #{key} order by number desc")
+            " Where `key` = #{key} and number > 0 order by number desc")
     List<StockInfoDO> getStockInfoByKey(@Param("key") Integer stockKey);
 
     @Insert("INSERT INTO " + SysConstant.STOCK_INFO_DEATIL_TABLE_NAME +

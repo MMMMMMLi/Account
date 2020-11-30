@@ -4,14 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.imengli.appletServer.common.ResultStatus;
+import com.imengli.appletServer.common.StockTypeEnum;
 import com.imengli.appletServer.common.SysConstant;
 import com.imengli.appletServer.dao.OrderInfoDetailRepostory;
 import com.imengli.appletServer.dao.OrderInfoRepostory;
 import com.imengli.appletServer.dao.SysUserRepostory;
-import com.imengli.appletServer.daomain.OrderInfoDO;
-import com.imengli.appletServer.daomain.OrderInfoDetailDO;
-import com.imengli.appletServer.daomain.SysUserDO;
-import com.imengli.appletServer.daomain.WechatUserDO;
+import com.imengli.appletServer.daomain.*;
 import com.imengli.appletServer.dto.AddOrderFormInfoPOJO;
 import com.imengli.appletServer.dto.ResultDTO;
 import com.imengli.appletServer.utils.RedisUtil;
@@ -52,6 +50,9 @@ public class OrderService {
     private OrderInfoRepostory orderInfoRepostory;
 
     @Resource
+    private StockService stockService;
+
+    @Resource
     private OrderInfoDetailRepostory orderInfoDetailRepostory;
 
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -81,7 +82,8 @@ public class OrderService {
             OrderInfoDO orderInfoDO = OrderInfoDO.builder()
                     .userId(userInfo.getId())
                     .createBy(wecharUserDo.getUserId())
-                    .createDate(orderFormInfo.getCreateDate() == null ? LocalDateTime.now() : LocalDateTime.parse(orderFormInfo.getCreateDate(), dateTimeFormatter))
+                    .createDate(orderFormInfo.getCreateDate() == null ?
+                            LocalDateTime.now() : LocalDateTime.parse(orderFormInfo.getCreateDate(), dateTimeFormatter))
                     .updateDate(LocalDateTime.now())
                     .applyBox(orderFormInfo.getApplyBox())
                     .retreatBox(orderFormInfo.getRetreatBox())
@@ -105,6 +107,21 @@ public class OrderService {
                     .collect(Collectors.toList());
             // 创建订单详情
             Integer size = orderInfoDetailRepostory.save(orders);
+
+            // 插入库存详情信息
+            orderFormInfo.getOrders()
+                    .parallelStream()
+                    .forEach(info -> {
+                        // 修改库存信息
+                        stockService.replaceStockInfo(0, info.getCategoryValue(),
+                                info.getSizeValue(), StockTypeEnum.REDUCE, info.getGross() - info.getTare(),
+                                wecharUserDo.getUserId(), userInfo.getId());
+                    });
+            // 修改框子信息
+            stockService.replaceStockInfo(1, "", null, StockTypeEnum.REDUCE,
+                    Double.valueOf(orderFormInfo.getApplyBox() - orderFormInfo.getRetreatBox()),
+                    wecharUserDo.getUserId(), userInfo.getId());
+
             // 判断是否插入正常
             if (orders.size() == size) {
                 return new ResultDTO<>(ResultStatus.SUCCESS, orderInfoDO.getId());

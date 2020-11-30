@@ -34,7 +34,7 @@ public class StockInfoDeatilDO {
 
     private Double number;
 
-    private Integer type;
+    private String type;
 
     private LocalDateTime operationDate;
 

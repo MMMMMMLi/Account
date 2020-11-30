@@ -177,7 +177,21 @@ Page({
       jsonList: JSON.stringify(list),
       token: wx.getStorageSync('token'),
     }).then(res => {
-      console.log(res)
+      if (res.data.code == 20000 || res.data.code == 10000) {
+        wx.showModal({
+          content: '校准成功！',
+          showCancel: false
+        })
+      } else {
+        wx.showModal({
+          content: '校准失败！',
+          showCancel: false
+        })
+      }
+      // 关闭校准框
+      that.cancelalign();
+      // 刷新库存信息
+      that.getStockInfo();
     })
   },
   // 关闭库存校准
@@ -188,4 +202,6 @@ Page({
     })
   }
   // --------------------------------框信息
+
+  
 })

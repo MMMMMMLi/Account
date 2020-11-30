@@ -1,5 +1,7 @@
 <import src="/template/footer/footer.wxml" />
 
+<!-- 主界面 -->
+
 <view class="page">
 	<view class="weui-form__text-area" style="padding: 45px 32px 10px 32px">
 		<h2 class="weui-form__title" style="color:{{stockSum > 5000 ? 'green' : stockSum > 1000 ? 'Orange' : 'red' }};">
@@ -49,8 +51,8 @@
 		<view wx:for="{{stockInfoDeatil}}" wx:key="index" class="weui-cells weui-cells_form" style="font-size:14px;">
 			<view class="weui-cell weui-cell_active weui-cell_disabled">
 				<view class="weui-cell__bd">
-					<input class="weui-input" style="color:{{item.type ? 'var(--weui-FG-1)':'green'}}"
-						value="{{item.operationDate}}  {{item.userName}} | {{item.category}}  {{item.size ||''}} |  {{item.type ? '-':'+'}}{{ item.number}} KG"
+					<input class="weui-input" style="color:{{item.type == 'add' ? 'green' : item.type == 'align' ? 'Orange':'var(--weui-FG-1)'}}"
+						value="{{item.operationDate}}  {{item.userName}} | {{item.category}}  {{item.size ||''}} |  {{item.type == 'add' ? '+': item.type == 'align' ? '校准为：':'-'}}{{ item.number}} KG"
 						disabled />
 				</view>
 			</view>
@@ -63,6 +65,8 @@
 
 	<template is="footer" />
 </view>
+
+<!-- 新增库存页面 -->
 
 <view class="addStock" hidden="{{ addStockFlag }}">
 	<view class="s-b">
@@ -100,6 +104,8 @@
 		<button class="c" bindtap="cancelAdd" type="default">取消</button>
 	</view>
 </view>
+
+<!-- 库存校准页面 -->
 
 <view class="addStock" hidden="{{ alignStockFlag }}">
 	<view class="s-b">

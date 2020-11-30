@@ -6,23 +6,24 @@ package com.imengli.appletServer.common;
  * @description: 系统一些枚举
  * @version: v1
  */
-public enum SystemEnum {
+public enum StockTypeEnum {
 
-    ADD(0, "加操作"),
-    REDUCE(1, "减操作");
+    ADD("add", "加操作"),
+    REDUCE("reduce", "减操作"),
+    ALIGN("align","校准操作");
 
 
-    private Integer code;
+    private String key;
 
     private String value;
 
-    SystemEnum(Integer code, String value) {
-        this.code = code;
+    StockTypeEnum(String code, String value) {
+        this.key = code;
         this.value = value;
     }
 
-    public Integer code() {
-        return this.code;
+    public String key() {
+        return this.key;
     }
 
     public String value() {

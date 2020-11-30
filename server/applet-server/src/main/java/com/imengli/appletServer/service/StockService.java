@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.imengli.appletServer.common.ResultStatus;
-import com.imengli.appletServer.common.SystemEnum;
+import com.imengli.appletServer.common.StockTypeEnum;
 import com.imengli.appletServer.dao.StockRepostory;
 import com.imengli.appletServer.daomain.StockInfoDO;
 import com.imengli.appletServer.daomain.StockInfoDeatilDO;
@@ -51,6 +51,56 @@ public class StockService {
     }
 
     /**
+     * 修改/添加库存信息
+     *
+     * @param stockKey        库存标识： 0 货物/ 1框子
+     * @param category        品种
+     * @param size            大小
+     * @param type            操作类型
+     * @param number          操作的数值
+     * @param updateUserId    更新用户
+     * @param operationUserId 操作用户
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void replaceStockInfo(Integer stockKey, String category, String size, StockTypeEnum type, Double number, String updateUserId, String operationUserId) {
+        // 查询当前库存相关库存的数量
+        StockInfoDO stockInfoDO = stockRepostory.getStockInfoByKeyAndCategory(stockKey, category);
+        // 如果已经存在,则修改库存量
+        Double stockNumber = number;
+        if (stockInfoDO != null) {
+            if(type == StockTypeEnum.ADD) {
+                stockNumber += stockInfoDO.getNumber();
+            }
+            if(type == StockTypeEnum.REDUCE) {
+                stockNumber = stockInfoDO.getNumber() - stockNumber;
+            }
+        }
+        // 当前时间
+        LocalDateTime now = LocalDateTime.now();
+        // 保存入库
+        stockRepostory.insertStock(StockInfoDO.builder()
+                .key(stockKey)
+                .category(category)
+                // TODO 总库存现在不区分大小个。
+                // .size(size)
+                .number(stockNumber)
+                .updateDate(now)
+                .updateBy(updateUserId)
+                .build());
+        // 保存操作日志入库
+        this.addStockInfoDetail(StockInfoDeatilDO.builder()
+                .userId(operationUserId)
+                .key(stockKey)
+                .category(category)
+                .size(size)
+                .number(number)
+                .type(type.key())
+                .operationDate(now)
+                .operationBy(updateUserId)
+                .build());
+    }
+
+    /**
      * 添加库存
      *
      * @param stockKey 0: 货物 / 1: 框子
@@ -68,38 +118,11 @@ public class StockService {
             if (stockKey == 1) {
                 category = "";
             }
-            // 查询当前库存相关库存的数量
-            StockInfoDO stockInfoDO = stockRepostory.getStockInfoByKeyAndCategory(stockKey, category);
-            // 如果已经存在,则修改库存量
-            Double stockNumber = number;
-            if (stockInfoDO != null) {
-                stockNumber += stockInfoDO.getNumber();
-            }
-            // 当前时间
-            LocalDateTime now = LocalDateTime.now();
-            // 保存入库
-            stockRepostory.insertStock(StockInfoDO.builder()
-                    .key(stockKey)
-                    .category(category)
-                    .number(stockNumber)
-                    .updateDate(now)
-                    .updateBy(wechatUserDO.getUserId())
-                    .build());
-            // 保存操作日志入库
-            this.addStockInfoDetail(StockInfoDeatilDO.builder()
-                    .userId(wechatUserDO.getUserId())
-                    .key(stockKey)
-                    .category(category)
-                    .number(number)
-                    .type(SystemEnum.ADD.code())
-                    .operationDate(now)
-                    .operationBy(wechatUserDO.getUserId())
-                    .build());
+            replaceStockInfo(stockKey, category, "", StockTypeEnum.ADD, number, wechatUserDO.getUserId(), wechatUserDO.getUserId());
             return new ResultDTO(ResultStatus.SUCCESS);
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }
-
 
     /**
      * 获取库存信息
@@ -121,7 +144,6 @@ public class StockService {
             // 获取操作详情
             PageHelper.startPage(pageNum, pageSize);
             List<Map<String, Object>> stockInfoDeatilDOList = stockRepostory.getStockInfoDetailByKey(stockKey);
-            System.out.println(stockInfoDeatilDOList);
             PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(stockInfoDeatilDOList);
 
             // 库存信息
@@ -151,7 +173,6 @@ public class StockService {
         if (wechatUserDO != null) {
             // 格式化信息
             ArrayList<Map<String, String>> alignStockInfo = JSON.parseObject(jsonList, ArrayList.class);
-            System.out.println(alignStockInfo);
             // 如果信息为空,则返回空
             if (alignStockInfo.size() > 0) {
                 // 如果不是空,则迭代循环更新
@@ -174,7 +195,7 @@ public class StockService {
                             .key(0)
                             .category(info.get("category"))
                             .number(Double.valueOf(info.get("number")))
-                            .type(2)
+                            .type(StockTypeEnum.ALIGN.key())
                             .operationDate(now)
                             .operationBy(userId)
                             .build());
