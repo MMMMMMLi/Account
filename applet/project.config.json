@@ -31,14 +31,16 @@
     "useIsolateContext": true,
     "useCompilerModule": false,
     "userConfirmedUseCompilerModuleSwitch": false,
+    "userConfirmedBundleSwitch": false,
     "packNpmManually": false,
     "packNpmRelationList": [],
-    "minifyWXSS": true
+    "minifyWXSS": true,
+    "bundle": false
   },
   "compileType": "miniprogram",
   "libVersion": "2.12.2",
   "appid": "wx849d3412a19d47a6",
-  "projectname": "Accounting",
+  "projectname": "Account",
   "debugOptions": {
     "hidedInDevtools": []
   },

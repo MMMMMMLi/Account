@@ -75,5 +75,7 @@ App({
     needUpdateUserInfo: false,
     // 当前用户信息列表
     userInfos: [],
+    // 消息订阅模板
+    tmplIds:['SOzXhOVHt9X1NQAOJPvB5M1refAxCBVxIW_IKz8HGmw']
   }
 })

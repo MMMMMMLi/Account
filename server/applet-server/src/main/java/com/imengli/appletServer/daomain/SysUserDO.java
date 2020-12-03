@@ -58,6 +58,9 @@ public class SysUserDO {
     // 最后一次登陆时间
     private Long lastLoginTimeStamp;
 
+    // 用户消息通知的次数
+    private Integer subMsgNum;
+
     public SysUserDO(String id, String userName, String userNameCode, String phoneNumber, String address, LocalDateTime updateTime) {
         this.id = id;
         this.userName = userName;

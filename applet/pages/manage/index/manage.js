@@ -10,7 +10,7 @@ Page({
     orders: 0, // 今日订单数
     totalWeight: 0, // 今日交易量
     totalPrice: 0, // 今日交易额
-    surplusStock: 9999.99, // 剩余库存量
+    totalStock: 9999.99, // 剩余库存量
 
 
 
@@ -64,6 +64,7 @@ Page({
           orders: res.data.data.orders || 0,
           totalPrice: res.data.data.totalPrice || 0,
           totalWeight: res.data.data.totalWeight || 0,
+          totalStock: res.data.data.totalStock || 0
         })
       }
     })

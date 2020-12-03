@@ -21,7 +21,7 @@
 			<view>今日交易额</view>
 		</view>
 		<view class='item right'>
-			<view style="color:{{surplusStock > 5000 ? 'green' : surplusStock > 1000 ? 'Orange' : 'red' }};">{{surplusStock}} KG</view>
+			<view style="color:{{totalStock > 5000 ? 'green' : totalStock > 1000 ? 'Orange' : 'red' }};">{{totalStock}} KG</view>
 			<view>剩余库存量</view>
 		</view>
 	</view>
@@ -44,7 +44,7 @@
 			<view class="weui-grid__label">每周报告</view>
 		</view>
 		<!-- </navigator> -->
-		<view class="weui-grid">
+		<view class="weui-grid" bindtap="test">
 			<view class="weui-grid__icon" style="height: 37px;">
 				<image src="/images/icon/a3.png" alt></image>
 			</view>
