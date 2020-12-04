@@ -66,4 +66,9 @@ public class UserController {
         return userService.getUserInfoBySearch(token, searchValue, size);
     }
 
+    @RequestMapping("/userSubMsgAdd")
+    public ResultDTO userSubMsgAdd(@RequestParam String userId) {
+        return userService.userSubMsgAdd(userId);
+    }
+
 }

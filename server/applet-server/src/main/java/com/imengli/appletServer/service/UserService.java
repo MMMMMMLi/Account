@@ -116,7 +116,7 @@ public class UserService {
                             .country(country)
                             .updateTime(LocalDateTime.now())
                             .build());
-            return new ResultDTO(ResultStatus.SUCCESS,sysUserRepostory.getUserInfoById(userInfoId));
+            return new ResultDTO(ResultStatus.SUCCESS, sysUserRepostory.getUserInfoById(userInfoId));
 
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
@@ -130,7 +130,7 @@ public class UserService {
             WechatUserDO userEntityByOpenId = wechatUserRepostory.getUserEntityByOpenId(wechatAuthDO.getOpenId());
             if (userEntityByOpenId != null) {
                 // 更新
-                sysUserRepostory.update(new SysUserDO(userEntityByOpenId.getUserId(), name, PinyinUtil.ToFirstChar(name), phone, address,LocalDateTime.now()));
+                sysUserRepostory.update(new SysUserDO(userEntityByOpenId.getUserId(), name, PinyinUtil.ToFirstChar(name), phone, address, LocalDateTime.now()));
                 return new ResultDTO(ResultStatus.SUCCESS_UPDATE_USERINFO);
             }
         }
@@ -147,5 +147,17 @@ public class UserService {
             return new ResultDTO(ResultStatus.SUCCESS_SEARCH_USERINFO, userEntityList);
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
+    }
+
+    public ResultDTO userSubMsgAdd(String userId) {
+        // 获取当前用户的次数
+        SysUserDO userInfoById = sysUserRepostory.getUserInfoById(userId);
+        // +1
+        SysUserDO build = SysUserDO.builder().id(userInfoById.getId()).subMsgNum(userInfoById.getSubMsgNum() + 1).build();
+        // 更新
+        sysUserRepostory.update(build);
+        // 返回新的
+        userInfoById.setSubMsgNum(build.getSubMsgNum());
+        return new ResultDTO(ResultStatus.SUCCESS, userInfoById);
     }
 }

@@ -37,6 +37,9 @@ public class MineUpdateProvider {
             if (sysUserDO.getLastLoginTimeStamp() != null) {
                 SET("lastLoginTimeStamp= #{sysUserDO.lastLoginTimeStamp}");
             }
+            if (sysUserDO.getSubMsgNum() != null) {
+                SET("subMsgNum= #{sysUserDO.subMsgNum}");
+            }
             WHERE("id = #{sysUserDO.id}" );
         }}.toString();
 

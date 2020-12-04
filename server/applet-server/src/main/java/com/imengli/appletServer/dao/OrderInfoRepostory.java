@@ -41,4 +41,11 @@ public interface OrderInfoRepostory {
             " left join " + SysConstant.ORDER_INFO_DEATIL_TABLE_NAME + " on order_info.id =  order_info_detail.orderId " +
             "where order_info.id = #{orderId}")
     void deleteOrderInfoAndOrderInfoDeatils(@Param("orderId") Integer orderInfoId);
+
+    @Select("SELECT GROUP_CONCAT(DISTINCT oid.categoryValue) " +
+            "FROM " + SysConstant.ORDER_INFO_TABLE_NAME + " oi " +
+            "LEFT JOIN " + SysConstant.ORDER_INFO_DEATIL_TABLE_NAME + " oid ON oi.id = oid.orderId " +
+            "WHERE oi.createDate BETWEEN #{startDate} AND #{endDate} AND oi.userId = #{userId} " +
+            "GROUP BY userId;")
+    String getOrderCategoryByUserId(@Param("userId") String userId, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }
