@@ -56,7 +56,6 @@ public class WechatAuthService {
         }
 
         WechatUserDO wechatUserDO = new WechatUserDO();
-        long lastLoginTimeStamp = System.currentTimeMillis();
         // 拼接url
         String authUrl = String.format(wechatAuthUri, appID, appSecret, code);
         // 调用微信的Auto接口,获取当前用户信息.

@@ -88,19 +88,32 @@ Page({
     }
   },
   onLoad() {
-    wx.showModal({
-      title: '提示',
-      content: '是否接收新订单的通知？',
-      success(res) {
-        if (res.confirm) {
-          // 在订单页面,需要获取用户是否接收消息通知的权限
-          wx.requestSubscribeMessage({
-            tmplIds: APP.globalData.tmplIds,
-            complete(res) { }
-          })
+    const userInfo = APP.globalData.userInfos;
+
+    if (userInfo.subMsgNum <= 0) {
+      wx.showModal({
+        title: '提示',
+        content: '是否接收新订单的通知？',
+        success(res) {
+          if (res.confirm) {
+            // 在订单页面,需要获取用户是否接收消息通知的权限
+            wx.requestSubscribeMessage({
+              tmplIds: APP.globalData.tmplIds,
+              success(res) {
+                // 如果对接正常,则数据库提示次数+1
+                REQUEST.request('user/userSubMsgAdd', 'POST', {
+                  userId: userInfo.id
+                }).then(res => {
+                  if (res.data.code == 20000) {
+                    APP.globalData.userInfos = res.data.data;
+                  }
+                })
+              }
+            })
+          }
         }
-      }
-    })
+      })
+    }
   },
   /**
    * 生命周期函数--监听页面加载

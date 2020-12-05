@@ -1,4 +1,5 @@
 const AUTH = require('utils/auth');
+const REQUEST = require('utils/request');
 
 App({
   // 生命周期回调——监听小程序初始化。
@@ -65,6 +66,29 @@ App({
     }).then(isLogined => {
       if (!isLogined) {
         AUTH.login()
+      }
+      this.getUserApiInfo();
+    })
+  },
+  getUserApiInfo: function () {
+    REQUEST.request('user/authUserInfo', 'POST', {
+      token: wx.getStorageSync('token'),
+    }).then(res => {
+      // 用户信息不需要完善
+      if (res.data.code == 20005) {
+        // 保存主进程的用户信息
+        this.globalData.userInfos = res.data.data;
+        this.globalData.needUpdateUserInfo = false;
+      }
+      // 用户信息还需要完善
+      if (res.data.code == 40003) {
+        // 保存主进程的用户信息
+        this.globalData.needUpdateUserInfo = true;
+      }
+      // 用户未授权
+      if (res.data.code == 40004) {
+        // 保存主进程的用户信息
+        this.globalData.needUpdateUserInfo = true;
       }
     })
   },

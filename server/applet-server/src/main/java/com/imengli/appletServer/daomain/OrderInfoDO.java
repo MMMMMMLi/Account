@@ -75,4 +75,8 @@ public class OrderInfoDO {
      */
     private LocalDateTime collectionTime;
 
+    /**
+     * 是否通知
+     */
+    private Boolean isNotice;
 }

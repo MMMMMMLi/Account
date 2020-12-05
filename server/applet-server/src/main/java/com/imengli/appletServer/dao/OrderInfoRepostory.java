@@ -48,4 +48,10 @@ public interface OrderInfoRepostory {
             "WHERE oi.createDate BETWEEN #{startDate} AND #{endDate} AND oi.userId = #{userId} " +
             "GROUP BY userId;")
     String getOrderCategoryByUserId(@Param("userId") String userId, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+
+    @Update("update " + SysConstant.ORDER_INFO_TABLE_NAME + " set isNotice = 1 where id in (${orderIds}) ")
+    void updateOrderNoticeFlag(@Param("orderIds") String orderIds);
+
+    @Select("SELECT COUNT(1) FROM order_info WHERE createDate BETWEEN CONCAT(CURDATE(),' 00:00:00') AND NOW() AND isNotice = 0 AND userId = #{userId} GROUP BY userId;")
+    Integer getUserOrderSize(@Param("userId") String userId);
 }

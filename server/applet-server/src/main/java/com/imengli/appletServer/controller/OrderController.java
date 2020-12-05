@@ -41,6 +41,11 @@ public class OrderController {
     @RequestMapping("/confirmCollection")
     public ResultDTO confirmCollection(@RequestParam String token,
                                        @RequestParam Integer orderId) {
-        return orderService.confirmCollection(token,orderId);
+        return orderService.confirmCollection(token, orderId);
+    }
+
+    @RequestMapping("/getUserOrderSize")
+    public ResultDTO getUserOrderSize(@RequestParam String userId) {
+        return orderService.getUserOrderSize(userId);
     }
 }

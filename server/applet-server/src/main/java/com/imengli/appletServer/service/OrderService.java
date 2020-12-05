@@ -129,7 +129,7 @@ public class OrderService {
             // 判断是否插入正常
             if (orders.size() == size) {
                 return new ResultDTO<>(ResultStatus.SUCCESS, orderInfoDO.getId());
-            }else {
+            } else {
                 // 如果不正常则回滚
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }
@@ -248,5 +248,9 @@ public class OrderService {
             return new ResultDTO(ResultStatus.SUCCESS_COLLECTION);
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
+    }
+
+    public ResultDTO getUserOrderSize(String userId) {
+        return new ResultDTO(ResultStatus.SUCCESS, orderInfoRepostory.getUserOrderSize(userId));
     }
 }
