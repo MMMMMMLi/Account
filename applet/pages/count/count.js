@@ -41,6 +41,77 @@ Page({
     // 筛选选择框
     filterPicker: [],
   },
+  // 每个订单 点击 发送消息 按钮
+  sendMsg(e) {
+    const info = e.currentTarget.dataset.index;
+    const that = this;
+    // 校验当前用户是否能接收消息通知
+    if (info.userInfo.subMsgNum > 0) {
+      // 如果可接收，再判断当前用户今天是否存在多个订单信息。
+      let orderNum = 0;
+      REQUEST.request('order/getUserOrderSize', 'POST', {
+        userId: info.userInfo.id
+      }).then(res => {
+        if (res.data.code == 20000) {
+          if (res.data.data > 1) {
+            // 如果同一用户当日含有多个订单，则询问一下是否一起执行。
+            wx.showModal({
+              title: '提示',
+              cancelText: '单独发送',
+              confirmText: '一起发送',
+              content: '当前用户今日总共存在' + res.data.data + '笔订单未提示订单，是否一起发送？',
+              success(modalFlag) {
+                if (modalFlag.confirm) {
+                  // 一起发送
+                  that.sendMsgRequest(true, info.userInfo.id);
+                } else {
+                  if (res.data.data > info.userInfo.subMsgNum) {
+                    wx.showModal({
+                      title: '提示',
+                      cancelText: '单独发送',
+                      confirmText: '一起发送',
+                      content: '当前用户仅剩' + info.userInfo.subMsgNum + '次消息提示次数，是否一起发送订单？',
+                      success(doubleModalFlag) {
+                        if (doubleModalFlag.confirm) {
+                          // 一起发送
+                          that.sendMsgRequest(true, info.userInfo.id);
+                        } else {
+                          // 单独发送
+                          that.sendMsgRequest(false, info.orderInfoId);
+                        }
+                      }
+                    })
+                  } else {
+                    // 单独发送
+                    that.sendMsgRequest(false, info.orderInfoId);
+                  }
+                }
+              }
+            })
+          } else {
+            // 单独发送
+            that.sendMsgRequest(false, info.orderInfoId);
+          }
+        }
+      })
+    } else {
+      wx.showModal({
+        title: '提示',
+        content: '当前用户可接收消息次数为0，请联系用户重新授权。',
+        showCancel: false
+      })
+    }
+
+  },
+  // 发送订单
+  sendMsgRequest(flag, id) {
+    REQUEST.request('order/sendMsg', 'POST', {
+      flag,
+      id
+    }).then(res => {
+
+    })
+  },
   // 每个订单 点击 修改订单 按钮
   updateOrderInfo(e) {
     wx.setStorageSync('orderInfo', e.currentTarget.dataset.index);
@@ -208,13 +279,13 @@ Page({
           hasNextPage: res.data.pageInfo.hasNextPage
         })
       } else {
-         // 校验Token失败，等待1S之后重新拉取数据
+        // 校验Token失败，等待1S之后重新拉取数据
         if (res.data.code === 40002) {
           setTimeout(() => {
-            if(wx.getStorageSync('token')) {
+            if (wx.getStorageSync('token')) {
               that.getData(that.data.currentTab, true);
             }
-          },1000)
+          }, 1000)
           return;
         }
         wx.showModal({
@@ -232,8 +303,7 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      filterPicker: [
-        {
+      filterPicker: [{
           key: '订单状态',
           value: 'order.status'
         },

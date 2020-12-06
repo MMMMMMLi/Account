@@ -170,9 +170,9 @@ public class RedisUtil {
     public boolean set(final String key, String value, long time) {
         boolean result = false;
         try {
-            redisTemplate.opsForValue().set(KEY_PREFIX + key, value);
+            redisTemplate.opsForValue().set(key, value);
             if (time > 0) {
-                redisTemplate.expire(KEY_PREFIX + key, time, timeUnit);
+                redisTemplate.expire(key, time, timeUnit);
             }
             result = true;
         } catch (Exception e) {
@@ -189,7 +189,7 @@ public class RedisUtil {
      */
     public boolean contains(String key) {
         try {
-            return redisTemplate.hasKey(KEY_PREFIX + key);
+            return redisTemplate.hasKey(key);
         } catch (Throwable e) {
             log.error("判断缓存失败,key:[{}],失败原因 Codeor:[{}]", key, e);
         }
@@ -204,7 +204,7 @@ public class RedisUtil {
      */
     public String get(final String key) {
         try {
-            return redisTemplate.opsForValue().get(KEY_PREFIX + key);
+            return redisTemplate.opsForValue().get(key);
         } catch (Throwable e) {
             log.error("获取缓存失败，key:[{}],失败原因 Codeor:[{}]", key, e);
         }
@@ -224,9 +224,9 @@ public class RedisUtil {
     public boolean getAndSet(final String key, String value, long time) {
         boolean result = false;
         try {
-            redisTemplate.opsForValue().getAndSet(KEY_PREFIX + key, value);
+            redisTemplate.opsForValue().getAndSet(key, value);
             if (time > 0) {
-                redisTemplate.expire(KEY_PREFIX + key, time, timeUnit);
+                redisTemplate.expire(key, time, timeUnit);
             }
             result = true;
         } catch (Exception e) {
@@ -241,7 +241,7 @@ public class RedisUtil {
     public boolean delete(final String key) {
         boolean result = false;
         try {
-            redisTemplate.delete(KEY_PREFIX + key);
+            redisTemplate.delete(key);
             result = true;
         } catch (Exception e) {
             log.error("删除缓存失败,key:[{}],失败原因 Codeor:[{}]", key, e);

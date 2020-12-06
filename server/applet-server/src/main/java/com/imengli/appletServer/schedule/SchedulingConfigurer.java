@@ -1,7 +1,9 @@
 package com.imengli.appletServer.schedule;
 
+import com.alibaba.fastjson.JSON;
 import com.imengli.appletServer.dao.OrderInfoRepostory;
 import com.imengli.appletServer.daomain.OrderInfoDO;
+import com.imengli.appletServer.utils.HttpUtil;
 import com.imengli.appletServer.utils.RedisUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -12,11 +14,14 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author: Weijia Jiang
@@ -29,14 +34,14 @@ public class SchedulingConfigurer {
 
     private static final Logger LOG = LoggerFactory.getLogger(SchedulingConfigurer.class);
 
-    @Value("${applet.templateId}")
-    private String templateId;
+    @Value("${applet.appID}")
+    private String appID;
 
-    @Value("${applet.page}")
-    private String page;
+    @Value("${applet.appSecret}")
+    private String appSecret;
 
-    @Value("${applet.sendMsgUri}")
-    private String sendMsgUri;
+    @Value("${applet.accessTokenUri}")
+    private String accessTokenUri;
 
     @Value("${applet.wechatTokenKey}")
     private String wechatTokenKey;
@@ -48,78 +53,17 @@ public class SchedulingConfigurer {
     private RedisUtil redisUtil;
 
     /**
-     * 每天定时推送订单信息
+     * 每天的晚上18点01分01秒定时推送订单信息
      */
-//    @Scheduled(cron = "* * * * * ?")
+    @Scheduled(cron = "1 1 18 * * ?")
     public void subMessage() {
         LOG.info(">>>>>> 开始执行消息推送。");
-        // 获取今天早晚时间.
-        LocalDateTime startDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
-        LocalDateTime endDateTime = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
         // 获取今天的所有订单
         List<OrderInfoDO> orderInfoDOS = orderInfoRepostory.selectAllOrderList(
-                startDateTime, endDateTime, new ArrayList<>());
+                LocalDateTime.of(LocalDate.now(), LocalTime.MIN), LocalDateTime.of(LocalDate.now(), LocalTime.MAX), new ArrayList<>());
         // 今天如果存在订单，则操作
         if (orderInfoDOS.size() > 0) {
-            // 获取系统在微信端的Token
-            String nowWechatToken = redisUtil.get(wechatTokenKey);
-            // 构建推送请求的url
-            String.format(sendMsgUri,nowWechatToken);
-            // 迭代订单列表进行发送
-            orderInfoDOS.parallelStream()
-                    // 过滤已经发送过的订单信息
-                    .filter(info -> !info.getIsNotice())
-                    // 根据用户ID分组
-                    .collect(Collectors.groupingBy(info -> info.getUserId()))
-                    // 迭代通知
-                    .forEach((userId, orderList) -> {
-                        LOG.info(">>>>>>>>>>>,{},{}", userId, orderList);
-                        // 结果集
-                        Map<String, Object> result = new HashMap<>();
-                        // touser
-                        result.put("touser", userId);
-                        // template_id
-                        result.put("template_id", templateId);
-                        // page 跳转页面
-                        result.put("page", page);
-                        // miniprogram_state
-                        // TODO 正式上线之后需要注释掉，默认就是正式版
-                        result.put("miniprogram_state", "developer");
-                        // data
-                        Map<String, Map<String, Object>> data = new HashMap<>();
-                        // 下单时间
-                        Map<String, Object> date4 = new HashMap<>();
-                        date4.put("value",
-                                // 由于一个人可能存在多个订单，则取时间最早的那个订单时间
-                                orderList.parallelStream()
-                                        .sorted((o1, o2) -> o1.getCreateDate().isBefore(o2.getCreateDate()) ? -1 : 1)
-                                        .findFirst().get().getCreateDate());
-                        data.put("date4", date4);
-                        // 商品名称
-                        Map<String, Object> thing6 = new HashMap<>();
-                        thing6.put("value", orderInfoRepostory.getOrderCategoryByUserId(userId, startDateTime, endDateTime));
-                        data.put("thing6", thing6);
-                        // 采购数量
-                        Map<String, Object> thing7 = new HashMap<>();
-                        thing7.put("value", String.format("共 %s 斤"
-                                , orderList.parallelStream().map(OrderInfoDO::getTotalWeight).reduce((o1, o2) -> o1 + o2).get()));
-                        data.put("thing7", thing7);
-                        // 订单内容
-                        Map<String, Object> thing1 = new HashMap<>();
-                        thing1.put("value", String.format("共%s笔订单，已支付%s笔，待支付金额为：%s"
-                                , orderList.size()
-                                , orderList.parallelStream().filter(info -> info.getStatus() == 1).count()
-                                , orderList.parallelStream().map(OrderInfoDO::getTotalPrice).reduce((o1, o2) -> o1 + o2).get()));
-                        data.put("thing1", thing1);
-                        // 温馨提示
-                        Map<String, Object> thing5 = new HashMap<>();
-                        thing5.put("value", "点击进入小程序，查看详细订单信息。 \n 更能获取下次新订单通知 > ");
-                        data.put("thing5", thing5);
-                        result.put("data", data);
 
-                    });
-            // 发送完毕之后,更新已经处理的订单状态
-            orderInfoRepostory.updateOrderNoticeFlag(StringUtils.join(orderInfoDOS.parallelStream().map(info -> info.getId()).collect(Collectors.toList()), ","));
         }
     }
 
@@ -133,8 +77,39 @@ public class SchedulingConfigurer {
      * access_token 的有效时间可能会在未来有调整，所以中控服务器不仅需要内部定时主动刷新，还需要提供被动刷新 access_token 的接口，
      * 这样便于业务服务器在API调用获知 access_token 已超时的情况下，可以触发 access_token 的刷新流程。
      */
-    @Scheduled(cron = "* * * * * ?")
-    public void updateWechatAccessToken() {
+    // 微信的Token值有效时间为7200S，两个小时，每次提前10S更新有效值。
+    @Scheduled(fixedDelay = 7190 * 1000)
+    public void updateWechatAccessToken() throws InterruptedException {
+        LOG.info(">>>>>> 开始更新微信Token。 ");
+        String sccessToken = null;
+        try {
+            sccessToken = HttpUtil.execLink(String.format(this.accessTokenUri, this.appID, this.appSecret));
+        } catch (IOException e) {
+            LOG.error(">>>>>> 获取微信Token失败，一分钟之后重新执行。");
+            TimeUnit.MINUTES.sleep(1L);
+            this.updateWechatAccessToken();
+        }
+        if (StringUtils.isNotBlank(sccessToken)) {
+            LOG.info(">>>>>> 获取微信Token成功，开始更新Redis。 ");
+        }
+        // 格式化返回信息
+        Map<String, Object> retureInfo = JSON.parseObject(sccessToken, Map.class);
+        // 判断是否包含操作信息
+        if (retureInfo.containsKey("errcode")) {
+            LOG.info(">>>>>> 更新微信Token失败，原因为：{}，一分钟之后重新执行。",retureInfo.get("errmsg"));
+            TimeUnit.MINUTES.sleep(1L);
+            this.updateWechatAccessToken();
+        } else {
+            // 存入Redis中。
+            boolean set = redisUtil.set(this.wechatTokenKey,
+                    String.valueOf(retureInfo.get("access_token")),
+                    Long.valueOf(String.valueOf(retureInfo.get("expires_in"))) / 60 / 60);
+            if (set && redisUtil.contains(this.wechatTokenKey)) {
+                LOG.info(">>>>>> 更新微信Token成功。");
+            } else {
+                LOG.info(">>>>>> 更新微信Token失败。");
+            }
+        }
 
     }
 }

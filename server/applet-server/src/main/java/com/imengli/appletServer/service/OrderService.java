@@ -28,6 +28,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +43,7 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService {
 
-    private final static Logger log = LoggerFactory.getLogger(OrderService.class);
+    private final static Logger LOG = LoggerFactory.getLogger(OrderService.class);
 
     @Autowired
     private RedisUtil redisUtil;
@@ -53,8 +54,11 @@ public class OrderService {
     @Resource
     private OrderInfoRepostory orderInfoRepostory;
 
-    @Resource
+    @Autowired
     private StockService stockService;
+
+    @Autowired
+    private WechatAuthService wechatAuthService;
 
     @Resource
     private OrderInfoDetailRepostory orderInfoDetailRepostory;
@@ -202,7 +206,7 @@ public class OrderService {
             List<OrderInfoDO> orderInfoDOS =
                     orderInfoRepostory.selectAllOrderList(
                             LocalDateTime.of(LocalDate.now().minusDays(status), LocalTime.MIN),
-                            LocalDateTime.now(),
+                            LocalDateTime.of(LocalDate.now().minusDays(status), LocalTime.MAX),
                             JSON.parseArray(filterList, HashMap.class));
             PageInfo<OrderInfoDO> orderInfoDOPageInfo = new PageInfo<>(orderInfoDOS);
             orderInfoDOPageInfo.setList(null);
@@ -222,6 +226,7 @@ public class OrderService {
                                             .orders(orderInfoDetailRepostory.select(orderInfoDO.getId()))
                                             .status(SysConstant.getValueByTypeAndKey(TYPE, String.valueOf(orderInfoDO.getStatus())).toString())
                                             .collectionTime(orderInfoDO.getCollectionTime() != null ? orderInfoDO.getCollectionTime().format(dateTimeFormatter) : "")
+                                            .isNotice(orderInfoDO.getIsNotice())
                                             .build()
                             )
                             .sorted(Comparator.comparing(AddOrderFormInfoPOJO::getCreateDate).reversed())
@@ -251,6 +256,30 @@ public class OrderService {
     }
 
     public ResultDTO getUserOrderSize(String userId) {
-        return new ResultDTO(ResultStatus.SUCCESS, orderInfoRepostory.getUserOrderSize(userId));
+        List<OrderInfoDO> userOrderSize = orderInfoRepostory.getUserOrder(userId);
+        return new ResultDTO(ResultStatus.SUCCESS, userOrderSize.size());
+    }
+
+    /**
+     * 推送消息
+     *
+     * @param flag 标识为
+     * @param id   为true传入的是userId，为false传入的是orderId
+     * @return
+     */
+    public ResultDTO sendMsg(Boolean flag, String id) {
+        List<OrderInfoDO> userOrders = new ArrayList<>();
+        // 一起发送，
+        if (flag) {
+            userOrders = orderInfoRepostory.getUserOrder(id);
+        } else {
+            userOrders = orderInfoRepostory.getOrderInfoByOrderId(id);
+        }
+        try {
+            wechatAuthService.sendMsgToWechat(userOrders);
+        } catch (Exception e) {
+            LOG.error(">>>>>> 消息推送失败，Msg：{}", e.getMessage());
+        }
+        return null;
     }
 }

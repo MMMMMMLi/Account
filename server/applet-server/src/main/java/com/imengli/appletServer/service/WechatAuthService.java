@@ -1,11 +1,13 @@
 package com.imengli.appletServer.service;
 
 import com.alibaba.fastjson.JSON;
+import com.imengli.appletServer.common.ResultStatus;
+import com.imengli.appletServer.dao.OrderInfoRepostory;
 import com.imengli.appletServer.dao.WechatUserRepostory;
+import com.imengli.appletServer.daomain.OrderInfoDO;
 import com.imengli.appletServer.daomain.WechatAuthDO;
 import com.imengli.appletServer.daomain.WechatUserDO;
 import com.imengli.appletServer.dto.ResultDTO;
-import com.imengli.appletServer.common.ResultStatus;
 import com.imengli.appletServer.utils.HttpUtil;
 import com.imengli.appletServer.utils.RedisUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -13,11 +15,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class WechatAuthService {
@@ -33,8 +43,23 @@ public class WechatAuthService {
     @Value("${applet.wechatAuthUri}")
     private String wechatAuthUri;
 
+    @Value("${applet.templateId}")
+    private String templateId;
+
+    @Value("${applet.page}")
+    private String page;
+
+    @Value("${applet.sendMsgUri}")
+    private String sendMsgUri;
+
+    @Value("${applet.wechatTokenKey}")
+    private String wechatTokenKey;
+
     @Resource
     private WechatUserRepostory wechatUserRepostory;
+
+    @Resource
+    private OrderInfoRepostory orderInfoRepostory;
 
     @Autowired
     private RedisUtil redisUtil;
@@ -61,7 +86,7 @@ public class WechatAuthService {
         // 调用微信的Auto接口,获取当前用户信息.
         String openid = null;
         try {
-            openid = HttpUtil.getOpenid(authUrl);
+            openid = HttpUtil.execLink(authUrl);
         } catch (IOException e) {
             LOG.error(e.getMessage());
             return new ResultDTO(ResultStatus.ERROR_GET_OPEN_ID);
@@ -99,5 +124,75 @@ public class WechatAuthService {
             }
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
+    }
+
+    /**
+     * 推送订单信息
+     *
+     * @param orderInfoDOS
+     */
+    public void sendMsgToWechat(List<OrderInfoDO> orderInfoDOS) {
+        // 获取系统在微信端的Token
+        String nowWechatToken = redisUtil.get(wechatTokenKey);
+        // 构建推送请求的url
+        String url = String.format(sendMsgUri, nowWechatToken);
+        // 迭代订单列表进行发送
+        orderInfoDOS.parallelStream()
+                // 过滤已经发送过的订单信息
+                .filter(info -> !info.getIsNotice())
+                // 根据用户ID分组
+                .collect(Collectors.groupingBy(info -> info.getUserId()))
+                // 迭代通知
+                .forEach((userId, orderList) -> {
+                    // 结果集
+                    Map<String, Object> result = new HashMap<>();
+                    // touser
+                    result.put("touser", userId);
+                    // template_id
+                    result.put("template_id", templateId);
+                    // page 跳转页面
+                    result.put("page", page);
+                    // miniprogram_state
+                    // TODO 正式上线之后需要注释掉，默认就是正式版
+                    result.put("miniprogram_state", "developer");
+                    // data
+                    Map<String, Map<String, Object>> data = new HashMap<>();
+                    // 下单时间
+                    Map<String, Object> date4 = new HashMap<>();
+                    date4.put("value",
+                            // 由于一个人可能存在多个订单，则取时间最早的那个订单时间
+                            orderList.parallelStream()
+                                    .sorted((o1, o2) -> o1.getCreateDate().isBefore(o2.getCreateDate()) ? -1 : 1)
+                                    .findFirst().get().getCreateDate());
+                    data.put("date4", date4);
+                    // 商品名称
+                    Map<String, Object> thing6 = new HashMap<>();
+                    thing6.put("value", orderInfoRepostory.getOrderCategoryByUserId(userId, LocalDateTime.of(LocalDate.now(),
+                            LocalTime.MIN), LocalDateTime.of(LocalDate.now(), LocalTime.MAX)));
+                    data.put("thing6", thing6);
+                    // 采购数量
+                    Map<String, Object> thing7 = new HashMap<>();
+                    thing7.put("value", String.format("共 %s 斤"
+                            , orderList.parallelStream().map(OrderInfoDO::getTotalWeight).reduce((o1, o2) -> o1 + o2).get()));
+                    data.put("thing7", thing7);
+                    // 订单内容
+                    Map<String, Object> thing1 = new HashMap<>();
+                    thing1.put("value", String.format("共%s笔订单，已支付%s笔，待支付金额为：%s"
+                            , orderList.size()
+                            , orderList.parallelStream().filter(info -> info.getStatus() == 1).count()
+                            , orderList.parallelStream().map(OrderInfoDO::getTotalPrice).reduce((o1, o2) -> o1 + o2).get()));
+                    data.put("thing1", thing1);
+                    // 温馨提示
+                    Map<String, Object> thing5 = new HashMap<>();
+                    thing5.put("value", "点击进入小程序，查看详细订单信息。 \n 更能获取下次新订单通知 > ");
+                    data.put("thing5", thing5);
+                    result.put("data", data);
+
+                    // 构建请求集完毕，开始执行推送程序。
+                    String httpResult = HttpUtil.sendRequest(url, result, HttpMethod.POST);
+                    LOG.info(">>>>>>>>>> {}", httpResult);
+                });
+        // 发送完毕之后,更新已经处理的订单状态
+        orderInfoRepostory.updateOrderNoticeFlag(StringUtils.join(orderInfoDOS.parallelStream().map(info -> info.getId()).collect(Collectors.toList()), ","));
     }
 }

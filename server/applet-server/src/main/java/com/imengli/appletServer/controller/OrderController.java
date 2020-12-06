@@ -48,4 +48,11 @@ public class OrderController {
     public ResultDTO getUserOrderSize(@RequestParam String userId) {
         return orderService.getUserOrderSize(userId);
     }
+
+    @RequestMapping("/sendMsg")
+    public ResultDTO sendMsg(
+            @RequestParam Boolean flag,
+            @RequestParam String id) {
+        return orderService.sendMsg(flag,id);
+    }
 }

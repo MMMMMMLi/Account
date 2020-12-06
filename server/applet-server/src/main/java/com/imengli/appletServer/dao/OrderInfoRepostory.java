@@ -52,6 +52,9 @@ public interface OrderInfoRepostory {
     @Update("update " + SysConstant.ORDER_INFO_TABLE_NAME + " set isNotice = 1 where id in (${orderIds}) ")
     void updateOrderNoticeFlag(@Param("orderIds") String orderIds);
 
-    @Select("SELECT COUNT(1) FROM order_info WHERE createDate BETWEEN CONCAT(CURDATE(),' 00:00:00') AND NOW() AND isNotice = 0 AND userId = #{userId} GROUP BY userId;")
-    Integer getUserOrderSize(@Param("userId") String userId);
+    @Select("SELECT * FROM " + SysConstant.ORDER_INFO_TABLE_NAME + " WHERE DATE_FORMAT(createDate, '%Y-%m-%d') = CURDATE() AND isNotice = 0 AND userId = #{userId}")
+    List<OrderInfoDO> getUserOrder(@Param("userId") String userId);
+
+    @Select("SELECT * FROM " + SysConstant.ORDER_INFO_TABLE_NAME + " WHERE `id` = #{orderId} ")
+    List<OrderInfoDO> getOrderInfoByOrderId(@Param("orderId") String id);
 }

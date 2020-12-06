@@ -90,5 +90,8 @@ public class AddOrderFormInfoPOJO implements Serializable {
     @JsonProperty(value = "orders")
     private List<OrderInfoDetailDO> orders;
 
-
+    /**
+     * 当前订单是否已经通知
+     */
+    private Boolean isNotice;
 }

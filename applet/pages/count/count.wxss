@@ -105,7 +105,8 @@
   flex: 1;
   color: var(--weui-LINK);
   text-align: center;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  background: aliceblue;
 }
 
 button.weui-form-preview__btn {
@@ -141,6 +142,10 @@ button.weui-form-preview__btn {
 
 .weui-form-preview__btn_default {
   color: var(--weui-FG-HALF)
+}
+
+.weui-form-preview__btn_warn {
+  color: var(--weui-RED)
 }
 
 .weui-form-preview__btn_primary {
