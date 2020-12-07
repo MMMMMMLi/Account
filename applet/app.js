@@ -67,29 +67,6 @@ App({
       if (!isLogined) {
         AUTH.login()
       }
-      this.getUserApiInfo();
-    })
-  },
-  getUserApiInfo: function () {
-    REQUEST.request('user/authUserInfo', 'POST', {
-      token: wx.getStorageSync('token'),
-    }).then(res => {
-      // 用户信息不需要完善
-      if (res.data.code == 20005) {
-        // 保存主进程的用户信息
-        this.globalData.userInfos = res.data.data;
-        this.globalData.needUpdateUserInfo = false;
-      }
-      // 用户信息还需要完善
-      if (res.data.code == 40003) {
-        // 保存主进程的用户信息
-        this.globalData.needUpdateUserInfo = true;
-      }
-      // 用户未授权
-      if (res.data.code == 40004) {
-        // 保存主进程的用户信息
-        this.globalData.needUpdateUserInfo = true;
-      }
     })
   },
   globalData: {
@@ -100,6 +77,8 @@ App({
     // 当前用户信息列表
     userInfos: [],
     // 消息订阅模板
-    tmplIds:['SOzXhOVHt9X1NQAOJPvB5M1refAxCBVxIW_IKz8HGmw']
+    tmplIds:['SOzXhOVHt9X1NQAOJPvB5M1refAxCBVxIW_IKz8HGmw'],
+    // 动态底部导航
+    tabBarList: [], // tabBar
   }
 })

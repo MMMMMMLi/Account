@@ -4,19 +4,21 @@
 <view class="container">
 	<view wx:if="{{apiUserInfoMap}}" class="userinfo">
 		<navigator url="/pages/userInfo/userInfo">
-			<image wx:if="{{apiUserInfoMap.avatarUrl}}" class="userinfo-avatar" src="{{ apiUserInfoMap.avatarUrl }}" background-size="cover"></image>
+			<image wx:if="{{apiUserInfoMap.avatarUrl}}" class="userinfo-avatar" src="{{ apiUserInfoMap.avatarUrl }}"
+				background-size="cover"></image>
 			<image wx:else class="userinfo-avatar" src="/images/nologin.png" background-size="cover"></image>
 		</navigator>
 		<view class="userNames">
-			<text  wx:if= "{{apiUserInfoMap.userName}}" class="userinfo-nickname">{{ apiUserInfoMap.userName }}</text>
-			<text  wx:else class="userinfo-nickname">{{ apiUserInfoMap.nickName }}</text>
-			<text  wx:if= "{{apiUserInfoMap.phoneNumber}}" class="userinfo-phoneNumber">{{ apiUserInfoMap.phoneNumber }}</text>
-			<text  wx:else class="userinfo-phoneNumber">暂未完善手机号</text>
+			<text wx:if="{{apiUserInfoMap.userName}}" class="userinfo-nickname">{{ apiUserInfoMap.userName }}</text>
+			<text wx:else class="userinfo-nickname">{{ apiUserInfoMap.nickName }}</text>
+			<text wx:if="{{apiUserInfoMap.phoneNumber}}" class="userinfo-phoneNumber">{{ apiUserInfoMap.phoneNumber }}</text>
+			<text wx:else class="userinfo-phoneNumber">暂未完善手机号</text>
 		</view>
 	</view>
 	<view wx:else class="userinfo" style="margin-bottom:40rpx;">
 		<image class="userinfo-avatar" src="/images/nologin.png" background-size="cover"></image>
-		<button class="weui-btn mini-btn" style="margin-left:30rpx;" plain="true" size="mini" bindtap="goLogin">立即登录</button>
+		<button class="weui-btn mini-btn" style="margin-left:30rpx;" plain="true" size="mini"
+			bindtap="goLogin">立即登录</button>
 	</view>
 	<view class="asset">
 		<view class='item' bindtap='goAsset'>
@@ -31,12 +33,10 @@
 			<view>{{score}}</view>
 			<view>积分</view>
 		</view>
-		<navigator url="/pages/score/growth">
-			<view class='item right'>
-				<view>{{growth}}</view>
-				<view>成长值</view>
-			</view>
-		</navigator>
+		<view class='item right' bindtap="addMsgNum">
+			<view>{{apiUserInfoMap.subMsgNum}}</view>
+			<view>推送次数</view>
+		</view>
 	</view>
 	<view class="space"></view>
 
@@ -47,12 +47,12 @@
 		</view>
 	</navigator>
 	<view wx:if="{{needUpdateUserInfo}}" class="line"></view>
-	<navigator url="/pages/maidan/index">
+	<view bindtap="addMsgNum">
 		<view class="menu-item">
-			<view class="l">优惠买单</view>
+			<view class="l">点击此处增加推送消息次数</view>
 			<image class="next" src="/images/icon/next.png"></image>
 		</view>
-	</navigator>
+	</view>
 	<view class="line"></view>
 	<navigator url="/pages/asset/index">
 		<view class="menu-item">

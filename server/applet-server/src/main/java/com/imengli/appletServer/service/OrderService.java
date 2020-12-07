@@ -280,6 +280,6 @@ public class OrderService {
         } catch (Exception e) {
             LOG.error(">>>>>> 消息推送失败，Msg：{}", e.getMessage());
         }
-        return null;
+        return new ResultDTO(ResultStatus.SUCCESS);
     }
 }

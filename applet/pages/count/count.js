@@ -103,13 +103,13 @@ Page({
     }
 
   },
-  // 发送订单
+  // 发送消息
   sendMsgRequest(flag, id) {
     REQUEST.request('order/sendMsg', 'POST', {
       flag,
       id
     }).then(res => {
-
+     
     })
   },
   // 每个订单 点击 修改订单 按钮
@@ -187,11 +187,17 @@ Page({
     })
   },
   // 筛选界面返回按钮
+  closeFilterTab() {
+    this.setData({
+      needFilter: false,
+    })
+  },
   closeFilter() {
     this.setData({
       needFilter: false,
       // 清空订单列表
-      orderList: []
+      orderList: [],
+      size: 0
     })
     //动态获取数据
     this.getData(this.data.currentTab, true);

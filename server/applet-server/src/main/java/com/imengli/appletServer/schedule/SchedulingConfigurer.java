@@ -3,6 +3,7 @@ package com.imengli.appletServer.schedule;
 import com.alibaba.fastjson.JSON;
 import com.imengli.appletServer.dao.OrderInfoRepostory;
 import com.imengli.appletServer.daomain.OrderInfoDO;
+import com.imengli.appletServer.service.WechatAuthService;
 import com.imengli.appletServer.utils.HttpUtil;
 import com.imengli.appletServer.utils.RedisUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * @author: Weijia Jiang
@@ -50,21 +52,37 @@ public class SchedulingConfigurer {
     private OrderInfoRepostory orderInfoRepostory;
 
     @Autowired
+    private WechatAuthService wechatAuthService;
+
+    @Autowired
     private RedisUtil redisUtil;
 
     /**
-     * 每天的晚上18点01分01秒定时推送订单信息
+     * 每天的晚上18/19点01分01秒定时推送订单信息
+     * 19点的主要是为了给18点发送失败填窟窿的。
      */
-    @Scheduled(cron = "1 1 18 * * ?")
+    @Scheduled(cron = "1 1 18,19 * * ?")
     public void subMessage() {
         LOG.info(">>>>>> 开始执行消息推送。");
         // 获取今天的所有订单
         List<OrderInfoDO> orderInfoDOS = orderInfoRepostory.selectAllOrderList(
                 LocalDateTime.of(LocalDate.now(), LocalTime.MIN), LocalDateTime.of(LocalDate.now(), LocalTime.MAX), new ArrayList<>());
+        LOG.info(">>>>>> 今天需要推送：{}条消息。", orderInfoDOS.parallelStream()
+                // 过滤已经发送过的订单信息
+                .filter(info -> !info.getIsNotice())
+                // 根据用户ID分组
+                .collect(Collectors.groupingBy(info -> info.getUserId())).size());
         // 今天如果存在订单，则操作
+        Integer size = 0;
         if (orderInfoDOS.size() > 0) {
-
+            try {
+                size = wechatAuthService.sendMsgToWechat(orderInfoDOS);
+            } catch (Exception e) {
+                LOG.info(">>>>>> 自动推送失败，{}", e.getMessage());
+            }
         }
+        LOG.info(">>>>>> 已经成功推送：{}条消息。", size);
+        LOG.info(">>>>>> 推送完毕。");
     }
 
 
@@ -96,7 +114,7 @@ public class SchedulingConfigurer {
         Map<String, Object> retureInfo = JSON.parseObject(sccessToken, Map.class);
         // 判断是否包含操作信息
         if (retureInfo.containsKey("errcode")) {
-            LOG.info(">>>>>> 更新微信Token失败，原因为：{}，一分钟之后重新执行。",retureInfo.get("errmsg"));
+            LOG.info(">>>>>> 更新微信Token失败，原因为：{}，一分钟之后重新执行。", retureInfo.get("errmsg"));
             TimeUnit.MINUTES.sleep(1L);
             this.updateWechatAccessToken();
         } else {

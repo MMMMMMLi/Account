@@ -3,6 +3,7 @@ package com.imengli.appletServer.dao;
 import com.imengli.appletServer.common.SysConstant;
 import com.imengli.appletServer.dao.provide.MineSelectProvider;
 import com.imengli.appletServer.daomain.OrderInfoDO;
+import com.imengli.appletServer.daomain.OrderInfoDetailDO;
 import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDateTime;
@@ -42,13 +43,6 @@ public interface OrderInfoRepostory {
             "where order_info.id = #{orderId}")
     void deleteOrderInfoAndOrderInfoDeatils(@Param("orderId") Integer orderInfoId);
 
-    @Select("SELECT GROUP_CONCAT(DISTINCT oid.categoryValue) " +
-            "FROM " + SysConstant.ORDER_INFO_TABLE_NAME + " oi " +
-            "LEFT JOIN " + SysConstant.ORDER_INFO_DEATIL_TABLE_NAME + " oid ON oi.id = oid.orderId " +
-            "WHERE oi.createDate BETWEEN #{startDate} AND #{endDate} AND oi.userId = #{userId} " +
-            "GROUP BY userId;")
-    String getOrderCategoryByUserId(@Param("userId") String userId, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
-
     @Update("update " + SysConstant.ORDER_INFO_TABLE_NAME + " set isNotice = 1 where id in (${orderIds}) ")
     void updateOrderNoticeFlag(@Param("orderIds") String orderIds);
 
@@ -57,4 +51,7 @@ public interface OrderInfoRepostory {
 
     @Select("SELECT * FROM " + SysConstant.ORDER_INFO_TABLE_NAME + " WHERE `id` = #{orderId} ")
     List<OrderInfoDO> getOrderInfoByOrderId(@Param("orderId") String id);
+
+    @Select("SELECT * From " + SysConstant.ORDER_INFO_DEATIL_TABLE_NAME + " where orderId in (${join}) ")
+    List<OrderInfoDetailDO> getOrderInfoDetailsByOrderId(@Param("join") String join);
 }

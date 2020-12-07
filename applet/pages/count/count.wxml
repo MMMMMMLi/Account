@@ -106,7 +106,7 @@
 		<view class="weui-mask"></view>
 		<view class="weui-half-screen-dialog">
 			<view class="weui-half-screen-dialog__hd">
-				<view class="weui-half-screen-dialog__hd__side" bindtap="closeFilter">
+				<view class="weui-half-screen-dialog__hd__side" bindtap="closeFilterTab">
 					<a class="weui-icon-btn">返回<i class="weui-icon-back-arrow-thin"></i></a>
 				</view>
 				<view class="weui-half-screen-dialog__hd__main">

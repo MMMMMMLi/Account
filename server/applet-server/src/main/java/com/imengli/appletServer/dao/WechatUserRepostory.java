@@ -17,4 +17,7 @@ public interface WechatUserRepostory {
 
     @Insert("insert into " + SysConstant.WECHAT_USER_TABLE_NAME + " (openId,unionId) values(#{wechatUserDO.openId},#{wechatUserDO.unionId})")
     void saveUserEntity(@Param("wechatUserDO") WechatUserDO wechatUserDO);
+
+    @Select("select * from " + SysConstant.WECHAT_USER_TABLE_NAME + " where userId = #{userId}")
+    WechatUserDO getUserEntityByUserId(@Param("userId") String userId);
 }

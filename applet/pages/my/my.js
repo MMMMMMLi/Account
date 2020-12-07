@@ -12,7 +12,7 @@ Page({
     balance: 0.00, //可用余额
     freeze: 0, //冻结金额
     score: 0, //可用积分
-    growth: 0, //当前成长值
+    subMsgNum: 0, // 剩余可推送次数
     score_sign_continuous: 0,
     rechargeOpen: false, // 是否开启充值[预存]功能
   },
@@ -41,6 +41,26 @@ Page({
       if (isLogined) {
         _this.getUserApiInfo();
         _this.getUserAmount();
+      }
+    })
+  },
+  // 增加 消息通知次数
+  addMsgNum(){
+    let that = this;
+    wx.requestSubscribeMessage({
+      tmplIds: APP.globalData.tmplIds,
+      success(res) {
+        // 如果对接正常,则数据库提示次数+1
+        REQUEST.request('user/userSubMsgAdd', 'POST', {
+          userId: that.data.apiUserInfoMap.id
+        }).then(res => {
+          if (res.data.code == 20000) {
+            that.setData({
+              apiUserInfoMap:res.data.data
+            })
+            APP.globalData.userInfos = res.data.data;
+          }
+        })
       }
     })
   },
@@ -117,21 +137,6 @@ Page({
   },
   handleOrderCount: function (count) {
     return count > 99 ? '99+' : count;
-  },
-  goAsset: function () {
-    wx.navigateTo({
-      url: "/pages/asset/index"
-    })
-  },
-  goScore: function () {
-    wx.navigateTo({
-      url: "/pages/score/index"
-    })
-  },
-  goOrder: function (e) {
-    wx.navigateTo({
-      url: "/pages/order-list/index?type=" + e.currentTarget.dataset.type
-    })
   },
   cancelLogin() {
     this.setData({

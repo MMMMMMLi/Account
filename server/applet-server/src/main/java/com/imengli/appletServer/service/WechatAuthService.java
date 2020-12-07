@@ -3,10 +3,9 @@ package com.imengli.appletServer.service;
 import com.alibaba.fastjson.JSON;
 import com.imengli.appletServer.common.ResultStatus;
 import com.imengli.appletServer.dao.OrderInfoRepostory;
+import com.imengli.appletServer.dao.SysUserRepostory;
 import com.imengli.appletServer.dao.WechatUserRepostory;
-import com.imengli.appletServer.daomain.OrderInfoDO;
-import com.imengli.appletServer.daomain.WechatAuthDO;
-import com.imengli.appletServer.daomain.WechatUserDO;
+import com.imengli.appletServer.daomain.*;
 import com.imengli.appletServer.dto.ResultDTO;
 import com.imengli.appletServer.utils.HttpUtil;
 import com.imengli.appletServer.utils.RedisUtil;
@@ -20,13 +19,12 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,8 +59,13 @@ public class WechatAuthService {
     @Resource
     private OrderInfoRepostory orderInfoRepostory;
 
+    @Resource
+    private SysUserRepostory sysUserRepostory;
+
     @Autowired
     private RedisUtil redisUtil;
+
+    private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     /**
      * 根据用户Code获取当前登陆用户信息
@@ -131,11 +134,14 @@ public class WechatAuthService {
      *
      * @param orderInfoDOS
      */
-    public void sendMsgToWechat(List<OrderInfoDO> orderInfoDOS) {
+    public Integer sendMsgToWechat(List<OrderInfoDO> orderInfoDOS) {
+        LOG.info(">>>>>> 开始推送订单消息。");
         // 获取系统在微信端的Token
         String nowWechatToken = redisUtil.get(wechatTokenKey);
         // 构建推送请求的url
         String url = String.format(sendMsgUri, nowWechatToken);
+        // 失败的用户List
+        CopyOnWriteArrayList<String> errorUserIds = new CopyOnWriteArrayList<String>();
         // 迭代订单列表进行发送
         orderInfoDOS.parallelStream()
                 // 过滤已经发送过的订单信息
@@ -147,52 +153,80 @@ public class WechatAuthService {
                     // 结果集
                     Map<String, Object> result = new HashMap<>();
                     // touser
-                    result.put("touser", userId);
+                    result.put("touser", wechatUserRepostory.getUserEntityByUserId(userId).getOpenId());
                     // template_id
                     result.put("template_id", templateId);
                     // page 跳转页面
                     result.put("page", page);
                     // miniprogram_state
                     // TODO 正式上线之后需要注释掉，默认就是正式版
-                    result.put("miniprogram_state", "developer");
+                    result.put("miniprogram_state", "trial");
                     // data
-                    Map<String, Map<String, Object>> data = new HashMap<>();
+                    Map<String, Map> data = new HashMap<>();
                     // 下单时间
                     Map<String, Object> date4 = new HashMap<>();
                     date4.put("value",
                             // 由于一个人可能存在多个订单，则取时间最早的那个订单时间
-                            orderList.parallelStream()
+                            dateTimeFormatter.format(orderList.parallelStream()
                                     .sorted((o1, o2) -> o1.getCreateDate().isBefore(o2.getCreateDate()) ? -1 : 1)
-                                    .findFirst().get().getCreateDate());
+                                    .findFirst().get().getCreateDate()));
                     data.put("date4", date4);
                     // 商品名称
                     Map<String, Object> thing6 = new HashMap<>();
-                    thing6.put("value", orderInfoRepostory.getOrderCategoryByUserId(userId, LocalDateTime.of(LocalDate.now(),
-                            LocalTime.MIN), LocalDateTime.of(LocalDate.now(), LocalTime.MAX)));
+                    List<OrderInfoDetailDO> orderInfoDetailDOS = orderInfoRepostory.getOrderInfoDetailsByOrderId(
+                            StringUtils.join(orderList.stream().map(OrderInfoDO::getId).collect(Collectors.toList()), ",")
+                    );
+                    thing6.put("value", StringUtils.join(
+                            orderInfoDetailDOS.parallelStream().map(OrderInfoDetailDO::getCategoryValue).distinct().collect(Collectors.toList()),
+                            "，"));
                     data.put("thing6", thing6);
                     // 采购数量
                     Map<String, Object> thing7 = new HashMap<>();
-                    thing7.put("value", String.format("共 %s 斤"
-                            , orderList.parallelStream().map(OrderInfoDO::getTotalWeight).reduce((o1, o2) -> o1 + o2).get()));
+                    thing7.put("value", String.format("共%s斤，待付：%s元"
+                            , orderList.parallelStream().map(OrderInfoDO::getTotalWeight).reduce((o1, o2) -> o1 + o2).get()
+                            , orderList.parallelStream().map(OrderInfoDO::getTotalPrice).reduce((o1, o2) -> o1 + o2).get()));
                     data.put("thing7", thing7);
                     // 订单内容
-                    Map<String, Object> thing1 = new HashMap<>();
-                    thing1.put("value", String.format("共%s笔订单，已支付%s笔，待支付金额为：%s"
+                    Map<String, String> thing1 = new HashMap<>();
+                    thing1.put("value", String.format("共%s笔订单，已支付%s笔"
                             , orderList.size()
                             , orderList.parallelStream().filter(info -> info.getStatus() == 1).count()
-                            , orderList.parallelStream().map(OrderInfoDO::getTotalPrice).reduce((o1, o2) -> o1 + o2).get()));
+                    ));
                     data.put("thing1", thing1);
                     // 温馨提示
                     Map<String, Object> thing5 = new HashMap<>();
-                    thing5.put("value", "点击进入小程序，查看详细订单信息。 \n 更能获取下次新订单通知 > ");
+                    thing5.put("value", "点击进入小程序，查看详细订单信息");
                     data.put("thing5", thing5);
                     result.put("data", data);
 
                     // 构建请求集完毕，开始执行推送程序。
-                    String httpResult = HttpUtil.sendRequest(url, result, HttpMethod.POST);
-                    LOG.info(">>>>>>>>>> {}", httpResult);
+                    Map httpResult = JSON.parseObject(HttpUtil.sendRequest(url, result, HttpMethod.POST), Map.class);
+                    String errmsg = String.valueOf(httpResult.get("errmsg"));
+                    if ("ok".equals(errmsg)) {
+                        LOG.info(">>>>>> 发送成功！");
+                        // 发送成功之后更新用户表
+                        // 更新
+                        sysUserRepostory.update(
+                                SysUserDO.builder()
+                                        .id(userId)
+                                        .subMsgNum(sysUserRepostory.getUserInfoById(userId).getSubMsgNum() - 1)
+                                        .build());
+                    } else {
+                        LOG.info(">>>>>> 发送失败！,{}",errmsg);
+                        errorUserIds.add(userId);
+                    }
                 });
-        // 发送完毕之后,更新已经处理的订单状态
-        orderInfoRepostory.updateOrderNoticeFlag(StringUtils.join(orderInfoDOS.parallelStream().map(info -> info.getId()).collect(Collectors.toList()), ","));
+        List<Integer> updateOrderId = orderInfoDOS.parallelStream().
+                // 过滤掉发送失败的用户订单信息
+                        filter(info -> !errorUserIds.contains(info.getUserId()))
+                .map(info -> info.getId())
+                .collect(Collectors.toList());
+        if (updateOrderId.size() > 0) {
+            // 发送完毕之后,更新已经处理的订单状态
+            orderInfoRepostory.updateOrderNoticeFlag(
+                    StringUtils.join(updateOrderId, ",")
+            );
+        }
+        return updateOrderId.size();
     }
 }
