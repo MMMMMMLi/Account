@@ -16,6 +16,21 @@ Page({
   },
   onLoad() {},
   onShow() {
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      let viewName = wx.getStorageSync('viewName') || this.getTabBar().data.viewName;
+
+      if (viewName == 'master') {
+        this.getTabBar().setData({
+          selected: 1
+        })
+      }
+      if (viewName == 'developer') {
+        this.getTabBar().setData({
+          selected: 3
+        })
+      }
+    }
+
     // 每次打开页面,都需要回到顶部。
     if (wx.pageScrollTo) {
       wx.pageScrollTo({
@@ -203,3 +218,10 @@ Page({
     }, 1500);
   },
 })
+
+export function switchView() {
+  console.log(this)
+  this.getTabBar().setData({
+    viewName: wx.getStorageSync('viewName')
+  })
+}

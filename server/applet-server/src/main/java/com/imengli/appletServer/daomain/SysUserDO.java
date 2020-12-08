@@ -61,6 +61,9 @@ public class SysUserDO {
     // 用户消息通知的次数
     private Integer subMsgNum;
 
+    // 权限
+    private SysRoleDo role;
+
     public SysUserDO(String id, String userName, String userNameCode, String phoneNumber, String address, LocalDateTime updateTime) {
         this.id = id;
         this.userName = userName;

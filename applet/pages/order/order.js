@@ -88,7 +88,6 @@ Page({
     }
   },
   onLoad() {
-    
     REQUEST.request('user/authUserInfo', 'POST', {
       token: wx.getStorageSync('token'),
     }).then(res => {
@@ -125,6 +124,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onShow() {
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {      
+      this.getTabBar().setData({
+        selected: 0,
+      })
+    }
     // 获取数据
     this.getData(this.data.currentTab, false);
   },

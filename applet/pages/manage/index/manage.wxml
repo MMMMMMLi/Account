@@ -80,11 +80,11 @@
 			</view>
 			<view class="weui-grid__label">订单分析</view>
 		</view>
-		<view class="weui-grid">
+		<view class="weui-grid" bindtap="switchView">
 			<view class="weui-grid__icon">
 				<image src="/images/icon/c2.png" alt></image>
 			</view>
-			<view class="weui-grid__label">待定</view>
+			<view class="weui-grid__label">切换视图</view>
 		</view>
 		<view class="weui-grid">
 			<view class="weui-grid__icon">

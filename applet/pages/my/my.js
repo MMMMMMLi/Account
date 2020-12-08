@@ -17,6 +17,13 @@ Page({
     rechargeOpen: false, // 是否开启充值[预存]功能
   },
   onShow() {
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      console.log( wx.getStorageSync('viewName'));
+      this.getTabBar().setData({
+        selected: 1,
+      })
+    }
+
     // 每次打开页面,都需要回到顶部。
     if (wx.pageScrollTo) {
       wx.pageScrollTo({

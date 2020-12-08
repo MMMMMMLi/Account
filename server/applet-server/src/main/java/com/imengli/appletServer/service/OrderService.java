@@ -206,7 +206,7 @@ public class OrderService {
             List<OrderInfoDO> orderInfoDOS =
                     orderInfoRepostory.selectAllOrderList(
                             LocalDateTime.of(LocalDate.now().minusDays(status), LocalTime.MIN),
-                            LocalDateTime.of(LocalDate.now().minusDays(status), LocalTime.MAX),
+                            LocalDateTime.of(LocalDate.now(), LocalTime.MAX),
                             JSON.parseArray(filterList, HashMap.class));
             PageInfo<OrderInfoDO> orderInfoDOPageInfo = new PageInfo<>(orderInfoDOS);
             orderInfoDOPageInfo.setList(null);

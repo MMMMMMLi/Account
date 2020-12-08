@@ -1,5 +1,5 @@
 {
-  "entryPagePath": "pages/manage/index/manage",
+  "entryPagePath": "pages/start/start",
   "pages": [
     "pages/start/start",
     "pages/my/my",
@@ -13,7 +13,8 @@
     "pages/manage/user/user",
     "pages/manage/system/system",
     "pages/manage/user/detail/detail",
-    "pages/manage/stock/index/stock"
+    "pages/manage/stock/index/stock",
+    "custom-tab-bar/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
@@ -22,6 +23,7 @@
     "backgroundTextStyle": "light"
   },
   "tabBar": {
+    "custom": true,
     "color": "#6e6d6b",
     "selectedColor": "#1296db",
     "borderStyle": "white",

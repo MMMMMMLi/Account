@@ -1,5 +1,11 @@
 const CONFIG = require('../../../config.js');
 const REQUEST = require('../../../utils/request');
+const add = require('../../add/add')
+
+import {
+  developer,
+  master
+} from "../../../utils/tabBarUrl";
 
 Page({
   data: {
@@ -24,6 +30,21 @@ Page({
     })
   },
   onShow() {
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      let viewName = wx.getStorageSync('viewName') || this.getTabBar().data.viewName;
+      console.log(viewName);
+      if (viewName == 'master') {
+        this.getTabBar().setData({
+          selected: 2
+        })
+      }
+      if (viewName == 'developer') {
+        this.getTabBar().setData({
+          selected: 4
+        })
+      }
+    }
+
     // 获取订单信息
     this.getSummaryOrderInfo();
     // 获取 清新小句子
@@ -34,6 +55,28 @@ Page({
         scrollTop: 0
       })
     }
+  },
+  // 点击切换试图按钮
+  switchView() {
+    let viewName = wx.getStorageSync('viewName') || this.getTabBar().data.viewName;;
+    let switchData = {};
+    if (viewName == 'master') {
+      switchData = {
+        selected: 4,
+        viewName: 'developer',
+      }
+      wx.setStorageSync('viewName','developer');
+    }
+    if (viewName == 'developer') {
+      switchData = {
+        selected: 2,
+        viewName: 'master',
+      }
+      wx.setStorageSync('viewName','master');
+    }
+    // 更新别的页面
+    add.switchView()
+    this.getTabBar().setData(switchData)
   },
   // 点击切换 清新小句子
   switchContent() {
@@ -47,8 +90,8 @@ Page({
       url: 'https://v1.hitokoto.cn?c=b&c=d&c=h&c=j&c=k',
       success: res => {
         this.setData({
-          sentenceContent:res.data.hitokoto,
-          sentenceFrom:res.data.from
+          sentenceContent: res.data.hitokoto,
+          sentenceFrom: res.data.from
         })
       }
     })

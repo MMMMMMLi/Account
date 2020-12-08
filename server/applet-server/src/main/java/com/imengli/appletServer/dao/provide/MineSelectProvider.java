@@ -25,10 +25,12 @@ public class MineSelectProvider {
                 "`order`.* " +
                 "FROM " +
                 SysConstant.ORDER_INFO_TABLE_NAME +
-                " `order` " +
-                "LEFT JOIN " + SysConstant.ORDER_INFO_DEATIL_TABLE_NAME + " detail ON `order`.id = detail.orderId " +
-                "LEFT JOIN " + SysConstant.USER_TABLE_NAME + " `user` ON `order`.userId = `user`.id " +
-                "WHERE createDate BETWEEN #{startDate} AND #{endDate} ");
+                " `order` ");
+        if (filterList.size() > 0) {
+            sb.append("LEFT JOIN " + SysConstant.ORDER_INFO_DEATIL_TABLE_NAME + " detail ON `order`.id = detail.orderId " +
+                    "LEFT JOIN " + SysConstant.USER_TABLE_NAME + " `user` ON `order`.userId = `user`.id ");
+        }
+        sb.append("WHERE `order`.createDate BETWEEN #{startDate} AND #{endDate} ");
         if (filterList.size() > 0) {
             filterList.parallelStream()
                     // 去掉空Map
