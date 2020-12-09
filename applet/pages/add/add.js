@@ -18,15 +18,16 @@ Page({
   onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       let viewName = wx.getStorageSync('viewName') || this.getTabBar().data.viewName;
-
       if (viewName == 'master') {
         this.getTabBar().setData({
-          selected: 1
+          selected: 1,
+          viewName
         })
       }
       if (viewName == 'developer') {
         this.getTabBar().setData({
-          selected: 3
+          selected: 3,
+          viewName
         })
       }
     }
@@ -218,10 +219,3 @@ Page({
     }, 1500);
   },
 })
-
-export function switchView() {
-  console.log(this)
-  this.getTabBar().setData({
-    viewName: wx.getStorageSync('viewName')
-  })
-}

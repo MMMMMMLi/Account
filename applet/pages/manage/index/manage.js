@@ -1,11 +1,5 @@
 const CONFIG = require('../../../config.js');
 const REQUEST = require('../../../utils/request');
-const add = require('../../add/add')
-
-import {
-  developer,
-  master
-} from "../../../utils/tabBarUrl";
 
 Page({
   data: {
@@ -32,7 +26,6 @@ Page({
   onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       let viewName = wx.getStorageSync('viewName') || this.getTabBar().data.viewName;
-      console.log(viewName);
       if (viewName == 'master') {
         this.getTabBar().setData({
           selected: 2
@@ -74,8 +67,6 @@ Page({
       }
       wx.setStorageSync('viewName','master');
     }
-    // 更新别的页面
-    add.switchView()
     this.getTabBar().setData(switchData)
   },
   // 点击切换 清新小句子

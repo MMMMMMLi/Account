@@ -346,15 +346,16 @@ Page({
   onShow: function (options) {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       let viewName = wx.getStorageSync('viewName') || this.getTabBar().data.viewName;
-      console.log(viewName);
       if (viewName == 'master') {
         this.getTabBar().setData({
-          selected: 0
+          selected: 0,
+          viewName
         })
       }
       if (viewName == 'developer') {
         this.getTabBar().setData({
-          selected: 2
+          selected: 2,
+          viewName
         })
       }
     }

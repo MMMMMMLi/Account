@@ -12,7 +12,8 @@ Component({
     "borderStyle": "white",
     "backgroundColor": "#fff",
     list: [],
-    viewName:'',
+    viewName: '',
+    lastViewName: ''
   },
   lifetimes: {
     // 在组件实例进入页面节点树时赋值
@@ -27,26 +28,29 @@ Component({
       })
     },
     switchView() {
-      console.log(">>>>>>>>>>>>>>")
       let viewName = wx.getStorageSync('viewName');
       let list = averageUser;
-      if(viewName == 'developer') {
+      if (viewName == 'developer') {
         list = developer;
       }
-      if(viewName == 'averageUser') {
+      if (viewName == 'averageUser') {
         list = averageUser;
       }
-      if(viewName == 'master') {
+      if (viewName == 'master') {
         list = master;
       }
       this.setData({
-        list
+        list,
+        viewName,
+        lastViewName: viewName
       })
     },
   },
-  observers:{
-    'viewName': function(subfield) {
-      this.switchView();
+  observers: {
+    'viewName': function (subfield) {
+      if (this.data.lastViewName != this.data.viewName) {
+        this.switchView();
+      }
     },
   },
 })

@@ -18,7 +18,6 @@ Page({
   },
   onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      console.log( wx.getStorageSync('viewName'));
       this.getTabBar().setData({
         selected: 1,
       })

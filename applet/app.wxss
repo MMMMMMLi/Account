@@ -1844,7 +1844,7 @@ button.weui-vcode-btn {
 .weui-form__extra-area,
 .weui-form__tips-area {
   /* 修改footer样式 */
-  padding-bottom: 24px;
+  padding-bottom: 65px;
   text-align: center
 }
 
