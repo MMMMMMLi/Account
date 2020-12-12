@@ -112,7 +112,8 @@ public class WechatAuthService {
             // 更新好用户信息之后,返回保存Token值到Redis然后返回给微信小程序。
             // TODO: 此处生成Token的方法过于简单，后续升级一下。
             String uuidToken = UUID.randomUUID().toString();
-            redisUtil.setWechat(uuidToken, wechatAuthDO);
+            // 2020-12-12 update 将token的过期时间设置为永不过期。
+            redisUtil.setWechat(uuidToken, wechatAuthDO,-1);
             return new ResultDTO(ResultStatus.SUCCESS_LOGIN, uuidToken);
         } else {
             return new ResultDTO(Integer.valueOf(wechatAuthDO.getErrcode()), wechatAuthDO.getErrmsg());
@@ -182,7 +183,7 @@ public class WechatAuthService {
                     data.put("thing6", thing6);
                     // 采购数量
                     Map<String, Object> thing7 = new HashMap<>();
-                    thing7.put("value", String.format("共%s斤，待付：%s元"
+                    thing7.put("value", String.format("%s斤，待付：%s元"
                             , orderList.parallelStream().map(OrderInfoDO::getTotalWeight).reduce((o1, o2) -> o1 + o2).get()
                             , orderList.parallelStream().map(OrderInfoDO::getTotalPrice).reduce((o1, o2) -> o1 + o2).get()));
                     data.put("thing7", thing7);
