@@ -349,13 +349,11 @@ Page({
       if (viewName == 'master') {
         this.getTabBar().setData({
           selected: 0,
-          viewName
         })
       }
       if (viewName == 'developer') {
         this.getTabBar().setData({
           selected: 2,
-          viewName
         })
       }
     }

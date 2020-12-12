@@ -1,6 +1,7 @@
 <view class="page">
 	<view class="swiper-tab">
-		<view class="tab-item {{currentTab == item.status ? 'on' : ''}}" wx:for="{{statusType}}" wx:key="index" data-current="{{item.status}}" bindtap="swichNav">
+		<view class="tab-item {{currentTab == item.status ? 'on' : ''}}" wx:for="{{statusType}}" wx:key="index"
+			data-current="{{item.status}}" bindtap="swichNav">
 			{{item.label}}
 		</view>
 	</view>
@@ -16,90 +17,98 @@
 			</view>
 		</view>
 	</view>
-
-	<scroll-view scroll-y wx:if="{{orderList.length > 0}}">
-		<view class="weui-form-preview" wx:for="{{orderList}}" wx:key="index">
-			<view class="weui-form-preview__hd_count">
-				<view class="weui-form-preview__item">
-					<label class="{{item.status == '待付款' ? 'weui-form-preview__label_unpaid' : 'weui-form-preview__label_paid'}}">{{item.userInfo.userName}}</label>
-					<label class="weui-media-box__info__meta_extra {{item.status == '待付款' ? 'weui-form-preview__label_unpaid' : 'weui-form-preview__label_paid'}}">{{item.userInfo.phoneNumber}}</label>
-					<label class="weui-media-box__info__meta_extra {{item.status == '待付款' ? 'weui-form-preview__label_unpaid' : 'weui-form-preview__label_paid'}}">{{item.createDate}}</label>
+	<view wx:if="{{orderList.length > 0}}">
+		<scroll-view scroll-y>
+			<view class="weui-form-preview" wx:for="{{orderList}}" wx:key="index">
+				<view class="weui-form-preview__hd_count">
+					<view class="weui-form-preview__item">
+						<label
+							class="{{item.status == '待付款' ? 'weui-form-preview__label_unpaid' : 'weui-form-preview__label_paid'}}">{{item.userInfo.userName}}</label>
+						<label
+							class="weui-media-box__info__meta_extra {{item.status == '待付款' ? 'weui-form-preview__label_unpaid' : 'weui-form-preview__label_paid'}}">{{item.userInfo.phoneNumber}}</label>
+						<label
+							class="weui-media-box__info__meta_extra {{item.status == '待付款' ? 'weui-form-preview__label_unpaid' : 'weui-form-preview__label_paid'}}">{{item.createDate}}</label>
+					</view>
+				</view>
+				<view class="weui-form-preview__bd" wx:for="{{item.orders}}" wx:key="index">
+					<view style="display: flex;">
+						<view class="weui-form-preview__item" style="flex:0.5;">
+							<label class="weui-form-preview__label">品种：</label>
+							<text class="weui-form-preview__value">{{item.categoryValue}}</text>
+						</view>
+						<view class="weui-form-preview__item" style="flex:0.5;">
+							<label class="weui-form-preview__label">毛重：</label>
+							<text class="weui-form-preview__value">{{item.gross}} KG</text>
+						</view>
+					</view>
+					<view style="display: flex;">
+						<view class="weui-form-preview__item" style="flex:0.5;">
+							<label class="weui-form-preview__label">大小：</label>
+							<text class="weui-form-preview__value">{{item.sizeValue}}</text>
+						</view>
+						<view class="weui-form-preview__item" style="flex:0.5;">
+							<label class="weui-form-preview__label">皮重：</label>
+							<text class="weui-form-preview__value">{{item.tare}} KG</text>
+						</view>
+					</view>
+					<view style="display: flex;">
+						<view class="weui-form-preview__item" style="flex:0.5;">
+							<label class="weui-form-preview__label">单价：</label>
+							<text class="weui-form-preview__value">￥{{item.unitPrice}}</text>
+						</view>
+						<view class="weui-form-preview__item" style="flex:0.5;">
+							<label class="weui-form-preview__label">总价：</label>
+							<text class="weui-form-preview__value" style="color:red">￥{{item.totalPrice}}</text>
+						</view>
+					</view>
+				</view>
+				<view class="weui-form-preview__bd">
+					<view style="display: flex;">
+						<view class="weui-form-preview__item" style="flex:0.5;">
+							<label class="weui-form-preview__label">用框：</label>
+							<text class="weui-form-preview__value">{{item.applyBox}} 个</text>
+						</view>
+						<view class="weui-form-preview__item" style="flex:0.5;">
+							<label class="weui-form-preview__label">总重量：</label>
+							<text class="weui-form-preview__value">{{item.totalWeight}} KG</text>
+						</view>
+					</view>
+					<view style="display: flex;">
+						<view class="weui-form-preview__item" style="flex:0.5;">
+							<label class="weui-form-preview__label">退框：</label>
+							<text class="weui-form-preview__value">{{item.retreatBox}} 个</text>
+						</view>
+						<view class="weui-form-preview__item" style="flex:0.5;">
+							<label class="weui-form-preview__label">总价钱：</label>
+							<text class="weui-form-preview__value" style="color:red;font-weight: bolder;">￥{{item.totalPrice}}</text>
+						</view>
+					</view>
+				</view>
+				<view class="weui-form-preview__ft" wx:if="{{item.status == '待付款'}}">
+					<a wx:if="{{currentTab == 0 && !item.isNotice}}" class="weui-form-preview__btn weui-form-preview__btn_default"
+						data-index="{{item}}" bindtap="sendMsg">发送消息</a>
+					<a class="weui-form-preview__btn weui-form-preview__btn_warn" data-index="{{item}}"
+						bindtap="updateOrderInfo">修改订单</a>
+					<a class="weui-form-preview__btn weui-form-preview__btn_primary" data-index="{{item.orderInfoId}}"
+						bindtap="confirmCollection">确认收款</a>
+				</view>
+				<view class="weui-form-preview__ft" wx:else>
+					<a class="weui-form-preview__btn weui-form-preview__btn_primary"
+						style="color:green">收款时间：{{item.collectionTime}}</a>
 				</view>
 			</view>
-			<view class="weui-form-preview__bd" wx:for="{{item.orders}}" wx:key="index">
-				<view style="display: flex;">
-					<view class="weui-form-preview__item" style="flex:0.5;">
-						<label class="weui-form-preview__label">品种：</label>
-						<text class="weui-form-preview__value">{{item.categoryValue}}</text>
-					</view>
-					<view class="weui-form-preview__item" style="flex:0.5;">
-						<label class="weui-form-preview__label">毛重：</label>
-						<text class="weui-form-preview__value">{{item.gross}} KG</text>
-					</view>
-				</view>
-				<view style="display: flex;">
-					<view class="weui-form-preview__item" style="flex:0.5;">
-						<label class="weui-form-preview__label">大小：</label>
-						<text class="weui-form-preview__value">{{item.sizeValue}}</text>
-					</view>
-					<view class="weui-form-preview__item" style="flex:0.5;">
-						<label class="weui-form-preview__label">皮重：</label>
-						<text class="weui-form-preview__value">{{item.tare}} KG</text>
-					</view>
-				</view>
-				<view style="display: flex;">
-					<view class="weui-form-preview__item" style="flex:0.5;">
-						<label class="weui-form-preview__label">单价：</label>
-						<text class="weui-form-preview__value">￥{{item.unitPrice}}</text>
-					</view>
-					<view class="weui-form-preview__item" style="flex:0.5;">
-						<label class="weui-form-preview__label">总价：</label>
-						<text class="weui-form-preview__value" style="color:red">￥{{item.totalPrice}}</text>
-					</view>
-				</view>
-			</view>
-			<view class="weui-form-preview__bd">
-				<view style="display: flex;">
-					<view class="weui-form-preview__item" style="flex:0.5;">
-						<label class="weui-form-preview__label">用框：</label>
-						<text class="weui-form-preview__value">{{item.applyBox}} 个</text>
-					</view>
-					<view class="weui-form-preview__item" style="flex:0.5;">
-						<label class="weui-form-preview__label">总重量：</label>
-						<text class="weui-form-preview__value">{{item.totalWeight}} KG</text>
-					</view>
-				</view>
-				<view style="display: flex;">
-					<view class="weui-form-preview__item" style="flex:0.5;">
-						<label class="weui-form-preview__label">退框：</label>
-						<text class="weui-form-preview__value">{{item.retreatBox}} 个</text>
-					</view>
-					<view class="weui-form-preview__item" style="flex:0.5;">
-						<label class="weui-form-preview__label">总价钱：</label>
-						<text class="weui-form-preview__value" style="color:red;font-weight: bolder;">￥{{item.totalPrice}}</text>
-					</view>
-				</view>
-			</view>
-			<view class="weui-form-preview__ft" wx:if="{{item.status == '待付款'}}">
-				<a wx:if="{{currentTab == 0 && !item.isNotice}}" class="weui-form-preview__btn weui-form-preview__btn_default" data-index="{{item}}" bindtap="sendMsg">发送消息</a>
-				<a class="weui-form-preview__btn weui-form-preview__btn_warn" data-index="{{item}}" bindtap="updateOrderInfo">修改订单</a>
-				<a class="weui-form-preview__btn weui-form-preview__btn_primary" data-index="{{item.orderInfoId}}" bindtap="confirmCollection">确认收款</a>
-			</view>
-			<view class="weui-form-preview__ft" wx:else>
-				<a class="weui-form-preview__btn weui-form-preview__btn_primary" style="color:green">收款时间：{{item.collectionTime}}</a>
-			</view>
-		</view>
-		<view wx:if="{{!hasNextPage}}" class="weui-loadmore weui-loadmore_line">
+		</scroll-view>
+		<view wx:if="{{!hasNextPage}}" class="weui-loadmore weui-loadmore_line" style="margin-bottom:5em;">
 			<text class="weui-loadmore__tips">暂无更多数据</text>
 		</view>
-	</scroll-view>
+	</view>
 
 	<!--  没有订单的显示i页面 -->
 	<view wx:else class="no-order">
 		<image src="/images/no-order.png" class="no-order-img"></image>
 		<view class="text">暂无订单</view>
 	</view>
-	
+
 	<!-- 筛选的页面 -->
 	<view class="fadeIn" wx:if="{{needFilter}}">
 		<!-- <view class="weui-mask"  bindtap="closeFilter"></view> -->
@@ -121,37 +130,48 @@
 				<view style="display: flex;">
 					<view class="pickerView weui-cell_select" style="flex:0.4;">
 						<view class="weui-cell__bd ">
-							<picker bindchange="categoryPickerChange" data-type="firstFilterPickerValue" data-index="0" range="{{filterPicker}}" range-key="key">
+							<picker bindchange="categoryPickerChange" data-type="firstFilterPickerValue" data-index="0"
+								range="{{filterPicker}}" range-key="key">
 								<view class="weui-select" style="padding-left: 0px;">{{filterPicker[firstFilterPickerValue].key}}</view>
 							</picker>
 						</view>
 					</view>
 					<view class="pickerView" style="flex:0.6;">
-						<input class="weui-input" placeholder="筛选内容" placeholder-class="weui-input__placeholder" data-type="firstFilterPickerValue" data-index="0" value="{{filterCriteria[0].value}}" bindblur="overInput" />
+						<input class="weui-input" placeholder="筛选内容" placeholder-class="weui-input__placeholder"
+							data-type="firstFilterPickerValue" data-index="0" value="{{filterCriteria[0].value}}"
+							bindblur="overInput" />
 					</view>
 				</view>
 				<view style="display: flex;">
 					<view class="pickerView weui-cell_select" style="flex:0.4;">
 						<view class="weui-cell__bd ">
-							<picker bindchange="categoryPickerChange" data-type="secondtFilterPickerValue" data-index="1" range="{{filterPicker}}" range-key="key">
-								<view class="weui-select" style="padding-left: 0px;">{{filterPicker[secondtFilterPickerValue].key}}</view>
+							<picker bindchange="categoryPickerChange" data-type="secondtFilterPickerValue" data-index="1"
+								range="{{filterPicker}}" range-key="key">
+								<view class="weui-select" style="padding-left: 0px;">{{filterPicker[secondtFilterPickerValue].key}}
+								</view>
 							</picker>
 						</view>
 					</view>
 					<view class="pickerView" style="flex:0.6;">
-						<input class="weui-input" placeholder="筛选内容" placeholder-class="weui-input__placeholder" data-type="secondtFilterPickerValue" data-index="1" value="{{filterCriteria[1].value}}" bindblur="overInput" />
+						<input class="weui-input" placeholder="筛选内容" placeholder-class="weui-input__placeholder"
+							data-type="secondtFilterPickerValue" data-index="1" value="{{filterCriteria[1].value}}"
+							bindblur="overInput" />
 					</view>
 				</view>
 				<view style="display: flex;">
 					<view class="pickerView weui-cell_select" style="flex:0.4;">
 						<view class="weui-cell__bd ">
-							<picker bindchange="categoryPickerChange" data-type="threetFilterPickerValue" data-index="2" range="{{filterPicker}}" range-key="key">
-								<view class="weui-select" style="padding-left: 0px;">{{filterPicker[threetFilterPickerValue].key}}</view>
+							<picker bindchange="categoryPickerChange" data-type="threetFilterPickerValue" data-index="2"
+								range="{{filterPicker}}" range-key="key">
+								<view class="weui-select" style="padding-left: 0px;">{{filterPicker[threetFilterPickerValue].key}}
+								</view>
 							</picker>
 						</view>
 					</view>
 					<view class="pickerView" style="flex:0.6;">
-						<input class="weui-input" placeholder="筛选内容" placeholder-class="weui-input__placeholder" data-type="threetFilterPickerValue" data-index="2" value="{{filterCriteria[2].value}}" bindblur="overInput" />
+						<input class="weui-input" placeholder="筛选内容" placeholder-class="weui-input__placeholder"
+							data-type="threetFilterPickerValue" data-index="2" value="{{filterCriteria[2].value}}"
+							bindblur="overInput" />
 					</view>
 				</view>
 			</view>

@@ -120,8 +120,34 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+// loading加载提示
+const showLoading = (title) => {
+  return new Promise((resolve, reject) => {
+    wx.showLoading({
+      title: title,
+      mask: true,
+      success (res) {
+        resolve(res)
+      },
+      fail (err) {
+        reject(err)
+      }
+    })
+  })
+}
+
+// 关闭loading
+const hideLoading = () => {
+  return new Promise((resolve) => {
+    wx.hideLoading()
+    resolve()
+  })
+}
+
 module.exports = {
   getArrayIndex: getArrayIndex,
   getLunarDay: getLunarDay,
-  formatTime: formatTime
+  formatTime: formatTime,
+  showLoading,
+  hideLoading
 }

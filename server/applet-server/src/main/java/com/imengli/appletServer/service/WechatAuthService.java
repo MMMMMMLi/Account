@@ -113,7 +113,8 @@ public class WechatAuthService {
             // TODO: 此处生成Token的方法过于简单，后续升级一下。
             String uuidToken = UUID.randomUUID().toString();
             // 2020-12-12 update 将token的过期时间设置为永不过期。
-            redisUtil.setWechat(uuidToken, wechatAuthDO,-1);
+            // 2020-12-12 又更新,还是得设置过期时间,要不然Redis会堆积大量垃圾Token占用内存,现在配置的为 15Days
+            redisUtil.setWechat(uuidToken, wechatAuthDO);
             return new ResultDTO(ResultStatus.SUCCESS_LOGIN, uuidToken);
         } else {
             return new ResultDTO(Integer.valueOf(wechatAuthDO.getErrcode()), wechatAuthDO.getErrmsg());

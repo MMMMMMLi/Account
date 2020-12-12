@@ -52,22 +52,19 @@ Page({
   // 点击切换试图按钮
   switchView() {
     let viewName = wx.getStorageSync('viewName') || this.getTabBar().data.viewName;;
-    let switchData = {};
+
     if (viewName == 'master') {
-      switchData = {
-        selected: 4,
-        viewName: 'developer',
-      }
       wx.setStorageSync('viewName','developer');
+      this.getTabBar().setData({
+          selected: 4
+        })
     }
     if (viewName == 'developer') {
-      switchData = {
-        selected: 2,
-        viewName: 'master',
-      }
       wx.setStorageSync('viewName','master');
+      this.getTabBar().setData({
+        selected: 2
+      })
     }
-    this.getTabBar().setData(switchData)
   },
   // 点击切换 清新小句子
   switchContent() {

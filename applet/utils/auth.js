@@ -13,14 +13,13 @@ async function checkHasLogined() {
   }
   // 同步校验Token
   let flag = true;
-  await REQUEST.request('applet/auth/checkToken', 'POST', {
+  let res = await REQUEST.request('applet/auth/checkToken', 'POST', {
     token: token
-  }).then(async res => {
-    if (res.data.code != 20003) {
-      wx.removeStorageSync('token')
-      flag = false;
-    }
   })
+  if (res.data.code != 20003) {
+    wx.removeStorageSync('token')
+    flag = false;
+  }
   return flag;
 }
 
@@ -40,27 +39,29 @@ async function checkSession() {
 
 // 获取用户登陆信息
 async function login(page) {
-  wx.login({
-    success: function (res) {
-      REQUEST.request('applet/auth/code2Session', 'POST', {
-        code: res.code,
-      }).then(res => {
-        if (res.data.code != 20004) {
-          // 登录错误
-          wx.showModal({
-            title: '无法登录',
-            content: res.data.msg,
-            showCancel: false
-          })
-          return;
-        }
-        wx.setStorageSync('token', res.data.data);
-        if (page) {
-          page.onShow()
-        }
-      })
-    }
+  return new Promise((resolve, reject) => {
+    wx.login({
+      success: function (res) {
+        console.log(">>>>> 服务端登陆。")
+        REQUEST.request('applet/auth/code2Session', 'POST', {
+          code: res.code,
+        }).then(res => {
+          if (res.data.code != 20004) {
+            // 登录错误
+            wx.showModal({
+              title: '无法登录',
+              content: res.data.msg,
+              showCancel: false
+            })
+            return;
+          }
+          wx.setStorageSync('token', res.data.data);
+          resolve(res);
+        })
+      }
+    })
   })
+
 }
 
 // what?

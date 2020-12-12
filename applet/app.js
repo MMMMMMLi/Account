@@ -1,5 +1,4 @@
 const AUTH = require('utils/auth');
-const REQUEST = require('utils/request');
 
 App({
   // 生命周期回调——监听小程序初始化。
@@ -54,20 +53,22 @@ App({
       }
     })
   },
-  onShow(e) {
-    this.authLogin();
+  onShow(param) {
+    // 此处逻辑说明
+    // 1. 用户进入页面的时候,是走的start页面,里面需要获取用户权限信息,参数为Token
+    // 2. 由于页面的加载为异步加载,当start加载的时候,
+    //        这个地方校验用户是否登陆成功的方法还没有执行完,就会导致start页面数据获取失败
+    // 3. 修改逻辑为: 第一次进入小程序的时候,由start页面先校验用户信息,在后续的页面中由此校验
+    if(wx.getStorageSync('token') && param.path.indexOf('start') < 0) {
+      this.authLogin();
+    }
   },
-  authLogin() {
-    // 自动登录
-    return new Promise((res) => {
-      AUTH.checkHasLogined().then(async isLogined => {
-        res(isLogined);
-      });
-    }).then(isLogined => {
-      if (!isLogined) {
-        AUTH.login()
-      }
-    })
+  // 校验用户是否登陆,如果没有登陆,则登陆
+  async authLogin() {
+    if (!await AUTH.checkHasLogined()) {
+      await AUTH.login()
+    }
+
   },
   globalData: {
     // 校验是否登陆
@@ -77,8 +78,6 @@ App({
     // 当前用户信息列表
     userInfos: [],
     // 消息订阅模板
-    tmplIds:['SOzXhOVHt9X1NQAOJPvB5M1refAxCBVxIW_IKz8HGmw'],
-    // 动态底部导航
-    tabBarList: [], // tabBar
+    tmplIds: ['SOzXhOVHt9X1NQAOJPvB5M1refAxCBVxIW_IKz8HGmw'],
   }
 })

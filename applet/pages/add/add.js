@@ -20,14 +20,12 @@ Page({
       let viewName = wx.getStorageSync('viewName') || this.getTabBar().data.viewName;
       if (viewName == 'master') {
         this.getTabBar().setData({
-          selected: 1,
-          viewName
+          selected: 1
         })
       }
       if (viewName == 'developer') {
         this.getTabBar().setData({
-          selected: 3,
-          viewName
+          selected: 3
         })
       }
     }

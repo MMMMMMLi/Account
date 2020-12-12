@@ -186,6 +186,8 @@ Page({
   },
   clearStorage() {
     wx.clearStorageSync()
+    // 重新将token置为新值
+    // wx.setStorageSync('token', 'clearStorage');
     wx.showToast({
       title: '已清除',
       icon: 'success'

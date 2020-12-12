@@ -157,7 +157,11 @@ async function getBarOption(type) {
       }
     }
     if(res.data.code == 10000) {
-      option = '';
+      option = {
+        title: {
+          text: '暂无数据',
+        },
+      };
     }
   })
   return option;

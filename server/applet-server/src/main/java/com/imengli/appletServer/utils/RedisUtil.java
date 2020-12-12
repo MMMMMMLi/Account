@@ -31,7 +31,7 @@ public class RedisUtil {
     @Value("${mineRedis.default.timeout}")
     private Long DEFAULT_TIMEOUT;
 
-    private TimeUnit timeUnit = TimeUnit.HOURS;
+    private TimeUnit timeUnit = TimeUnit.DAYS;
 
     // 校验Token的工具类
 

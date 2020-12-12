@@ -47,8 +47,8 @@ Component({
     },
   },
   observers: {
-    'viewName': function (subfield) {
-      if (this.data.lastViewName != this.data.viewName) {
+    'selected': function () {
+      if (this.data.lastViewName != wx.getStorageSync('viewName')) {
         this.switchView();
       }
     },
