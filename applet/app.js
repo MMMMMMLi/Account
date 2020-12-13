@@ -52,6 +52,12 @@ App({
         wx.hideToast()
       }
     })
+    /**
+     * 设置屏幕保持常量
+     */
+    wx.setKeepScreenOn({
+      keepScreenOn: true
+    })
   },
   onShow(param) {
     // 此处逻辑说明
@@ -59,7 +65,7 @@ App({
     // 2. 由于页面的加载为异步加载,当start加载的时候,
     //        这个地方校验用户是否登陆成功的方法还没有执行完,就会导致start页面数据获取失败
     // 3. 修改逻辑为: 第一次进入小程序的时候,由start页面先校验用户信息,在后续的页面中由此校验
-    if(wx.getStorageSync('token') && param.path.indexOf('start') < 0) {
+    if (wx.getStorageSync('token') && param.path.indexOf('start') < 0) {
       this.authLogin();
     }
   },

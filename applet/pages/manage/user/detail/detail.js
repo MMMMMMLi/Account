@@ -82,4 +82,22 @@ Page({
       }
     })
   },
+  // 呼叫用户
+  callNumber(res) {
+    const number = res.currentTarget.dataset.number;
+    wx.showModal({
+      title: '提示',
+      content: '是否呼叫：' + number,
+      confirmText: '呼叫',
+      success(res) {
+        if(res.confirm) {
+          wx.makePhoneCall({
+            phoneNumber: number,
+            complete(res){
+            }
+          })
+        }
+      },
+    })
+  },
 })

@@ -109,12 +109,14 @@
 		</view>
 	</navigator>
 	<view class="line"></view>
-	<navigator url="/pages/asset/index" style="margin-bottom:30px">
+	<navigator url="/pages/asset/index">
 		<view class="menu-item">
 			<view class="l">资金明细</view>
 			<image class="next" src="/images/icon/next.png"></image>
 		</view>
 	</navigator>
 
+	<view class="line"></view>
+	<view class="space" style="margin-bottom:30px"></view>
 	<template is="footer" />
 </view>

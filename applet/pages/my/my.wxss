@@ -29,6 +29,7 @@ page,view,image,input {
 }
 .userinfo-nickname {
   margin-top: 10rpx;
+  margin-bottom: 10rpx;
   font-family:"微软雅黑";
   font-size: 22px;
   font-weight: bolder;

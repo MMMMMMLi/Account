@@ -12,7 +12,7 @@
 				<view class="weui-cell__hd">
 					<label class="weui-label">联系方式</label>
 				</view>
-				<view class="weui-cell__bd">
+				<view class="weui-cell__bd" bindtap="callNumber" data-number="{{phoneNumber}}">
 					<input class="weui-input" value="{{phoneNumber}}" disabled />
 				</view>
 			</view>
