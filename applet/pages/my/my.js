@@ -46,53 +46,8 @@ Page({
       // 如果已经登陆了话,获取一些基本信息.
       if (isLogined) {
         _this.getUserApiInfo();
-        _this.getUserAmount();
       }
     })
-  },
-  // 增加 消息通知次数
-  addMsgNum(){
-    let that = this;
-    wx.requestSubscribeMessage({
-      tmplIds: APP.globalData.tmplIds,
-      success(res) {
-        // 如果对接正常,则数据库提示次数+1
-        REQUEST.request('user/userSubMsgAdd', 'POST', {
-          userId: that.data.apiUserInfoMap.id
-        }).then(res => {
-          if (res.data.code == 20000) {
-            that.setData({
-              apiUserInfoMap:res.data.data
-            })
-            APP.globalData.userInfos = res.data.data;
-          }
-        })
-      }
-    })
-  },
-  // TODO: 可以修改一下展示信息。
-  aboutUs: function () {
-    wx.showModal({
-      title: '关于我们',
-      content: '本系统是兴隆薯业的展示订单平台，祝大家使用愉快！',
-      showCancel: false
-    })
-  },
-  loginOut() {
-    AUTH.loginOut()
-    wx.reLaunch({
-      url: '/pages/my/index'
-    })
-  },
-  getPhoneNumber: function (e) {
-    if (!e.detail.errMsg || e.detail.errMsg != "getPhoneNumber:ok") {
-      wx.showModal({
-        title: '提示',
-        content: e.detail.errMsg,
-        showCancel: false
-      })
-      return;
-    }
   },
   // 获取用户信息
   getUserApiInfo: function () {
@@ -136,25 +91,42 @@ Page({
       }
     })
   },
-  // 获取资产信息（余额、可用积分）
-  getUserAmount: function () {
-    var that = this;
-    // TODO: 后续完善，待定。
-  },
-  handleOrderCount: function (count) {
-    return count > 99 ? '99+' : count;
-  },
-  cancelLogin() {
-    this.setData({
-      wxAuth: true,
-      hasUserInfo: true
+  // 增加 消息通知次数
+  addMsgNum() {
+    let that = this;
+    wx.requestSubscribeMessage({
+      tmplIds: APP.globalData.tmplIds,
+      success(res) {
+        // 如果对接正常,则数据库提示次数+1
+        REQUEST.request('user/userSubMsgAdd', 'POST', {
+          userId: that.data.apiUserInfoMap.id
+        }).then(res => {
+          if (res.data.code == 20000) {
+            that.setData({
+              apiUserInfoMap: res.data.data
+            })
+            APP.globalData.userInfos = res.data.data;
+          }
+        })
+      }
     })
   },
-  goLogin() {
-    this.setData({
-      wxAuth: false
+  // TODO: 可以修改一下展示信息。
+  aboutUs: function () {
+    wx.showModal({
+      title: '关于我们',
+      content: '本系统是兴隆薯业的订单平台，祝大家使用愉快！',
+      showCancel: false
     })
   },
+  callUs() {
+    wx.makePhoneCall({
+      phoneNumber: '13791921192',
+      complete(res){
+      }
+    })
+  },
+  // 确认登陆回调
   processLogin(e) {
     if (!e.detail.userInfo) {
       wx.showToast({
@@ -184,6 +156,19 @@ Page({
       }
     })
   },
+  // 取消登陆
+  cancelLogin() {
+    this.setData({
+      wxAuth: true,
+      hasUserInfo: true
+    })
+  },
+  // ----------------- 下面这些方法暂时为用到.
+  goLogin() {
+    this.setData({
+      wxAuth: false
+    })
+  },
   clearStorage() {
     wx.clearStorageSync()
     // 重新将token置为新值
@@ -192,5 +177,21 @@ Page({
       title: '已清除',
       icon: 'success'
     })
+  },
+  loginOut() {
+    AUTH.loginOut()
+    wx.reLaunch({
+      url: '/pages/my/my'
+    })
+  },
+  getPhoneNumber: function (e) {
+    if (!e.detail.errMsg || e.detail.errMsg != "getPhoneNumber:ok") {
+      wx.showModal({
+        title: '提示',
+        content: e.detail.errMsg,
+        showCancel: false
+      })
+      return;
+    }
   },
 })

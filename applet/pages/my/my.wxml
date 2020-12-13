@@ -1,5 +1,4 @@
 <import src="/template/login/index.wxml" />
-<import src="/template/footer/footer.wxml" />
 
 <view class="container">
 	<view wx:if="{{apiUserInfoMap}}" class="userinfo">
@@ -11,13 +10,13 @@
 		<view class="userNames">
 			<text wx:if="{{apiUserInfoMap.userName}}" class="userinfo-nickname">{{ apiUserInfoMap.userName }}</text>
 			<text wx:else class="userinfo-nickname">{{ apiUserInfoMap.nickName }}</text>
-			<text wx:if="{{apiUserInfoMap.phoneNumber}}" class="userinfo-phoneNumber">{{ apiUserInfoMap.phoneNumber }}</text>
-			<text wx:else class="userinfo-phoneNumber">暂未完善手机号</text>
+			<!-- <text wx:if="{{apiUserInfoMap.phoneNumber}}" class="userinfo-phoneNumber">{{ apiUserInfoMap.phoneNumber }}</text>
+			<text wx:else class="userinfo-phoneNumber">暂未完善手机号</text> -->
 		</view>
 	</view>
-	<view wx:else class="userinfo" style="margin-bottom:40rpx;">
+	<view wx:else class="userinfo">
 		<image class="userinfo-avatar" src="/images/nologin.png" background-size="cover"></image>
-		<button class="weui-btn mini-btn" style="margin-left:30rpx;" plain="true" size="mini"
+		<button class="weui-btn mini-btn" plain="true" size="mini"
 			bindtap="goLogin">立即登录</button>
 	</view>
 	<view class="asset">
@@ -76,7 +75,7 @@
   <view class="menu-item">
     <view class="l">我的订单</view>
     <view class="r">内容</view>
-  </view> -->
+  </view>
 
 	<view class="space"></view>
 	<navigator wx:if="{{!apiUserInfoMap.base.isSeller}}" url="/pages/fx/apply-status">
@@ -164,7 +163,7 @@
 			<image class="next" src="/images/icon/next.png"></image>
 		</view>
 	</navigator>
-	<view class="line"></view>
+	<view class="line"></view> -->
 
 	<view class="space"></view>
 	<navigator url="/pages/userInfo/userInfo">
@@ -179,7 +178,12 @@
 		<image class="next" src="/images/icon/next.png"></image>
 	</view>
 	<view class="line"></view>
-	<view wx:if="{{userMobile}}" class="menu-item">
+	<view class="menu-item" bindtap="callUs">
+		<view class="l">联系我们</view>
+		<view class="r">13791921198</view>
+	</view>
+	<view class="line"></view>
+	<!-- <view wx:if="{{userMobile}}" class="menu-item">
 		<view class="l">绑定手机</view>
 		<view class="r">{{ userMobile }}</view>
 	</view>
@@ -187,26 +191,35 @@
 		<view class="l">绑定手机</view>
 		<button type="primary" size="mini" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">立即绑定</button>
 	</view>
-	<view class="line"></view>
+	<view class="line"></view> -->
 	<view class="menu-item" bindtap="clearStorage">
 		<view class="l">清除缓存</view>
 		<image class="next" src="/images/icon/next.png"></image>
 	</view>
 	<view class="line"></view>
-	<view wx:if="{{apiUserInfoMap}}" class="menu-item" bindtap="loginOut" style="margin-bottom:30px">
+	<!-- <view wx:if="{{apiUserInfoMap}}" class="menu-item" bindtap="loginOut">
 		<view class="l">退出登录</view>
 		<image class="next" src="/images/icon/next.png"></image>
 	</view>
-	<view wx:else class="menu-item" bindtap="goLogin" style="margin-bottom:30px">
+	<view wx:else class="menu-item" bindtap="goLogin">
 		<view class="l">授权登录</view>
 		<image class="next" src="/images/icon/next.png"></image>
-	</view>
+	</view> -->
 	<!-- <view class="line"></view>
   <view class="menu-item">
     <view class="l">绑定官网账号</view>
     <image class="next" src="/images/icon/next.png"></image>
-  </view> -->
-	<template is="footer" />
+	</view> -->
+	<view class="line"></view>
+	<view class="space" style="margin-bottom:30px"></view>
+	<view class="weui-footer weui-footer_fixed-bottom" style="">
+		<view class="weui-footer">
+			<view class="weui-footer__links">
+				<!-- <a href="javascript:" class="weui-footer__link">底部链接文本</a> -->
+			</view>
+			<view class="weui-footer__text">Copyright © 2019-2020 兴隆薯业</view>
+		</view>
+	</view>
 </view>
 
 <template is="apifmLogin" data="{{wxAuth: wxAuth}}" />
