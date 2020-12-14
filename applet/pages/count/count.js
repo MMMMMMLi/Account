@@ -109,7 +109,7 @@ Page({
       flag,
       id
     }).then(res => {
-     
+
     })
   },
   // 每个订单 点击 修改订单 按钮
@@ -156,6 +156,30 @@ Page({
           })
         }
       }
+    })
+  },
+  // 每个订单的详情信息
+  showOrderInfo(e) {
+    let showOrderInfo = e.currentTarget.dataset.data;
+    if((showOrderInfo.orders).length < 4) {
+      showOrderInfo.orders.unshift({
+        categoryValue: "品种",
+        sizeValue: "大小",
+        unitPrice: "单价",
+        totalPrice: "总价",
+        gross:"重量"
+      })
+    }
+    this.setData({
+      showOrderInfoFlag: true,
+      showOrderInfo
+    })
+  },
+  // 关闭订单详情信息
+  closeOrderInfo(){
+    this.setData({
+      showOrderInfoFlag: false,
+      showOrderInfo:[]
     })
   },
   // 点击是否开启筛选按钮

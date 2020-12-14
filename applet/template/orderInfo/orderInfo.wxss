@@ -1,0 +1,56 @@
+.apifmLogin {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 99999999999;
+}
+
+.apifmLogin .s-b {
+  width: 90%;
+  margin: 0 auto;
+  height: auto;
+  background-color: #fff;
+  margin-top: 40%;
+  border-radius: 10rpx;
+  padding-bottom: 10px;
+}
+
+.apifmLogin .s-b .s-l-b {
+  text-align: center;
+  width: 80%;
+  margin: 0 auto;
+  padding: 12px 0px;
+}
+
+.apifmLogin .s-b .s-l-b text {
+  font-size: 32rpx;
+  margin-top: 20rpx;
+  margin-bottom: 20rpx;
+  color: #333;
+  font-weight: bolder;
+}
+
+.apifmLogin .s-b .s-t-b {
+  margin-bottom: 20rpx;
+  text-align: center;
+}
+
+.apifmLogin .s-b button::after {
+  border-radius: 4rpx;
+  border: 0;
+}
+
+.apifmLogin .s-b .l {
+  padding: 6px 24px;
+  width: 80%;
+  font-size: 30rpx;
+  background-color: #04be01;
+  color: #fff;
+}
+
+/* .weui-form-preview:before{
+  border-top:unset;
+} */

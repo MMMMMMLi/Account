@@ -1,3 +1,5 @@
+@import "/template/orderInfo/orderInfo.wxss";
+
 /* 主要内容样式 */
 .container {
   width: 100%;

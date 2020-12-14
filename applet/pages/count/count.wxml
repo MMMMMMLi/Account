@@ -1,3 +1,5 @@
+<import src="/template/orderInfo/orderInfo.wxml" />
+
 <view class="page">
 	<view class="swiper-tab">
 		<view class="tab-item {{currentTab == item.status ? 'on' : ''}}" wx:for="{{statusType}}" wx:key="index"
@@ -20,7 +22,7 @@
 	<view wx:if="{{orderList.length > 0}}">
 		<scroll-view scroll-y>
 			<view class="weui-form-preview" wx:for="{{orderList}}" wx:key="index">
-				<view class="weui-form-preview__hd_count">
+				<view class="weui-form-preview__hd_count" bindtap="showOrderInfo" data-data="{{item}}">
 					<view class="weui-form-preview__item">
 						<label
 							class="{{item.status == '待付款' ? 'weui-form-preview__label_unpaid' : 'weui-form-preview__label_paid'}}">{{item.userInfo.userName}}</label>
@@ -62,6 +64,7 @@
 						</view>
 					</view>
 				</view>
+				<!-- 横向 -->
 				<view class="weui-form-preview__bd">
 					<view style="display: flex;">
 						<view class="weui-form-preview__item" style="flex:0.5;">
@@ -84,6 +87,25 @@
 						</view>
 					</view>
 				</view>
+				<!-- 竖向 -->
+				<!-- <view class="weui-form-preview__bd  weui-flex" style="text-align: center; border-bottom: unset; padding: 10px;">
+						<view class="weui-form-preview__item  weui-flex__item">
+							<label class="weui-form-preview__label"  style="float: none;margin-right:unset;">用框</label>
+							<text class="weui-form-preview__value">{{item.applyBox}} 个</text>
+						</view>
+						<view class="weui-form-preview__item weui-flex__item">
+							<label class="weui-form-preview__label"  style="float: none;margin-right:unset;">退框</label>
+							<text class="weui-form-preview__value">{{item.retreatBox}} 个</text>
+						</view>
+						<view class="weui-form-preview__item weui-flex__item" >
+							<label class="weui-form-preview__label"  style="float: none;margin-right:unset;">总重量</label>
+							<text class="weui-form-preview__value">{{item.totalWeight}} KG</text>
+						</view>
+						<view class="weui-form-preview__item weui-flex__item">
+							<label class="weui-form-preview__label"  style="float: none;margin-right:unset;">总价钱</label>
+							<text class="weui-form-preview__value" style="color:red;font-weight: bolder;">￥{{item.totalPrice}}</text>
+						</view>
+				</view> -->
 				<view class="weui-form-preview__ft" wx:if="{{item.status == '待付款'}}">
 					<a wx:if="{{currentTab == 0 && !item.isNotice}}" class="weui-form-preview__btn weui-form-preview__btn_default"
 						data-index="{{item}}" bindtap="sendMsg">发送消息</a>
@@ -181,3 +203,5 @@
 		</view>
 	</view>
 </view>
+
+<template is="orderInfo" data="{{showOrderInfo: showOrderInfoFlag,item:showOrderInfo}}" />
