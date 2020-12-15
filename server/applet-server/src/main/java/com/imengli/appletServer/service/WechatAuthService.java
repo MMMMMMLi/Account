@@ -20,10 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
@@ -152,69 +149,77 @@ public class WechatAuthService {
                 .collect(Collectors.groupingBy(info -> info.getUserId()))
                 // 迭代通知
                 .forEach((userId, orderList) -> {
-                    // 结果集
-                    Map<String, Object> result = new HashMap<>();
-                    // touser
-                    result.put("touser", wechatUserRepostory.getUserEntityByUserId(userId).getOpenId());
-                    // template_id
-                    result.put("template_id", templateId);
-                    // page 跳转页面
-                    result.put("page", page);
-                    // miniprogram_state
-                    // TODO 正式上线之后需要注释掉，默认就是正式版
-                    result.put("miniprogram_state", "trial");
-                    // data
-                    Map<String, Map> data = new HashMap<>();
-                    // 下单时间
-                    Map<String, Object> date4 = new HashMap<>();
-                    date4.put("value",
-                            // 由于一个人可能存在多个订单，则取时间最早的那个订单时间
-                            dateTimeFormatter.format(orderList.parallelStream()
-                                    .sorted((o1, o2) -> o1.getCreateDate().isBefore(o2.getCreateDate()) ? -1 : 1)
-                                    .findFirst().get().getCreateDate()));
-                    data.put("date4", date4);
-                    // 商品名称
-                    Map<String, Object> thing6 = new HashMap<>();
-                    List<OrderInfoDetailDO> orderInfoDetailDOS = orderInfoRepostory.getOrderInfoDetailsByOrderId(
-                            StringUtils.join(orderList.stream().map(OrderInfoDO::getId).collect(Collectors.toList()), ",")
-                    );
-                    thing6.put("value", StringUtils.join(
-                            orderInfoDetailDOS.parallelStream().map(OrderInfoDetailDO::getCategoryValue).distinct().collect(Collectors.toList()),
-                            "，"));
-                    data.put("thing6", thing6);
-                    // 采购数量
-                    Map<String, Object> thing7 = new HashMap<>();
-                    thing7.put("value", String.format("%s斤，待付：%s元"
-                            , orderList.parallelStream().map(OrderInfoDO::getTotalWeight).reduce((o1, o2) -> o1 + o2).get()
-                            , orderList.parallelStream().map(OrderInfoDO::getTotalPrice).reduce((o1, o2) -> o1 + o2).get()));
-                    data.put("thing7", thing7);
-                    // 订单内容
-                    Map<String, String> thing1 = new HashMap<>();
-                    thing1.put("value", String.format("共%s笔订单，已支付%s笔"
-                            , orderList.size()
-                            , orderList.parallelStream().filter(info -> info.getStatus() == 1).count()
-                    ));
-                    data.put("thing1", thing1);
-                    // 温馨提示
-                    Map<String, Object> thing5 = new HashMap<>();
-                    thing5.put("value", "点击进入小程序，查看详细订单信息");
-                    data.put("thing5", thing5);
-                    result.put("data", data);
+                    // 首先看看当前用户是不是手动添加的用户
+                    Optional<WechatUserDO> userEntityByUserId = Optional.ofNullable(wechatUserRepostory.getUserEntityByUserId(userId));
+                    if(userEntityByUserId.isPresent()) {
+                        // 如果不是则,推送消息
+                        // 结果集
+                        Map<String, Object> result = new HashMap<>();
+                        // touser
+                        result.put("touser", userEntityByUserId.get().getOpenId());
+                        // template_id
+                        result.put("template_id", templateId);
+                        // page 跳转页面
+                        result.put("page", page);
+                        // miniprogram_state
+                        // TODO 正式上线之后需要注释掉，默认就是正式版
+                        result.put("miniprogram_state", "trial");
+                        // data
+                        Map<String, Map> data = new HashMap<>();
+                        // 下单时间
+                        Map<String, Object> date4 = new HashMap<>();
+                        date4.put("value",
+                                // 由于一个人可能存在多个订单，则取时间最早的那个订单时间
+                                dateTimeFormatter.format(orderList.parallelStream()
+                                        .sorted((o1, o2) -> o1.getCreateDate().isBefore(o2.getCreateDate()) ? -1 : 1)
+                                        .findFirst().get().getCreateDate()));
+                        data.put("date4", date4);
+                        // 商品名称
+                        Map<String, Object> thing6 = new HashMap<>();
+                        List<OrderInfoDetailDO> orderInfoDetailDOS = orderInfoRepostory.getOrderInfoDetailsByOrderId(
+                                StringUtils.join(orderList.stream().map(OrderInfoDO::getId).collect(Collectors.toList()), ",")
+                        );
+                        thing6.put("value", StringUtils.join(
+                                orderInfoDetailDOS.parallelStream().map(OrderInfoDetailDO::getCategoryValue).distinct().collect(Collectors.toList()),
+                                "，"));
+                        data.put("thing6", thing6);
+                        // 采购数量
+                        Map<String, Object> thing7 = new HashMap<>();
+                        thing7.put("value", String.format("%s斤，待付：%s元"
+                                , orderList.parallelStream().map(OrderInfoDO::getTotalWeight).reduce((o1, o2) -> o1 + o2).get()
+                                , orderList.parallelStream().map(OrderInfoDO::getTotalPrice).reduce((o1, o2) -> o1 + o2).get()));
+                        data.put("thing7", thing7);
+                        // 订单内容
+                        Map<String, String> thing1 = new HashMap<>();
+                        thing1.put("value", String.format("共%s笔订单，已支付%s笔"
+                                , orderList.size()
+                                , orderList.parallelStream().filter(info -> info.getStatus() == 1).count()
+                        ));
+                        data.put("thing1", thing1);
+                        // 温馨提示
+                        Map<String, Object> thing5 = new HashMap<>();
+                        thing5.put("value", "点击进入小程序，查看详细订单信息");
+                        data.put("thing5", thing5);
+                        result.put("data", data);
 
-                    // 构建请求集完毕，开始执行推送程序。
-                    Map httpResult = JSON.parseObject(HttpUtil.sendRequest(url, result, HttpMethod.POST), Map.class);
-                    String errmsg = String.valueOf(httpResult.get("errmsg"));
-                    if ("ok".equals(errmsg)) {
-                        LOG.info(">>>>>> 发送成功！");
-                        // 发送成功之后更新用户表
-                        // 更新
-                        sysUserRepostory.update(
-                                SysUserDO.builder()
-                                        .id(userId)
-                                        .subMsgNum(sysUserRepostory.getUserInfoById(userId).getSubMsgNum() - 1)
-                                        .build());
-                    } else {
-                        LOG.info(">>>>>> 发送失败！,{}",errmsg);
+                        // 构建请求集完毕，开始执行推送程序。
+                        Map httpResult = JSON.parseObject(HttpUtil.sendRequest(url, result, HttpMethod.POST), Map.class);
+                        String errmsg = String.valueOf(httpResult.get("errmsg"));
+                        if ("ok".equals(errmsg)) {
+                            LOG.info(">>>>>> 发送成功！");
+                            // 发送成功之后更新用户表
+                            // 更新
+                            sysUserRepostory.update(
+                                    SysUserDO.builder()
+                                            .id(userId)
+                                            .subMsgNum(sysUserRepostory.getUserInfoById(userId).getSubMsgNum() - 1)
+                                            .build());
+                        } else {
+                            LOG.info(">>>>>> 发送失败！,{}",errmsg);
+                            errorUserIds.add(userId);
+                        }
+                    }else {
+                        LOG.info(">>>>>> 发送失败！当前用户为手动添加用户，无法推送。");
                         errorUserIds.add(userId);
                     }
                 });
