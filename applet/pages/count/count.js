@@ -48,7 +48,6 @@ Page({
     // 校验当前用户是否能接收消息通知
     if (info.userInfo.subMsgNum > 0) {
       // 如果可接收，再判断当前用户今天是否存在多个订单信息。
-      let orderNum = 0;
       REQUEST.request('order/getUserOrderSize', 'POST', {
         userId: info.userInfo.id
       }).then(res => {
@@ -105,11 +104,19 @@ Page({
   },
   // 发送消息
   sendMsgRequest(flag, id) {
+    let that = this;
     REQUEST.request('order/sendMsg', 'POST', {
       flag,
       id
     }).then(res => {
-
+      wx.showModal({
+        title: '提示',
+        content: res.data.msg,
+        showCancel: false,
+        success() {
+          that.getData(that.data.currentTab, false, true);
+        }
+      })
     })
   },
   // 每个订单 点击 修改订单 按钮
@@ -161,13 +168,13 @@ Page({
   // 每个订单的详情信息
   showOrderInfo(e) {
     let showOrderInfo = e.currentTarget.dataset.data;
-    if((showOrderInfo.orders).length < 4) {
+    if ((showOrderInfo.orders).length < 4) {
       showOrderInfo.orders.unshift({
         categoryValue: "品种",
         sizeValue: "大小",
         unitPrice: "单价",
         totalPrice: "总价",
-        gross:"重量"
+        gross: "重量"
       })
     }
     this.setData({
@@ -176,10 +183,10 @@ Page({
     })
   },
   // 关闭订单详情信息
-  closeOrderInfo(){
+  closeOrderInfo() {
     this.setData({
       showOrderInfoFlag: false,
-      showOrderInfo:[]
+      showOrderInfo: []
     })
   },
   // 点击是否开启筛选按钮
@@ -286,7 +293,7 @@ Page({
     }
   },
   // 获取数据
-  getData(status, showLoading) {
+  getData(status, showLoading, cleanFlag) {
     let that = this;
     if (showLoading) {
       wx.showLoading({
@@ -294,6 +301,9 @@ Page({
       })
     }
     let oldOrderList = that.data.orderList ? that.data.orderList : [];
+    if (cleanFlag) {
+      oldOrderList = [];
+    }
     // 根据传入的状态码，去后台获取订单列表
     REQUEST.request('order/getOrderList', 'POST', {
       token: wx.getStorageSync('token'),

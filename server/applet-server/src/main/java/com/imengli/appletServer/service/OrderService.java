@@ -284,7 +284,7 @@ public class OrderService {
             userEntityByUserId = Optional.ofNullable(wechatUserRepostory.getUserEntityByUserId(userOrders.get(0).getUserId()));
         }
         // 校验用户是否为手动添加用户
-        if (!userEntityByUserId.isPresent()) {
+        if (userEntityByUserId.isPresent()) {
             if (StringUtils.isBlank(userEntityByUserId.get().getOpenId())) {
                 return new ResultDTO(ResultStatus.ERROR.code(), "发送失败，当前用户为手动添加用户！");
             }
