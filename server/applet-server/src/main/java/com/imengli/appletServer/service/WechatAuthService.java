@@ -212,7 +212,7 @@ public class WechatAuthService {
                             sysUserRepostory.update(
                                     SysUserDO.builder()
                                             .id(userId)
-                                            .subMsgNum(sysUserRepostory.getUserInfoById(userId).getSubMsgNum() - 1)
+                                            .subMsgNum(sysUserRepostory.getUserInfoByUserId(userId).getSubMsgNum() - 1)
                                             .build());
                         } else {
                             LOG.info(">>>>>> 发送失败！,{}",errmsg);

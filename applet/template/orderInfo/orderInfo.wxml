@@ -15,10 +15,10 @@
               <text class="weui-form-preview__value">{{item.sizeValue}}</text>
             </view>
             <view class="weui-form-preview__item">
-              <text class="weui-form-preview__value">{{index == 0 ? item.gross:item.gross-item.tare}} {{index == 0 ? '':'KG'}}</text>
+              <text class="weui-form-preview__value">{{index == 0 ? item.gross:item.gross-item.tare}}{{index == 0 ? '':'KG'}}</text>
             </view>
             <view class="weui-form-preview__item">
-              <text class="weui-form-preview__value">{{index == 0 ? '':'￥'}}{{item.unitPrice}}</text>
+              <text class="weui-form-preview__value">{{item.unitPrice}}/斤</text>
             </view>
             <view class="weui-form-preview__item">
               <text class="weui-form-preview__value" style="color:red">{{index == 0 ? '':'￥'}}{{item.totalPrice}}</text>
@@ -28,15 +28,15 @@
         <view class="weui-form-preview__bd weui-flex" style="text-align: unset; border-bottom: unset; padding: 10px;">
           <view class="weui-form-preview__item weui-flex__item" >
             <label class="weui-form-preview__label" style="float: none;margin-right:unset;">用框</label>
-            <text class="weui-form-preview__value">{{item.applyBox}} 个</text>
+            <text class="weui-form-preview__value">{{item.applyBox}}个</text>
           </view>
           <view class="weui-form-preview__item weui-flex__item" >
             <label class="weui-form-preview__label" style="float: none;margin-right:unset;">退框</label>
-            <text class="weui-form-preview__value">{{item.retreatBox}} 个</text>
+            <text class="weui-form-preview__value">{{item.retreatBox}}个</text>
           </view>
           <view class="weui-form-preview__item weui-flex__item" >
             <label class="weui-form-preview__label" style="float: none;margin-right:unset;">总重量</label>
-            <text class="weui-form-preview__value">{{item.totalWeight}} KG</text>
+            <text class="weui-form-preview__value">{{item.totalWeight}}KG</text>
           </view>
           <view class="weui-form-preview__item weui-flex__item">
             <label class="weui-form-preview__label"  style="float: none;margin-right:unset;">总价钱</label>

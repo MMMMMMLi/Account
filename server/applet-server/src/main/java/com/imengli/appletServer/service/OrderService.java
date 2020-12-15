@@ -9,6 +9,7 @@ import com.imengli.appletServer.common.SysConstant;
 import com.imengli.appletServer.dao.OrderInfoDetailRepostory;
 import com.imengli.appletServer.dao.OrderInfoRepostory;
 import com.imengli.appletServer.dao.SysUserRepostory;
+import com.imengli.appletServer.dao.WechatUserRepostory;
 import com.imengli.appletServer.daomain.OrderInfoDO;
 import com.imengli.appletServer.daomain.OrderInfoDetailDO;
 import com.imengli.appletServer.daomain.SysUserDO;
@@ -16,6 +17,7 @@ import com.imengli.appletServer.daomain.WechatUserDO;
 import com.imengli.appletServer.dto.AddOrderFormInfoPOJO;
 import com.imengli.appletServer.dto.ResultDTO;
 import com.imengli.appletServer.utils.RedisUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +30,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -53,6 +52,9 @@ public class OrderService {
 
     @Resource
     private OrderInfoRepostory orderInfoRepostory;
+
+    @Resource
+    private WechatUserRepostory wechatUserRepostory;
 
     @Autowired
     private StockService stockService;
@@ -155,7 +157,7 @@ public class OrderService {
         // 根据信息完善度返回
         if (wechatUserDO != null) {
             // 获取用户信息
-            SysUserDO userInfoById = sysUserRepostory.getUserInfoById(wechatUserDO.getUserId());
+            SysUserDO userInfoById = sysUserRepostory.getUserInfoByUserId(wechatUserDO.getUserId());
             if (userInfoById != null) {
                 PageHelper.startPage(page, size);
                 // 查询用户订单
@@ -217,7 +219,7 @@ public class OrderService {
                                     AddOrderFormInfoPOJO.builder()
                                             .orderInfoId(orderInfoDO.getId())
                                             .orderListId(orderInfoDO.getId().toString())
-                                            .userInfo(sysUserRepostory.getUserInfoById(orderInfoDO.getUserId()))
+                                            .userInfo(sysUserRepostory.getUserInfoByUserId(orderInfoDO.getUserId()))
                                             .totalPrice(orderInfoDO.getTotalPrice())
                                             .totalWeight(orderInfoDO.getTotalWeight())
                                             .applyBox(orderInfoDO.getApplyBox())
@@ -269,17 +271,32 @@ public class OrderService {
      */
     public ResultDTO sendMsg(Boolean flag, String id) {
         List<OrderInfoDO> userOrders = new ArrayList<>();
+        Optional<WechatUserDO> userEntityByUserId;
         // 一起发送，
         if (flag) {
+            // 查看当前用户是否有openid
+            userEntityByUserId = Optional.ofNullable(wechatUserRepostory.getUserEntityByUserId(id));
+
             userOrders = orderInfoRepostory.getUserOrder(id);
         } else {
             userOrders = orderInfoRepostory.getOrderInfoByOrderId(id);
+            // 查看当前用户是否有openid
+            userEntityByUserId = Optional.ofNullable(wechatUserRepostory.getUserEntityByUserId(userOrders.get(0).getUserId()));
+        }
+        // 校验用户是否为手动添加用户
+        if (!userEntityByUserId.isPresent()) {
+            if (StringUtils.isBlank(userEntityByUserId.get().getOpenId())) {
+                return new ResultDTO(ResultStatus.ERROR.code(), "发送失败，当前用户为手动添加用户！");
+            }
+        } else {
+            return new ResultDTO(ResultStatus.ERROR.code(), "发送失败，当前用户为手动添加用户！");
         }
         try {
             wechatAuthService.sendMsgToWechat(userOrders);
         } catch (Exception e) {
             LOG.error(">>>>>> 消息推送失败，Msg：{}", e.getMessage());
+            return new ResultDTO(ResultStatus.ERROR.code(),"消息推送失败！");
         }
-        return new ResultDTO(ResultStatus.SUCCESS);
+        return new ResultDTO(ResultStatus.SUCCESS.code(),"消息推送成功！");
     }
 }

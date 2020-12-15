@@ -58,7 +58,7 @@ public class UserService {
                     // 需要完善
                     return new ResultDTO(ResultStatus.ERROR_UN_AUTHORIZED);
                 } else {
-                    SysUserDO info = sysUserRepostory.getUserInfoById(wechatUserDOByOpenId.getUserId());
+                    SysUserDO info = sysUserRepostory.getUserInfoByUserId(wechatUserDOByOpenId.getUserId());
                     if (StringUtils.isAnyBlank(info.getAddress(), info.getUserName(), info.getPhoneNumber())) {
                         return new ResultDTO(ResultStatus.ERROR_USERINFO, info);
                     }
@@ -92,7 +92,7 @@ public class UserService {
                     sysUserRepostory.save(sysUserDO);
                     return new ResultDTO(ResultStatus.SUCCESS_USERINFO, sysUserDO);
                 } else {
-                    return new ResultDTO(ResultStatus.SUCCESS_USERINFO, sysUserRepostory.getUserInfoById(userId));
+                    return new ResultDTO(ResultStatus.SUCCESS_USERINFO, sysUserRepostory.getUserInfoByUserId(userId));
                 }
             }
         }
@@ -116,7 +116,7 @@ public class UserService {
                             .country(country)
                             .updateTime(LocalDateTime.now())
                             .build());
-            return new ResultDTO(ResultStatus.SUCCESS, sysUserRepostory.getUserInfoById(userInfoId));
+            return new ResultDTO(ResultStatus.SUCCESS, sysUserRepostory.getUserInfoByUserId(userInfoId));
 
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
@@ -151,7 +151,7 @@ public class UserService {
 
     public ResultDTO userSubMsgAdd(String userId) {
         // 获取当前用户的次数
-        SysUserDO userInfoById = sysUserRepostory.getUserInfoById(userId);
+        SysUserDO userInfoById = sysUserRepostory.getUserInfoByUserId(userId);
         // +1
         SysUserDO build = SysUserDO.builder().id(userInfoById.getId()).subMsgNum(userInfoById.getSubMsgNum() + 1).build();
         // 更新

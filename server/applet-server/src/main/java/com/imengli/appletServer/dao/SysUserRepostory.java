@@ -14,7 +14,7 @@ public interface SysUserRepostory {
     @Select("select * from " + SysConstant.USER_TABLE_NAME + " where id = #{userId} limit 1")
     @Result(property="role", column="roleId",
             one=@One(select="com.imengli.appletServer.dao.SysRoleRepostory.selectRoleInfoById", fetchType= FetchType.EAGER))
-    SysUserDO getUserInfoById(@Param("userId") String userId);
+    SysUserDO getUserInfoByUserId(@Param("userId") String userId);
 
     @Insert("INSERT INTO " + SysConstant.USER_TABLE_NAME +
             " (id,nickName, avatarUrl, gender, country, province, city, createTime, updateTime) " +

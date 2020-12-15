@@ -65,7 +65,7 @@
 					</view>
 				</view>
 				<!-- 横向 -->
-				<view class="weui-form-preview__bd">
+				<!-- <view class="weui-form-preview__bd">
 					<view style="display: flex;">
 						<view class="weui-form-preview__item" style="flex:0.5;">
 							<label class="weui-form-preview__label">用框：</label>
@@ -86,9 +86,9 @@
 							<text class="weui-form-preview__value" style="color:red;font-weight: bolder;">￥{{item.totalPrice}}</text>
 						</view>
 					</view>
-				</view>
+				</view> -->
 				<!-- 竖向 -->
-				<!-- <view class="weui-form-preview__bd  weui-flex" style="text-align: center; border-bottom: unset; padding: 10px;">
+				<view class="weui-form-preview__bd  weui-flex" style="text-align: center; border-bottom: unset; padding: 10px;">
 						<view class="weui-form-preview__item  weui-flex__item">
 							<label class="weui-form-preview__label"  style="float: none;margin-right:unset;">用框</label>
 							<text class="weui-form-preview__value">{{item.applyBox}} 个</text>
@@ -105,7 +105,7 @@
 							<label class="weui-form-preview__label"  style="float: none;margin-right:unset;">总价钱</label>
 							<text class="weui-form-preview__value" style="color:red;font-weight: bolder;">￥{{item.totalPrice}}</text>
 						</view>
-				</view> -->
+				</view>
 				<view class="weui-form-preview__ft" wx:if="{{item.status == '待付款'}}">
 					<a wx:if="{{currentTab == 0 && !item.isNotice}}" class="weui-form-preview__btn weui-form-preview__btn_default"
 						data-index="{{item}}" bindtap="sendMsg">发送消息</a>
