@@ -2801,7 +2801,7 @@ a.weui-media-box:active {
 }
 
 .weui-half-screen-dialog__ft {
-  padding: 0 24px 32px;
+  padding: 0 24px 65px 24px;
   text-align: center
 }
 

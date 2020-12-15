@@ -94,7 +94,7 @@ Component({
       // 判断三个条件是否都存在，存在的话，则生成总价。
       if (thisOrder.hasOwnProperty('gross') && thisOrder.hasOwnProperty('tare') && thisOrder.hasOwnProperty('unitPrice')) {
         // 计算当前订单项的金额
-        orderInfo.orders[index].totalPrice = thisOrder.unitPrice * (thisOrder.gross - thisOrder.tare);
+        orderInfo.orders[index].totalPrice = thisOrder.unitPrice * (thisOrder.gross - thisOrder.tare) * 2;
         // 计算所有订单项的金额
         orderInfo.totalPrice = orderInfo.orders.map(order => order.totalPrice).reduce((total, num) => total + num) +
           (((orderInfo.applyBox ? orderInfo.applyBox : 0) - (orderInfo.retreatBox ? orderInfo.retreatBox : 0)) * this.data.boxPrice);
