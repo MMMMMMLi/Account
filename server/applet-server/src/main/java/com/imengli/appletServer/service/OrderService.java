@@ -284,19 +284,31 @@ public class OrderService {
             userEntityByUserId = Optional.ofNullable(wechatUserRepostory.getUserEntityByUserId(userOrders.get(0).getUserId()));
         }
         // 校验用户是否为手动添加用户
+        Boolean errorFlag = false;
         if (userEntityByUserId.isPresent()) {
             if (StringUtils.isBlank(userEntityByUserId.get().getOpenId())) {
-                return new ResultDTO(ResultStatus.ERROR.code(), "发送失败，当前用户为手动添加用户！");
+                errorFlag = true;
             }
         } else {
+            errorFlag = true;
+        }
+        if (errorFlag) {
+            orderInfoRepostory.updateOrderNoticeFlag(
+                    StringUtils.join(
+                            userOrders.parallelStream()
+                                    // 过滤掉发送失败的用户订单信息
+                                    .map(info -> info.getId())
+                                    .collect(Collectors.toList())
+                            , ",")
+            );
             return new ResultDTO(ResultStatus.ERROR.code(), "发送失败，当前用户为手动添加用户！");
         }
         try {
             wechatAuthService.sendMsgToWechat(userOrders);
         } catch (Exception e) {
             LOG.error(">>>>>> 消息推送失败，Msg：{}", e.getMessage());
-            return new ResultDTO(ResultStatus.ERROR.code(),"消息推送失败！");
+            return new ResultDTO(ResultStatus.ERROR.code(), "消息推送失败！");
         }
-        return new ResultDTO(ResultStatus.SUCCESS.code(),"消息推送成功！");
+        return new ResultDTO(ResultStatus.SUCCESS.code(), "消息推送成功！");
     }
 }

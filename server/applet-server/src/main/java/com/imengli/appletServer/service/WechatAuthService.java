@@ -151,7 +151,7 @@ public class WechatAuthService {
                 .forEach((userId, orderList) -> {
                     // 首先看看当前用户是不是手动添加的用户
                     Optional<WechatUserDO> userEntityByUserId = Optional.ofNullable(wechatUserRepostory.getUserEntityByUserId(userId));
-                    if(userEntityByUserId.isPresent()) {
+                    if (userEntityByUserId.isPresent()) {
                         // 如果不是则,推送消息
                         // 结果集
                         Map<String, Object> result = new HashMap<>();
@@ -215,17 +215,17 @@ public class WechatAuthService {
                                             .subMsgNum(sysUserRepostory.getUserInfoByUserId(userId).getSubMsgNum() - 1)
                                             .build());
                         } else {
-                            LOG.info(">>>>>> 发送失败！,{}",errmsg);
+                            LOG.info(">>>>>> 发送失败！,{}", errmsg);
                             errorUserIds.add(userId);
                         }
-                    }else {
+                    } else {
                         LOG.info(">>>>>> 发送失败！当前用户为手动添加用户，无法推送。");
                         errorUserIds.add(userId);
                     }
                 });
-        List<Integer> updateOrderId = orderInfoDOS.parallelStream().
+        List<Integer> updateOrderId = orderInfoDOS.parallelStream()
                 // 过滤掉发送失败的用户订单信息
-                        filter(info -> !errorUserIds.contains(info.getUserId()))
+                .filter(info -> !errorUserIds.contains(info.getUserId()))
                 .map(info -> info.getId())
                 .collect(Collectors.toList());
         if (updateOrderId.size() > 0) {

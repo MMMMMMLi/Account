@@ -56,7 +56,7 @@
 					<view style="display: flex;">
 						<view class="weui-form-preview__item" style="flex:0.5;">
 							<label class="weui-form-preview__label">单价：</label>
-							<text class="weui-form-preview__value">￥{{item.unitPrice}}</text>
+							<text class="weui-form-preview__value">{{item.unitPrice}}/斤</text>
 						</view>
 						<view class="weui-form-preview__item" style="flex:0.5;">
 							<label class="weui-form-preview__label">总价：</label>

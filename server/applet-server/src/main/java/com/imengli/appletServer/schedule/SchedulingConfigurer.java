@@ -19,9 +19,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -70,6 +68,8 @@ public class SchedulingConfigurer {
         LOG.info(">>>>>> 今天需要推送：{}条消息。", orderInfoDOS.parallelStream()
                 // 过滤已经发送过的订单信息
                 .filter(info -> !info.getIsNotice())
+                // TODO 是否需要过滤掉收费的订单？
+                // .filter(info -> info.getStatus() == 0)
                 // 根据用户ID分组
                 .collect(Collectors.groupingBy(info -> info.getUserId())).size());
         // 今天如果存在订单，则操作

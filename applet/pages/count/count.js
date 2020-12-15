@@ -228,7 +228,7 @@ Page({
       needFilter: false,
       // 清空订单列表
       orderList: [],
-      size: 0
+      page: 0
     })
     //动态获取数据
     this.getData(this.data.currentTab, true);
@@ -302,6 +302,9 @@ Page({
     }
     let oldOrderList = that.data.orderList ? that.data.orderList : [];
     if (cleanFlag) {
+      this.setData({
+        page:0
+      })
       oldOrderList = [];
     }
     // 根据传入的状态码，去后台获取订单列表
@@ -323,7 +326,7 @@ Page({
         if (res.data.code === 40002) {
           setTimeout(() => {
             if (wx.getStorageSync('token')) {
-              that.getData(that.data.currentTab, true);
+              that.getData(that.data.currentTab, showLoading, cleanFlag);
             }
           }, 1000)
           return;
@@ -392,7 +395,7 @@ Page({
       }
     }
     // 获取数据
-    this.getData(this.data.currentTab, true);
+    this.getData(this.data.currentTab, true, true);
   },
   /**
    * 生命周期函数--监听页面隐藏
