@@ -21,6 +21,7 @@
 	</view>
 	<view wx:if="{{orderList.length > 0}}">
 		<scroll-view scroll-y>
+			<!-- <scroll-view scroll-y style="height: 880rpx;" bindscrolltolower="haha"> -->
 			<view class="weui-form-preview" wx:for="{{orderList}}" wx:key="index">
 				<view class="weui-form-preview__hd_count" bindtap="showOrderInfo" data-data="{{item}}">
 					<view class="weui-form-preview__item">
@@ -120,9 +121,9 @@
 				</view>
 			</view>
 		</scroll-view>
-		<view wx:if="{{!hasNextPage}}" class="weui-loadmore weui-loadmore_line" style="margin-bottom:5em;">
+		<view wx:if="{{!hasNextPage}}" class="weui-loadmore weui-loadmore_line" style="margin-bottom:3em;">
 			<text class="weui-loadmore__tips">暂无更多数据</text>
-		</view>
+		</view> 
 	</view>
 
 	<!--  没有订单的显示i页面 -->
