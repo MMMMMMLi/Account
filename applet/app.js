@@ -53,10 +53,17 @@ App({
       }
     })
     /**
-     * 设置屏幕保持常量
+     * 设置屏幕是否保持常量
      */
-    wx.setKeepScreenOn({
-      keepScreenOn: true
+    wx.getBatteryInfo({
+      success(res) {
+        // 如果在充电或者电量大于50就设置为常量
+        if (res.isCharging || res.level > 50) {
+          wx.setKeepScreenOn({
+            keepScreenOn: true
+          })
+        }
+      }
     })
   },
   onShow(param) {
@@ -68,6 +75,19 @@ App({
     if (wx.getStorageSync('token') && param.path.indexOf('start') < 0) {
       this.authLogin();
     }
+    // 判断当前电量是多少,如果少于30就取消屏幕常量的设置
+    wx.getBatteryInfo({
+      success(res) {
+        if (!res.isCharging) {
+          // 如果没有充电,则看看当前电量
+          if (res.level < 30) {
+            wx.setKeepScreenOn({
+              keepScreenOn: false
+            })
+          }
+        }
+      }
+    })
   },
   // 校验用户是否登陆,如果没有登陆,则登陆
   async authLogin() {

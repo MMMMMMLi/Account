@@ -111,7 +111,6 @@ Page({
       }
     })
   },
-  // TODO: 可以修改一下展示信息。
   aboutUs: function () {
     wx.showModal({
       title: '关于我们',
@@ -121,7 +120,7 @@ Page({
   },
   callUs() {
     wx.makePhoneCall({
-      phoneNumber: '13791921192',
+      phoneNumber: '13791921198',
       complete(res){
       }
     })

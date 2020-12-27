@@ -173,14 +173,14 @@
 		</view>
 	</navigator>
 	<view class="line"></view>
-	<view class="menu-item" bindtap="aboutUs">
-		<view class="l">关于我们</view>
-		<image class="next" src="/images/icon/next.png"></image>
-	</view>
-	<view class="line"></view>
 	<view class="menu-item" bindtap="callUs">
 		<view class="l">联系我们</view>
 		<view class="r">13791921198</view>
+	</view>
+	<view class="line"></view>
+	<view class="menu-item" bindtap="aboutUs">
+		<view class="l">关于我们</view>
+		<image class="next" src="/images/icon/next.png"></image>
 	</view>
 	<!-- <view class="line"></view>
 	<view wx:if="{{userMobile}}" class="menu-item">

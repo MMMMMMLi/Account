@@ -1,3 +1,5 @@
 {
-  "navigationBarTitleText": "库存管理"
+  "navigationBarTitleText": "库存管理",
+  "navigationBarBackgroundColor": "#EDEDED",
+  "backgroundColor": "#EDEDED"
 }

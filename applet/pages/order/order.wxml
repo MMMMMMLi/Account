@@ -66,7 +66,7 @@
 				</view>
 			</view>
 		</scroll-view>
-		<view wx:if="{{!hasNextPage}}" class="weui-loadmore weui-loadmore_line" style="margin-bottom:5em;">
+		<view wx:if="{{!hasNextPage}}" class="weui-loadmore weui-loadmore_line" style="margin-bottom:3em;">
 			<text class="weui-loadmore__tips">暂无更多数据</text>
 		</view>
 	</view>

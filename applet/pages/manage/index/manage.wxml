@@ -21,7 +21,8 @@
 			<view>今日交易额</view>
 		</view>
 		<view class='item right'>
-			<view style="color:{{totalStock > 5000 ? 'green' : totalStock > 1000 ? 'Orange' : 'red' }};">{{totalStock}} KG</view>
+			<view style="color:{{totalStock > 5000 ? 'green' : totalStock > 1000 ? 'Orange' : 'red' }};">{{totalStock}} KG
+			</view>
 			<view>剩余库存量</view>
 		</view>
 	</view>
@@ -86,12 +87,14 @@
 			</view>
 			<view class="weui-grid__label">切换视图</view>
 		</view>
-		<view class="weui-grid">
-			<view class="weui-grid__icon">
-				<image src="/images/icon/c3.png" alt></image>
+		<navigator url="/pages/manage/warn/warn">
+			<view class="weui-grid">
+				<view class="weui-grid__icon">
+					<image src="/images/icon/c3.png" alt></image>
+				</view>
+				<view class="weui-grid__label">警告信息</view>
 			</view>
-			<view class="weui-grid__label">告警信息</view>
-		</view>
+		</navigator>
 	</view>
 	<!-- 其余 -->
 	<view class="space"></view>
