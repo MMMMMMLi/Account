@@ -1,4 +1,4 @@
-const REQUEST = require('../../../utils/request');
+const REQUEST = require('../../../../utils/request');
 
 // pages/manage/user/user.js
 Page({

@@ -1,0 +1,47 @@
+<import src="/template/update/update.wxml" />
+
+<view class="page">
+	<view wx:if="{{topTips}}" class="weui-toptips weui-toptips_warn fadeIn" style="display:block">{{tipMsg}}</view>
+	<view class="weui-form" style="padding:15px 0 0;">
+		<view class="weui-form__text-area">
+			<image class="userinfo-avatar" style="width:88px;height:88px;border-radius:40px;" src="{{avatarUrl}}"
+				bindtap="refreshAva" />
+		</view>
+		<form catchsubmit="formSubmit" catchreset="formReset">
+			<view class="weui-form__control-area" style="margin:24px 0">
+				<view class="weui-cells__group weui-cells__group_form">
+					<view class="weui-cells__title">客户信息</view>
+					<view class="weui-cells weui-cells_form">
+						<view class="weui-cell weui-cell_active">
+							<view class="weui-cell__hd"><label class="weui-label">客户姓名</label></view>
+							<view class="weui-cell__bd weui-flex">
+								<input class="weui-input" maxlength="4" placeholder="客户姓名" name="name"
+									placeholder-class="weui-input__placeholder" />
+								<!-- <view wx:if="{{showClearBtn}}" class="weui-btn_reset weui-btn_icon weui-btn_input-clear"
+									bindtap="onClear">
+									<i class="weui-icon-clear"></i>
+								</view> -->
+							</view>
+						</view>
+						<view class="weui-cell weui-cell_active">
+							<view class="weui-cell__hd">
+								<label class="weui-label">联系电话</label>
+							</view>
+							<view class="weui-cell__bd">
+								<input class="weui-input" maxlength="11" placeholder="客户电话号码" type="number" name="phone"
+									placeholder-class="weui-input__placeholder" bindblur="checkNum" />
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="weui-form__opr-area" style="margin-top:100px;margin-bottom: 10px;">
+				<button class="weui-btn weui-btn_primary" formType="submit">提交</button>
+				<button class="weui-btn weui-btn_default" bindtap="back">返回</button>
+			</view>
+		</form>
+		<view class="weui-footer weui-footer_fixed-bottom">
+			<view class="weui-footer__text">Copyright © 2019-2020 兴隆薯业</view>
+		</view>
+	</view>
+</view>

@@ -1,5 +1,5 @@
 const APP = getApp();
-const REQUEST = require('../../utils/request');
+const REQUEST = require('../../../../utils/request');
 
 Page({
 
@@ -12,28 +12,36 @@ Page({
     hasError: false,
     tipMsg: '',
 
-    // 用户基本信息
-    hasUserInfo: true,
-    userInfos: [],
-
-    // 是否更新微信信息
-    updateFlag: false,
+    // 是否显示叉号
+    // showClearBtn:true,
+    // 头像URL
     avatarUrl: '/images/nologin.png'
+  },
+  /**
+   * 生成随机头像
+   */
+  async refreshAva() {
+    let res = await REQUEST.request('user/refreshAva', 'POST', {});
+    if (res.statusCode === 200 && res.data.code === 20000) {
+      this.setData({
+        avatarUrl: res.data.data
+      })
+    }
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setData({
-      hasUserInfo: !APP.globalData.needUpdateUserInfo,
-      userInfos: APP.globalData.userInfos,
-    })
+    // 进来之后获取一个头像
+    this.refreshAva()
   },
   // 校验手机号状态
   formSubmit(e) {
     const that = this;
     // 校验一下，不正确的话返回提示信息。
-    if (!e.detail.value.address || !e.detail.value.name || !e.detail.value.phone) {
+    let userName = e.detail.value.name;
+    let phoneNum = e.detail.value.phone;
+    if (!userName || !phoneNum) {
       that.setData({
         topTips: true,
         hasError: true,
@@ -57,7 +65,6 @@ Page({
     // 编写后台保存
     REQUEST.request('user/updateUserInfo', 'POST', {
       token: wx.getStorageSync('token'),
-      address: e.detail.value.address,
       name: e.detail.value.name,
       phone: e.detail.value.phone
     }).then(res => {
@@ -108,44 +115,5 @@ Page({
   },
   back() {
     wx.navigateBack()
-  },
-  // 更新微信信息
-  updateInfo() {
-    this.setData({
-      updateFlag: true,
-      avatarUrl: this.data.userInfos ? this.data.userInfos.avatarUrl : '/images/nologin.png'
-    })
-  },
-  // 同意更新
-  processLogin(e) {
-    if (!e.detail.userInfo) {
-      wx.showToast({
-        title: '已取消',
-        icon: 'none',
-      })
-      this.setData({
-        updateFlag: false
-      })
-      return;
-    }
-    let that = this;
-    REQUEST.request('user/updateWechatUserInfo', 'POST', {
-      ...e.detail.userInfo,
-      userInfoId: this.data.userInfos ? this.data.userInfos.id : '9999999',
-      token: wx.getStorageSync('token'),
-    }).then(res => {
-      if (res.data.code == 20000) {
-        that.setData({
-          updateFlag: false,
-          userInfos: res.data.data
-        });
-      }
-    })
-  },
-  // 拒绝更新
-  cancelLogin() {
-    this.setData({
-      updateFlag: false,
-    })
   },
 })

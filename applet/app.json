@@ -10,12 +10,13 @@
     "pages/manage/index/manage",
     "pages/manage/report/day/day",
     "pages/manage/report/week/week",
-    "pages/manage/user/user",
+    "pages/manage/user/index/user",
     "pages/manage/system/system",
     "pages/manage/user/detail/detail",
     "pages/manage/stock/index/stock",
     "custom-tab-bar/index",
-    "pages/manage/warn/warn"
+    "pages/manage/warn/warn",
+    "pages/manage/user/add/userAdd"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",

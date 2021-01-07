@@ -16,7 +16,7 @@
 						<view class="weui-cell weui-cell_active">
 							<view class="weui-cell__hd"><label class="weui-label">微信头像</label></view>
 							<view class="weui-cell__bd">
-								<image class="userinfo-avatar" style="width:88px;height:88px" src="{{userInfos.avatarUrl}}" />
+								<image class="userinfo-avatar" style="width:88px;height:88px;border-radius:40px;" src="{{userInfos.avatarUrl}}" />
 							</view>
 						</view>
 						<view class="weui-cell weui-cell_active">
