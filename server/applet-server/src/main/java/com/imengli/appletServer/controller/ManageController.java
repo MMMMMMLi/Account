@@ -111,4 +111,17 @@ public class ManageController {
 
     // ----------------------------------------订单分析----------------------------------------------------
     // ----------------------------------------告警信息----------------------------------------------------
+    /**
+     * 获取告警列表
+     *
+     * @param token
+     * @return
+     */
+    @RequestMapping("/getWarnList")
+    public ResultDTO getWarnList(@RequestParam String token,
+                                 @RequestParam Integer page,
+                                 @RequestParam Integer size,
+                                 @RequestParam(value = "value", required = false) Integer value) {
+        return manageService.getWarnList(token, page, size, value);
+    }
 }

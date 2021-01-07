@@ -3,14 +3,17 @@ const REQUEST = require('./request');
 // 检测登录状态，返回 true / false
 async function checkHasLogined() {
   const token = wx.getStorageSync('token')
+  console.log("checkHasLogined start ...")
   if (!token) {
     return false;
   }
+  console.log("checkHasLogined token is true ...")
   const loggined = await checkSession()
   if (!loggined) {
     wx.removeStorageSync('token');
     return false;
   }
+  console.log("checkHasLogined checkSession is true ...")
   // 同步校验Token
   let flag = true;
   let res = await REQUEST.request('applet/auth/checkToken', 'POST', {
@@ -20,6 +23,7 @@ async function checkHasLogined() {
     wx.removeStorageSync('token')
     flag = false;
   }
+  console.log("checkHasLogined server check is true ...")
   return flag;
 }
 
@@ -42,7 +46,6 @@ async function login(page) {
   return new Promise((resolve, reject) => {
     wx.login({
       success: function (res) {
-        console.log(">>>>> 服务端登陆。")
         REQUEST.request('applet/auth/code2Session', 'POST', {
           code: res.code,
         }).then(res => {

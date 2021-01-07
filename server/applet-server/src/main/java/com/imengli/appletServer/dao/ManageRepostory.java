@@ -103,4 +103,17 @@ public interface ManageRepostory {
             " set `value` = #{info.value}, updateDate = now(), `status` = #{info.status}" +
             " where id = #{info.id}")
     void updateSystemInfo(@Param("info") Map<String, Object> info);
+
+    @Select("SELECT " +
+            " COUNT(1) AS countDay," +
+            " SUM(oi.totalPrice) AS totalPrice," +
+            " su.*" +
+            "FROM " + SysConstant.ORDER_INFO_TABLE_NAME + " oi " +
+            "LEFT JOIN " + SysConstant.USER_TABLE_NAME + " su ON oi.userId = su.id " +
+            "WHERE oi.status = 0 " +
+            "and oi.collectionTime is null " +
+            "and TIMESTAMPDIFF(DAY,DATE(oi.createDate),CURDATE()) <= #{days} " +
+            "group by oi.userId " +
+            "ORDER BY totalPrice DESC ")
+    List<Map<String, Object>> getWarnList(@Param("days") int days);
 }

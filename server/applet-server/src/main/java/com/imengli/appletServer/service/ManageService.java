@@ -359,4 +359,22 @@ public class ManageService {
 
         return new ResultDTO(ResultStatus.SUCCESS);
     }
+
+    public ResultDTO getWarnList(String token, Integer page, Integer size, Integer value) {
+        // 校验token
+        WechatUserDO wechatUserDO = redisUtil.getWechatAuthEntity(token);
+        // 根据信息完善度返回
+        if (wechatUserDO != null) {
+            // TODO: 后续添加管理员校验
+            // 构建分页信息
+            PageHelper.startPage(page, size);
+            // 普通查询
+            List<Map<String, Object>> searchInfo = manageRepostory.getWarnList(value);
+            // 构建分页信息
+            PageInfo<Map<String, Object>> searchInfoPageInfo = new PageInfo<>(searchInfo);
+            // 返回
+            return new ResultDTO(ResultStatus.SUCCESS, null, searchInfoPageInfo);
+        }
+        return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
+    }
 }

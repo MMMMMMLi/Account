@@ -7,140 +7,42 @@ Page({
    * 页面的初始数据
    */
   data: {
-    // 搜索
-    inputShowed: false,
-    inputVal: "",
-    // 排序按钮
-    clickButton: '',
+    // 欠款时间排序
+    clickButton: '999',
     // 分页
     page: 0,
     size: 10,
-    hasNextPage: false,
-    // 查询条件
-    searchType: '',
-    searchValue: ''
+    hasNextPage: false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.getUserList(this.data.searchType, this.data.searchValue)
-  },
-  // 打开搜索input
-  showInput: function () {
-    this.setData({
-      inputShowed: true
-    });
-  },
-  // 禁用搜索input
-  hideInput: function () {
-    let type, value;
-    // 获取数据
-    if (this.data.clickButton) {
-      type = 'order';
-      value = this.data.clickButton;
-    } else {
-      type = 'search';
-      value = '';
-    }
-    this.setData({
-      inputVal: "",
-      userList:[],
-      page: 0,
-      inputShowed: false,
-      searchType: type,
-      searchValue: value
-    });
-    this.getUserList(type, value);
-  },
-  // 清空搜索框内容
-  clearInput: function () {
-    let type, value;
-    // 获取数据
-    if (this.data.clickButton) {
-      type = 'order';
-      value = this.data.clickButton;
-    } else {
-      type = 'search';
-      value = '';
-    }
-    this.setData({
-      userList:[],
-      page: 0,
-      inputVal: "",
-      searchType: type,
-      searchValue: value
-    });
-    this.getUserList(type, value);
-  },
-  // 输入内容
-  inputTyping: function (e) {
-    let inputVal = e.detail.value;
-    let type, value;
-    // 组装数据
-    if (this.data.clickButton) {
-      if (inputVal) {
-        type = this.data.clickButton;
-        value = inputVal;
-      } else {
-        type = 'order';
-        value = this.data.clickButton;
-      }
-    } else {
-      type = 'search';
-      value = inputVal;
-    }
-    // 更新
-    this.setData({
-      inputVal,
-      userList:[],
-      page: 0,
-      searchType: type,
-      searchValue: value
-    });
-    // 获取
-    this.getUserList(type, value);
+    this.getUserList(this.data.clickButton)
   },
   // 点击排序Button
   clickButton(e) {
-    let type, value;
     let clickButtonValue = e.currentTarget.dataset.value;
     if (this.data.clickButton == clickButtonValue) {
-      clickButtonValue = '';
-    }
-    // 获取数据
-    if (this.data.inputVal) {
-      if (clickButtonValue) {
-        type = clickButtonValue;
-        value = this.data.inputVal;
-      } else {
-        type = 'search';
-        value = this.data.inputVal;
-      }
-    } else {
-      type = 'order';
-      value = clickButtonValue;
+      clickButtonValue = '999';
     }
     // 更新
     this.setData({
       clickButton: clickButtonValue,
       userList:[],
-      page: 0,
-      searchType: type,
-      searchValue: value
+      page: 0
     });
     // 获取
-    this.getUserList(type, value);
+    this.getUserList(clickButtonValue);
   },
   // 获取订单列表
-  getUserList(searchType, searchValue) {
+  getUserList(value) {
     let that = this;
     let oldUserList = that.data.userList ? that.data.userList : [];
-    REQUEST.request('manage/getUserList', 'POST', {
+    REQUEST.request('manage/getWarnList', 'POST', {
       token: wx.getStorageSync('token'),
-      searchType,
-      searchValue,
+      value,
       page: this.data.page,
       size: this.data.size
     }).then(res => {
