@@ -51,7 +51,7 @@
 			</view>
 			<view class="weui-grid__label">每月报告</view>
 		</view>
-		<navigator url="/pages/manage/user/user">
+		<navigator url="/pages/manage/user/index/user">
 			<view class="weui-grid">
 				<view class="weui-grid__icon">
 					<image src="/images/icon/b1.png" alt></image>
@@ -75,12 +75,14 @@
 				<view class="weui-grid__label">库存管理</view>
 			</view>
 		</navigator>
+		<navigator url="/pages/manage/user/add/userAdd">
 		<view class="weui-grid">
 			<view class="weui-grid__icon">
 				<image src="/images/icon/c1.png" alt></image>
 			</view>
-			<view class="weui-grid__label">订单分析</view>
+			<view class="weui-grid__label">添加客户</view>
 		</view>
+	</navigator>
 		<view class="weui-grid" bindtap="switchView">
 			<view class="weui-grid__icon">
 				<image src="/images/icon/c2.png" alt></image>
