@@ -1,3 +1,27 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2020 mmmmmengli@gmail.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 package com.imengli.appletServer.service;
 
 
@@ -84,7 +108,7 @@ public class UserService {
                     // 生成用户ID
                     String userID = UUID.randomUUID().toString();
                     LocalDateTime now = LocalDateTime.now();
-                    SysUserDO sysUserDO = new SysUserDO(userID, nickName, avatarUrl, gender, country, province, city,now,now);
+                    SysUserDO sysUserDO = new SysUserDO(userID, nickName, avatarUrl, gender, country, province, city, now, now);
                     // 关联
                     wechatUserDOByOpenId.setUserId(userID);
                     // 保存
@@ -159,5 +183,41 @@ public class UserService {
         // 返回新的
         userInfoById.setSubMsgNum(build.getSubMsgNum());
         return new ResultDTO(ResultStatus.SUCCESS, userInfoById);
+    }
+
+    /**
+     * 添加临时用户
+     *
+     * @param token
+     * @param userName
+     * @param phoneNum
+     * @param avatarUrl
+     * @return
+     */
+    public ResultDTO addTempUserByApplet(String token, String userName, String phoneNum, String avatarUrl) {
+        // 校验Token
+        WechatAuthDO wechatAuthDO = this.getWechatAuthEntity(token);
+        // 判断是否异常
+        if (wechatAuthDO != null) {
+            // 首先判断当前添加的测试用户是否已经存在
+            // 判断条件是名字是否存在或者手机号是否存在
+            if(sysUserRepostory.getUserInfoBySearch(userName, 1).size() <= 0
+                    && sysUserRepostory.getUserInfoBySearch(phoneNum, 1).size() <= 0) {
+                // 如果都不存在,则添加
+                sysUserRepostory.saveTempUser(SysUserDO.builder()
+                        .id(UUID.randomUUID().toString())
+                        .userName(userName)
+                        .userNameCode(PinyinUtil.ToFirstChar(userName))
+                        .phoneNumber(phoneNum)
+                        .avatarUrl(avatarUrl)
+                        .createTime(LocalDateTime.now())
+                        .isTemp(Boolean.TRUE)
+                        .build());
+                return new ResultDTO(ResultStatus.SUCCESS);
+            }else {
+                return new ResultDTO(ResultStatus.EXISTED);
+            }
+        }
+        return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }
 }
