@@ -34,6 +34,7 @@ import com.imengli.appletServer.daomain.WechatUserDO;
 import com.imengli.appletServer.dto.ResultDTO;
 import com.imengli.appletServer.utils.PinyinUtil;
 import com.imengli.appletServer.utils.RedisUtil;
+import com.imengli.appletServer.utils.SnowflakeIdWorker;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +45,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class UserService {
@@ -59,6 +59,9 @@ public class UserService {
 
     @Resource
     private SysUserRepostory sysUserRepostory;
+
+    @Autowired
+    private SnowflakeIdWorker snowflakeIdWorker;
 
     public WechatAuthDO getWechatAuthEntity(String token) {
         WechatAuthDO wechatAuthDO = null;
@@ -106,7 +109,7 @@ public class UserService {
                 String userId = wechatUserDOByOpenId.getUserId();
                 if (StringUtils.isBlank(userId)) {
                     // 生成用户ID
-                    String userID = UUID.randomUUID().toString();
+                    String userID = String.valueOf(snowflakeIdWorker.nextId());
                     LocalDateTime now = LocalDateTime.now();
                     SysUserDO sysUserDO = new SysUserDO(userID, nickName, avatarUrl, gender, country, province, city, now, now);
                     // 关联
@@ -205,7 +208,7 @@ public class UserService {
                     && sysUserRepostory.getUserInfoBySearch(phoneNum, 1).size() <= 0) {
                 // 如果都不存在,则添加
                 sysUserRepostory.saveTempUser(SysUserDO.builder()
-                        .id(UUID.randomUUID().toString())
+                        .id(String.valueOf(snowflakeIdWorker.nextId()))
                         .userName(userName)
                         .userNameCode(PinyinUtil.ToFirstChar(userName))
                         .phoneNumber(phoneNum)
