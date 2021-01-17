@@ -63,34 +63,42 @@ Page({
       return;
     }
     // 编写后台保存
-    REQUEST.request('user/updateUserInfo', 'POST', {
+    REQUEST.request('user/addTempUserByApplet', 'POST', {
       token: wx.getStorageSync('token'),
-      name: e.detail.value.name,
-      phone: e.detail.value.phone
+      userName: e.detail.value.name,
+      phoneNum: e.detail.value.phone,
+      avatarUrl: that.data.avatarUrl
     }).then(res => {
-      if (res.data.code == 20006) {
+      let msg;
+      if (res.data.code == 20000) {
         wx.showModal({
-          content: '提交成功',
-          showCancel: false,
+          title: '提示',
+          content: '保存成功',
+          confirmText: '返回',
+          cancelText: '继续添加',
           success(res) {
-            // 修改主进程状态
-            APP.globalData.needUpdateUserInfo = false;
-            wx.switchTab({
-              url: '/pages/my/my',
-            });
+            if (res.confirm) {
+              that.back();
+            } else if (res.cancel) {
+              that.refreshAva();
+            }
           }
-        })
+        });
+        return;
+      } else if (res.data.code == 50000) {
+        msg = '添加失败！当前添加的客户已经存在！';
       } else {
-        wx.showModal({
-          content: res.data.msg,
-          showCancel: false,
-          success(res) {
-            wx.switchTab({
-              url: '/pages/my/my',
-            });
-          }
-        })
+        msg = '添加失败！服务器错误！';
       }
+      that.setData({
+        topTips: true,
+        tipMsg: msg
+      })
+      setTimeout(() => {
+        that.setData({
+          topTips: false
+        });
+      }, 1500);
     })
   },
   checkNum(e) {
@@ -115,5 +123,5 @@ Page({
   },
   back() {
     wx.navigateBack()
-  },
+  }
 })

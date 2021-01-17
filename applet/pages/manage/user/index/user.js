@@ -24,7 +24,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onShow: function (options) {
     this.getUserList(this.data.searchType, this.data.searchValue)
   },
   // 打开搜索input
@@ -178,5 +178,12 @@ Page({
     if (this.data.hasNextPage) {
       this.getUserList(this.data.searchType, this.data.searchValue);
     }
+  },
+  // 页面隐藏
+  onHide() {
+    this.setData({
+      userList:[],
+      page: 0,
+    })
   },
 })

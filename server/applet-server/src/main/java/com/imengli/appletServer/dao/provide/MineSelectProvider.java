@@ -106,6 +106,7 @@ public class MineSelectProvider {
         sb.append("	su.id as id, ");
         sb.append("	su.avatarUrl as avatarUrl, ");
         sb.append("	su.userName as userName, ");
+        sb.append("	su.nickName as nickName, ");
         sb.append("	su.phoneNumber as phoneNumber, ");
         sb.append("	IF(su.isTemp = 0 ,'否', '是') as isTemp ");
         sb.append("FROM ");

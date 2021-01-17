@@ -114,6 +114,14 @@ public class ManageController {
         return manageService.getUserDetails(token, userId, page, size);
     }
 
+    @RequestMapping("/getMergeUserInfo")
+    public ResultDTO getMergeUserInfo(@RequestParam String token,
+                                      @RequestParam String userId,
+                                      @RequestParam String userName,
+                                      @RequestParam String phoneNumber) {
+        return manageService.getMergeUserInfo(token, userId, userName, phoneNumber);
+    }
+
 
     // ----------------------------------------系统管理----------------------------------------------------
 
@@ -134,6 +142,7 @@ public class ManageController {
     }
 
     // ----------------------------------------告警信息----------------------------------------------------
+
     /**
      * 获取告警列表
      *

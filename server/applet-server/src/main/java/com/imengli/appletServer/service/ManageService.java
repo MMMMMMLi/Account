@@ -401,4 +401,16 @@ public class ManageService {
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }
+
+    public ResultDTO getMergeUserInfo(String token, String userId, String userName, String phoneNumber) {
+        // 校验token
+        WechatUserDO wechatUserDO = redisUtil.getWechatAuthEntity(token);
+        // 根据信息完善度返回
+        if (wechatUserDO != null) {
+            // TODO: 后续添加管理员校验
+            // 返回
+            return new ResultDTO(ResultStatus.SUCCESS, manageRepostory.getMergeUserInfo(userId,userName,phoneNumber));
+        }
+        return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
+    }
 }

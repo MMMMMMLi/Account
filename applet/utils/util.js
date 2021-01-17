@@ -126,10 +126,10 @@ const showLoading = (title) => {
     wx.showLoading({
       title: title,
       mask: true,
-      success (res) {
+      success(res) {
         resolve(res)
       },
-      fail (err) {
+      fail(err) {
         reject(err)
       }
     })
@@ -144,10 +144,54 @@ const hideLoading = () => {
   })
 }
 
+// 弹窗提示加载提示
+const showModaling = (title, content, confirmText, cancelText, showCancel) => {
+  return new Promise((resolve, reject) => {
+    wx.showModal({
+      title: title,
+      content: content,
+      mask: true,
+      confirmText: confirmText ? confirmText : '确定',
+      cancelText: cancelText ? cancelText : '取消',
+      showCancel: showCancel,
+      success(res) {
+        resolve(res)
+      },
+      fail(err) {
+        reject(err)
+      }
+    })
+  })
+}
+
+// 弹窗提示加载提示
+const showToasting = (title, icon, mask, duration) => {
+  return new Promise((resolve, reject) => {
+    wx.showToast({
+      title: title,
+      icon: icon,
+      duration: duration ? duration : 2000,
+      mask: true
+    })
+  })
+}
+
+// 关闭提示加载提示
+const hideToasting = () => {
+  return new Promise((resolve) => {
+    wx.hideToast()
+    resolve()
+  })
+}
+
+
 module.exports = {
   getArrayIndex: getArrayIndex,
   getLunarDay: getLunarDay,
   formatTime: formatTime,
   showLoading,
-  hideLoading
+  hideLoading,
+  showModaling,
+  showToasting,
+  hideToasting
 }

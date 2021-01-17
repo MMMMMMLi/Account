@@ -27,6 +27,7 @@ package com.imengli.appletServer.dao;
 import com.imengli.appletServer.common.SysConstant;
 import com.imengli.appletServer.dao.provide.MineInsertProvider;
 import com.imengli.appletServer.dao.provide.MineSelectProvider;
+import com.imengli.appletServer.daomain.SysUserDO;
 import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDateTime;
@@ -141,4 +142,14 @@ public interface ManageRepostory {
             "group by oi.userId " +
             "ORDER BY totalPrice DESC ")
     List<Map<String, Object>> getWarnList(@Param("days") int days);
+
+    @Select(" SELECT " +
+            "  * " +
+            " FROM " + SysConstant.USER_TABLE_NAME +
+            " WHERE " +
+            "   ( LOCATE(#{userName}, userName) " +
+            "   OR phoneNumber = #{phoneNumber} ) " +
+            " AND isTemp = 0 " +
+            " AND id != #{userId}")
+    List<SysUserDO> getMergeUserInfo(@Param("userId") String userId, @Param("userName") String userName, @Param("phoneNumber") String phoneNumber);
 }

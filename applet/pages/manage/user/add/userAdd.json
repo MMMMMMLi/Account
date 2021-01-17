@@ -1,3 +1,5 @@
 {
-  "navigationBarTitleText": "添加客户"
+  "navigationBarTitleText": "添加客户",
+  "navigationBarBackgroundColor": "#EDEDED",
+  "backgroundColor": "#EDEDED"
 }

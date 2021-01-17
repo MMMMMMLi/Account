@@ -29,6 +29,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.imengli.appletServer.daomain.WechatAuthDO;
+import com.imengli.appletServer.utils.SnowflakeIdWorker;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -38,9 +40,17 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
-public class MineRedisConfig {
+public class MineConfig {
 
+    @Value("${snowFlake.workerId}")
+    private Integer workerId;
 
+    @Value("${snowFlake.datacenterId}")
+    private Integer datacenterId;
+
+    /**
+     * 自动构建redis模板类
+     */
     @Bean
     public RedisTemplate<String, WechatAuthDO> redisTemplate(RedisConnectionFactory factory) {
 
@@ -64,5 +74,14 @@ public class MineRedisConfig {
 
         return template;
     }
+
+    /**
+     * 创建全局统一的雪花算法生成器
+     */
+    @Bean
+    public SnowflakeIdWorker getSnowflakeIdWorker() {
+        return new SnowflakeIdWorker(this.workerId, this.datacenterId);
+    }
+
 
 }

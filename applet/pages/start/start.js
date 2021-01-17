@@ -15,25 +15,38 @@ Page({
     swiperCurrent: 0,
 
     // 请求用户的信息
-    serverData: []
+    serverData: [],
+
+    // 重复请求次数
+    total: 0
   },
   onLoad: function () {
     UTIL.showLoading('正在登陆');
     // 获取Token
-    let token;
     APP.authLogin().then((res) => {
-      token = wx.getStorageSync('token');
       UTIL.hideLoading();
-      this.getInfo(token);
+      this.getInfo();
     })
   },
   // 执行逻辑
-  async getInfo(token) {
+  async getInfo() {
+    let token = wx.getStorageSync('token');
     const that = this;
     // 获取用户验证信息
     let res = await REQUEST.request('user/authUserInfo', 'POST', {
       token: token,
     })
+    if(res.data.code === 40002 ) {
+      let total = this.data.total;
+      this.setData({
+        total: total + 1
+      })
+      if(total <= 10) {
+        this.getInfo();
+      }else {
+        UTIL.showLoading('系统异常请稍候');
+      }
+    }
     let userInfo = res.data.data || [];
     let role = userInfo.role || '';
     if (userInfo && role) {
