@@ -152,4 +152,11 @@ public interface ManageRepostory {
             " AND isTemp = 0 " +
             " AND id != #{userId}")
     List<SysUserDO> getMergeUserInfo(@Param("userId") String userId, @Param("userName") String userName, @Param("phoneNumber") String phoneNumber);
+
+    @Update(" UPDATE " + SysConstant.ORDER_INFO_TABLE_NAME +
+            " oi LEFT JOIN " + SysConstant.STOCK_INFO_DEATIL_TABLE_NAME + " sid ON oi.userId = sid.userId " +
+            " LEFT JOIN "+SysConstant.USER_TABLE_NAME+" su ON su.id = oi.userId "+
+            " SET oi.userId = #{mergeUserId}, sid.userId = #{mergeUserId}, su.state = 0 " +
+            " WHERE oi.userId = #{userId}")
+    void mergeInfoByUserId(@Param("userId") String userId, @Param("mergeUserId") String mergeUserId);
 }

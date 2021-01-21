@@ -46,7 +46,8 @@ public enum ResultStatus {
     ERROR_GET_OPEN_ID(40001,"获取微信OpenId失败"),
     ERROR_AUTH_TOKEN(40002,"校验Token失败"),
     ERROR_USERINFO(40003,"用户信息不完整，请完善！"),
-    ERROR_UN_AUTHORIZED(40004,"用户未授权！");
+    ERROR_UN_AUTHORIZED(40004,"用户未授权！"),
+    ERROR_USER_NOT_EXIST(40005,"用户不存在！");
 
     // 状态码
     private Integer code;

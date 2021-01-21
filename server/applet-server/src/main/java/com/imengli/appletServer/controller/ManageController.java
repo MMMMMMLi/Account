@@ -122,6 +122,12 @@ public class ManageController {
         return manageService.getMergeUserInfo(token, userId, userName, phoneNumber);
     }
 
+    @RequestMapping("/mergeByUserId")
+    public ResultDTO mergeByUserId(@RequestParam String token,
+                                      @RequestParam String userId,
+                                      @RequestParam String mergeUserId) {
+        return manageService.mergeByUserId(token, userId, mergeUserId);
+    }
 
     // ----------------------------------------系统管理----------------------------------------------------
 

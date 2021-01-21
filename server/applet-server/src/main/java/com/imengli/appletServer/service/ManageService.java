@@ -30,6 +30,7 @@ import com.github.pagehelper.PageInfo;
 import com.imengli.appletServer.common.ResultStatus;
 import com.imengli.appletServer.common.SysConstant;
 import com.imengli.appletServer.dao.ManageRepostory;
+import com.imengli.appletServer.dao.SysUserRepostory;
 import com.imengli.appletServer.daomain.WechatUserDO;
 import com.imengli.appletServer.dto.ResultDTO;
 import com.imengli.appletServer.utils.RedisUtil;
@@ -64,6 +65,9 @@ public class ManageService {
 
     @Resource
     private ManageRepostory manageRepostory;
+
+    @Resource
+    private SysUserRepostory sysUserRepostory;
 
     @Autowired
     private SysConstant sysConstant;
@@ -288,10 +292,10 @@ public class ManageService {
             List<Map<String, Object>> sysUserDOList = manageRepostory.getUserList(searchMap);
             // 完善页面展示信息
             sysUserDOList.parallelStream().forEach(userInfo -> {
-                        if (searchMap.containsKey("order")) {
-                            userInfo.put("showInfo", userInfo.get(searchMap.get("order")));
-                        }
-                    });
+                if (searchMap.containsKey("order")) {
+                    userInfo.put("showInfo", userInfo.get(searchMap.get("order")));
+                }
+            });
             // 构建分页信息
             PageInfo<Map<String, Object>> sysUserDOPageInfo = new PageInfo<>(sysUserDOList);
             // 返回
@@ -409,8 +413,36 @@ public class ManageService {
         if (wechatUserDO != null) {
             // TODO: 后续添加管理员校验
             // 返回
-            return new ResultDTO(ResultStatus.SUCCESS, manageRepostory.getMergeUserInfo(userId,userName,phoneNumber));
+            return new ResultDTO(ResultStatus.SUCCESS, manageRepostory.getMergeUserInfo(userId, userName, phoneNumber));
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
+    }
+
+    /**
+     * 归并用户
+     *
+     * @param token
+     * @param userId
+     * @param mergeUserId
+     * @return
+     */
+    public ResultDTO mergeByUserId(String token, String userId, String mergeUserId) {
+        // 校验token
+        WechatUserDO wechatUserDO = redisUtil.getWechatAuthEntity(token);
+        // 根据信息完善度返回
+        if (wechatUserDO != null) {
+            // TODO: 后续添加管理员校验
+            // Step 1 校验一下用户是否存在
+            if (Optional.ofNullable(sysUserRepostory.getUserInfoByUserId(userId)).isPresent()
+                    && Optional.ofNullable(sysUserRepostory.getUserInfoByUserId(mergeUserId)).isPresent()) {
+                // Step2 都存在,则进行合并,
+                // 主要是将 临时用户 订单/库存操作记录 指向当前用户,然后用户状态置为 冻结
+                manageRepostory.mergeInfoByUserId(userId,mergeUserId);
+                return new ResultDTO(ResultStatus.SUCCESS);
+            }
+            return new ResultDTO(ResultStatus.ERROR_USER_NOT_EXIST);
+        }
+        return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
+
     }
 }
