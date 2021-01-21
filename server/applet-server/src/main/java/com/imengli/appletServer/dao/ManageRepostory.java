@@ -79,7 +79,7 @@ public interface ManageRepostory {
             " SUM(oi.totalPrice) AS totalPrice " +
             " FROM " + SysConstant.ORDER_INFO_TABLE_NAME + " oi " +
             " LEFT JOIN " + SysConstant.USER_TABLE_NAME + " su ON oi.userId = su.id " +
-            " WHERE oi.createDate BETWEEN #{startTime} AND #{endTime} " +
+            " WHERE oi.createDate BETWEEN #{startTime} AND #{endTime} and su.state = 1 " +
             " GROUP BY su.userName " +
             " ORDER BY totalPrice DESC " +
             " LIMIT 10 ")
@@ -115,7 +115,7 @@ public interface ManageRepostory {
             " FROM " + SysConstant.USER_TABLE_NAME + " su " +
             " LEFT JOIN " + SysConstant.ORDER_INFO_TABLE_NAME + " oi ON su.id = oi.userId " +
             " WHERE " +
-            " 	su.id = #{userId} " +
+            " 	su.id = #{userId} and su.state = 1 " +
             " ORDER BY oi.createDate DESC")
     List<Map<String, Object>> getUserDetails(@Param("userId") String userId);
 
@@ -136,7 +136,7 @@ public interface ManageRepostory {
             " su.*" +
             "FROM " + SysConstant.ORDER_INFO_TABLE_NAME + " oi " +
             "LEFT JOIN " + SysConstant.USER_TABLE_NAME + " su ON oi.userId = su.id " +
-            "WHERE oi.status = 0 " +
+            "WHERE oi.status = 0  and su.state = 1 " +
             "and oi.collectionTime is null " +
             "and TIMESTAMPDIFF(DAY,DATE(oi.createDate),CURDATE()) <= #{days} " +
             "group by oi.userId " +
@@ -149,7 +149,7 @@ public interface ManageRepostory {
             " WHERE " +
             "   ( LOCATE(#{userName}, userName) " +
             "   OR phoneNumber = #{phoneNumber} ) " +
-            " AND isTemp = 0 " +
+            " AND isTemp = 0 and state = 1 " +
             " AND id != #{userId}")
     List<SysUserDO> getMergeUserInfo(@Param("userId") String userId, @Param("userName") String userName, @Param("phoneNumber") String phoneNumber);
 

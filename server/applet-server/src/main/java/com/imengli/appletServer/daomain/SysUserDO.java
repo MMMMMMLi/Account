@@ -88,6 +88,9 @@ public class SysUserDO {
     // 权限
     private SysRoleDo role;
 
+    // 权限
+    private Integer state;
+
     // 是否是测试用户
     private Boolean isTemp;
 

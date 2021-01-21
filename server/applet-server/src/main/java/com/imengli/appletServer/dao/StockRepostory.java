@@ -66,7 +66,7 @@ public interface StockRepostory {
             "   su.userName,sid.category,sid.`key`,sid.type,sid.number,sid.`size` " +
             " FROM " + SysConstant.STOCK_INFO_DEATIL_TABLE_NAME + " sid " +
             " LEFT JOIN " + SysConstant.USER_TABLE_NAME + " su ON sid.userId = su.id " +
-            " WHERE sid.`key` = #{key} ORDER BY sid.operationDate DESC")
+            " WHERE sid.`key` = #{key} and su.state = 1 ORDER BY sid.operationDate DESC")
     List<Map<String,Object>> getStockInfoDetailByKey(@Param("key") Integer stockKey);
 
     @Update("UPDATE " + SysConstant.STOCK_INFO_TABLE_NAME +

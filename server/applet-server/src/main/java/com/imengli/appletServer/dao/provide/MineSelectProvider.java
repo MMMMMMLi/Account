@@ -112,7 +112,7 @@ public class MineSelectProvider {
         sb.append("FROM ");
         sb.append(SysConstant.USER_TABLE_NAME + " su ");
         sb.append("LEFT JOIN " + SysConstant.ORDER_INFO_TABLE_NAME + " oi ON su.id = oi.userId ");
-        sb.append("WHERE 1 ");
+        sb.append("WHERE su.state = 1 ");
         if (searchMap.containsKey("search")) {
             String searchValue = searchMap.get("search");
             sb.append(" AND (LOCATE('" + searchValue + "',userName) OR LOCATE('" + searchValue + "',userNameCode) OR LOCATE('" + searchValue + "',phoneNumber))");

@@ -49,10 +49,17 @@ Page({
     }
     let userInfo = res.data.data || [];
     let role = userInfo.role || '';
-    if (userInfo && role) {
-      // 保存Tab栏变量值
-      if (!wx.getStorageSync('viewName')) {
-        wx.setStorageSync('viewName', role.name);
+    if (userInfo ) {
+      // 校验当前用户是否失效
+      if(userInfo.state === 0) {
+        await UTIL.showModaling("登陆失败","当前用户已被冻结，请联系管理员！",null,null,false);
+        return;
+      }
+      if(role) {
+        // 保存Tab栏变量值
+        if (!wx.getStorageSync('viewName')) {
+          wx.setStorageSync('viewName', role.name);
+        }
       }
     }
     // 获取用户观看开头图片的版本

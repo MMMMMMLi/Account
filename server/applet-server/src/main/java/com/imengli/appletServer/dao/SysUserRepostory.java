@@ -48,11 +48,10 @@ public interface SysUserRepostory {
     @UpdateProvider(type = MineUpdateProvider.class, method = "updateSysUserInfo")
     void update(@Param("sysUserDO") SysUserDO sysUserDO);
 
-    @Select("SELECT * FROM " + SysConstant.USER_TABLE_NAME + " WHERE (LOCATE(#{searchValue},userName) OR LOCATE(#{searchValue},userNameCode) OR LOCATE(#{searchValue},phoneNumber)) LIMIT #{size}")
+    @Select("SELECT * FROM " + SysConstant.USER_TABLE_NAME +
+            " WHERE (LOCATE(#{searchValue},userName) OR LOCATE(#{searchValue},userNameCode) OR LOCATE(#{searchValue},phoneNumber)) and state = 1 " +
+            " LIMIT #{size}")
     List<SysUserDO> getUserInfoBySearch(@Param("searchValue") String searchValue, @Param("size") Integer size);
-
-    @Select("SELECT * FROM " + SysConstant.USER_TABLE_NAME + " WHERE id = #{id}")
-    List<SysUserDO> getUserInfoByID(@Param("id") Integer id);
 
     @Insert("INSERT INTO " + SysConstant.USER_TABLE_NAME +
             " (id,userName, userNameCode, phoneNumber, avatarUrl, createTime, updateTime, isTemp) " +

@@ -64,6 +64,9 @@ public class MineUpdateProvider {
             if (sysUserDO.getSubMsgNum() != null) {
                 SET("subMsgNum= #{sysUserDO.subMsgNum}");
             }
+            if (sysUserDO.getState() != null) {
+                SET("state = #{sysUserDO.state}");
+            }
             WHERE("id = #{sysUserDO.id}" );
         }}.toString();
 
