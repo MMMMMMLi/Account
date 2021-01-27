@@ -108,17 +108,23 @@ public class MineSelectProvider {
         sb.append("	su.userName as userName, ");
         sb.append("	su.nickName as nickName, ");
         sb.append("	su.phoneNumber as phoneNumber, ");
-        sb.append("	IF(su.isTemp = 0 ,'否', '是') as isTemp ");
+        sb.append("	IF(su.isTemp = 0 ,'否', '是') as isTemp, ");
+        sb.append("	IF(su.state = 0 ,'是', '否') as isFrozen ");
         sb.append("FROM ");
         sb.append(SysConstant.USER_TABLE_NAME + " su ");
         sb.append("LEFT JOIN " + SysConstant.ORDER_INFO_TABLE_NAME + " oi ON su.id = oi.userId ");
-        sb.append("WHERE su.state = 1 ");
+        sb.append("WHERE 1=1 ");
         if (searchMap.containsKey("search")) {
             String searchValue = searchMap.get("search");
             sb.append(" AND (LOCATE('" + searchValue + "',userName) OR LOCATE('" + searchValue + "',userNameCode) OR LOCATE('" + searchValue + "',phoneNumber))");
         }
         if("isTemp".equals(searchMap.get("search")) || "isTemp".equals(searchMap.get("order"))) {
             sb.append(" AND su.isTemp = 1 ");
+        }
+        if("isFrozen".equals(searchMap.get("search")) || "isFrozen".equals(searchMap.get("order"))) {
+            sb.append(" AND su.state = 0 AND su.isTemp = 0 ");
+        }else {
+            sb.append(" AND su.state = 1 ");
         }
         sb.append(" GROUP BY su.id ");
         if (searchMap.containsKey("order")) {

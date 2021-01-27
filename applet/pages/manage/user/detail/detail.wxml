@@ -6,6 +6,10 @@
 			<text style="font-weight:bolder;flex:2;">{{userName}}</text>
 			<button wx:if="{{isTemp}}" class="weui-btn weui-btn_mini weui-btn_default" style="flex:1;"
 				bindtap="mergeUser">归并</button>
+			<button wx:elif="{{isFrozen}}" class="weui-btn weui-btn_mini weui-btn_default" style="flex:1;" data-state="1"
+				bindtap="frozenUser">解冻</button>
+			<button wx:else class="weui-btn weui-btn_mini weui-btn_warn" style="flex:1;" data-state="0"
+				bindtap="frozenUser">冻结</button>
 		</view>
 		<view class="page__desc">总订单：{{orders}} | 总金额：￥{{money}}</view>
 	</view>

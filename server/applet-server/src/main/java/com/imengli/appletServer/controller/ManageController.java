@@ -129,6 +129,14 @@ public class ManageController {
         return manageService.mergeByUserId(token, userId, mergeUserId);
     }
 
+    @RequestMapping("/frozenByUserId")
+    public ResultDTO frozenByUserId(@RequestParam String token,
+                                   @RequestParam String userId,
+                                   @RequestParam Integer state) {
+        return manageService.frozenByUserId(token, userId, state);
+    }
+
+
     // ----------------------------------------系统管理----------------------------------------------------
 
     /**

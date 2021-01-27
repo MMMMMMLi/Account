@@ -102,6 +102,7 @@ public interface ManageRepostory {
             " 	su.userName, " +
             " 	su.phoneNumber, " +
             "   su.address, " +
+            "   IF(su.state = 0 ,true, false) as isFrozen, " +
             "   CASE su.gender WHEN '1' THEN '男' WHEN '2' THEN '女' END AS gender, " +
             "   DATE_FORMAT(su.updateTime, '%Y-%m-%d %H:%i:%s') AS updateTime," +
             " 	DATE_FORMAT(oi.createDate, '%Y-%m-%d') AS createDate, " +
@@ -115,7 +116,7 @@ public interface ManageRepostory {
             " FROM " + SysConstant.USER_TABLE_NAME + " su " +
             " LEFT JOIN " + SysConstant.ORDER_INFO_TABLE_NAME + " oi ON su.id = oi.userId " +
             " WHERE " +
-            " 	su.id = #{userId} and su.state = 1 " +
+            " 	su.id = #{userId} " +
             " ORDER BY oi.createDate DESC")
     List<Map<String, Object>> getUserDetails(@Param("userId") String userId);
 

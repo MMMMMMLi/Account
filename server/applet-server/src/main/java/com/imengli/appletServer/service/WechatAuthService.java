@@ -173,9 +173,10 @@ public class WechatAuthService {
                 .collect(Collectors.groupingBy(info -> info.getUserId()))
                 // 迭代通知
                 .forEach((userId, orderList) -> {
-                    // 首先看看当前用户是不是手动添加的用户
+                    // 首先看看当前用户是不是手动添加的用户 以及 用户是否冻结
                     Optional<WechatUserDO> userEntityByUserId = Optional.ofNullable(wechatUserRepostory.getUserEntityByUserId(userId));
-                    if (userEntityByUserId.isPresent()) {
+                    SysUserDO userInfoByUserId = sysUserRepostory.getUserInfoByUserId(userId);
+                    if (userEntityByUserId.isPresent() && userInfoByUserId.getState() == 1) {
                         // 如果不是则,推送消息
                         // 结果集
                         Map<String, Object> result = new HashMap<>();

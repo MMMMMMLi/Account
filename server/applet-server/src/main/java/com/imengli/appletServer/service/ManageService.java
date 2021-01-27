@@ -31,6 +31,7 @@ import com.imengli.appletServer.common.ResultStatus;
 import com.imengli.appletServer.common.SysConstant;
 import com.imengli.appletServer.dao.ManageRepostory;
 import com.imengli.appletServer.dao.SysUserRepostory;
+import com.imengli.appletServer.daomain.SysUserDO;
 import com.imengli.appletServer.daomain.WechatUserDO;
 import com.imengli.appletServer.dto.ResultDTO;
 import com.imengli.appletServer.utils.RedisUtil;
@@ -444,5 +445,30 @@ public class ManageService {
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
 
+    }
+
+    /**
+     * 修改用户状态
+     *
+     * @param token
+     * @param userId
+     * @param state
+     * @return
+     */
+    public ResultDTO frozenByUserId(String token, String userId, Integer state) {
+        // 校验token
+        WechatUserDO wechatUserDO = redisUtil.getWechatAuthEntity(token);
+        // 根据信息完善度返回
+        if (wechatUserDO != null) {
+            // TODO: 后续添加管理员校验
+            // Step 1 校验一下用户是否存在
+            if (Optional.ofNullable(sysUserRepostory.getUserInfoByUserId(userId)).isPresent()) {
+                // Step2 修改状态
+                sysUserRepostory.update(SysUserDO.builder().id(userId).state(state).build());
+                return new ResultDTO(ResultStatus.SUCCESS);
+            }
+            return new ResultDTO(ResultStatus.ERROR_USER_NOT_EXIST);
+        }
+        return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }
 }

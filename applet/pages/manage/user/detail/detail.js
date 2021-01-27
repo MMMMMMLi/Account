@@ -20,6 +20,7 @@ Page({
     updateTime: '',
     orders: 0,
     isTemp: false,
+    isFrozen:false,
     detailsMap: {},
 
     // 归并用户页面
@@ -74,6 +75,7 @@ Page({
           gender: details[0].gender || '',
           updateTime: details[0].updateTime || '',
           isTemp: details[0].isTemp || false,
+          isFrozen: details[0].isFrozen || false,
           detailsMap,
           page: res.data.pageInfo.nextPage,
           hasNextPage: res.data.pageInfo.hasNextPage
@@ -116,7 +118,7 @@ Page({
       this.setData({
         mergeUserList: data,
         mergeFlag: true,
-        mergeViewHeight: 300 + 120 * data.length,
+        mergeViewHeight: 330 + 120 * data.length,
         checkedUserId: data[0].id
       })
     } else {
@@ -158,5 +160,24 @@ Page({
       checkedUserId: ''
     });
     UTIL.showToasting('已取消', 'error');
+  },
+  // 冻结/解冻 用户
+  async frozenUser(e) {
+    const state = e.currentTarget.dataset.state;
+    let res = await REQUEST.request('manage/frozenByUserId','POST',{
+      token: wx.getStorageSync('token'),
+      userId: this.data.userId,
+      state
+    })
+    if(res.data.code === 20000) {
+      this.setData({
+        detailsMap: {}
+      })
+      this.getUserDetails();
+      await UTIL.showToasting('修改成功！', 'success')
+      await UTIL.hideToasting();
+    }else {
+      await UTIL.showToasting('修改失败！', 'error');
+    }
   },
 })
