@@ -52,6 +52,7 @@ Page({
     // 获取品种类型
     this.getServerData();
     this.setData({
+      addStockViewHeight: 320 + 100 * (this.data.keysValue == 0 ? 3 : 2),
       addStockFlag: false
     })
   },
@@ -79,6 +80,7 @@ Page({
   // 选择新增类型key
   bindPickerChange(e) {
     this.setData({
+      addStockViewHeight: 320 + 100 * (e.detail.value == 0 ? 3 : 2),
       keysValue: e.detail.value
     })
   },
@@ -137,6 +139,7 @@ Page({
   // 打开库存校准
   alignStock() {
     this.setData({
+      alignStockViewHeight: 320 + 100 * this.data.stockInfo.length,
       alignStockFlag: false
     })
   },
@@ -204,9 +207,9 @@ Page({
   // --------------------------------框信息
   notImpl() {
     wx.showModal({
-      content:'暂未实现!',
-      showCancel:false
+      content: '暂未实现!',
+      showCancel: false
     })
   }
-  
+
 })

@@ -76,13 +76,13 @@
 			</view>
 		</navigator>
 		<navigator url="/pages/manage/user/add/userAdd">
-		<view class="weui-grid">
-			<view class="weui-grid__icon">
-				<image src="/images/icon/c1.png" alt></image>
+			<view class="weui-grid">
+				<view class="weui-grid__icon">
+					<image src="/images/icon/c1.png" alt></image>
+				</view>
+				<view class="weui-grid__label">添加客户</view>
 			</view>
-			<view class="weui-grid__label">添加客户</view>
-		</view>
-	</navigator>
+		</navigator>
 		<view class="weui-grid" bindtap="switchView">
 			<view class="weui-grid__icon">
 				<image src="/images/icon/c2.png" alt></image>
@@ -100,28 +100,27 @@
 	</view>
 	<!-- 其余 -->
 	<view class="space"></view>
-	<navigator url="/pages/asset/index">
-		<view class="menu-item">
-			<view class="l">资金明细</view>
-			<image class="next" src="/images/icon/next.png"></image>
-		</view>
-	</navigator>
+	<!-- <navigator url=""></navigator> -->
+	<view class="menu-item">
+		<view class="l">功能暂定</view>
+		<image class="next" src="/images/icon/next.png"></image>
+	</view>
 	<view class="line"></view>
-	<navigator url="/pages/asset/index">
-		<view class="menu-item">
-			<view class="l">资金明细</view>
-			<image class="next" src="/images/icon/next.png"></image>
-		</view>
-	</navigator>
+	<view class="menu-item">
+		<view class="l">功能暂定</view>
+		<image class="next" src="/images/icon/next.png"></image>
+	</view>
 	<view class="line"></view>
-	<navigator url="/pages/asset/index">
-		<view class="menu-item">
-			<view class="l">资金明细</view>
-			<image class="next" src="/images/icon/next.png"></image>
-		</view>
-	</navigator>
+	<view class="menu-item">
+		<view class="l">功能暂定</view>
+		<image class="next" src="/images/icon/next.png"></image>
+	</view>
 
 	<view class="line"></view>
-	<view class="space" style="margin-bottom:30px"></view>
-	<template is="footer" />
+	<view class="space" style="height: 45rpx;"></view>
+	<view class="weui-form__extra-area" style="background: #F4F5F9;">
+		<view class="weui-footer">
+			<view class="weui-footer__text">Copyright © 2019-2020 兴隆薯业</view>
+		</view>
+	</view>
 </view>

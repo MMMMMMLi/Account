@@ -70,7 +70,7 @@
 <!-- 新增库存页面 -->
 
 <view class="addStock" hidden="{{ addStockFlag }}">
-	<view class="s-b">
+	<view class="s-b" style="height: {{addStockViewHeight}}rpx">
 		<view class="s-l-b">
 			<text>添加库存 / KG</text>
 		</view>
@@ -109,7 +109,7 @@
 <!-- 库存校准页面 -->
 
 <view class="addStock" hidden="{{ alignStockFlag }}">
-	<view class="s-b">
+	<view class="s-b" style="height: {{alignStockViewHeight}}rpx">
 		<view class="s-l-b">
 			<text>校准库存 / KG</text>
 		</view>
