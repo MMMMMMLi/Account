@@ -1,3 +1,34 @@
+/* 主要内容样式 */
+.container {
+  width: 100%;
+  height: 100%;
+  background-color: var(--weui-BG-0);
+  display: flex;
+  flex-direction: column;
+}
+
+/* 搜索框 */
+/* 筛选选择器 */
+.search-tab {
+  background-color: #ffffff;
+}
+
+/* 中间滚动 */
+.scroll {
+  flex: 1;
+  overflow: scroll;
+}
+
+.center {
+  text-align: center;
+  height: 100%;
+}
+
+/* 为了填充tab-bar的高度 */
+.bottom {
+  height: 48px;
+}
+
 .searchbar-result {
   margin: 0;
   font-size: 14px;

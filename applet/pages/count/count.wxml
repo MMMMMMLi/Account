@@ -9,17 +9,17 @@
 	</view>
 	<view class="search-tab">
 		<view class="weui-cells weui-cells_form" style="margin:0;">
-		<view class="weui-cell weui-cell_active weui-cell_switch">
-			<view class="weui-cell__bd" wx:if="{{!filterFalg}}">是否开启筛选</view>
-			<view class="weui-cell__bd" wx:else bindtap="openFilter">是否开启筛选</view>
-			<view class="weui-cell__ft">
-				<label class="weui-switch-cp">
-					<switch class="weui-switch-cp__input" bindchange="switchBoxChange" />
-					<view class="weui-switch-cp__box"></view>
-				</label>
+			<view class="weui-cell weui-cell_active weui-cell_switch">
+				<view class="weui-cell__bd" wx:if="{{!filterFalg}}">是否开启筛选</view>
+				<view class="weui-cell__bd" wx:else bindtap="openFilter">是否开启筛选</view>
+				<view class="weui-cell__ft">
+					<label class="weui-switch-cp">
+						<switch class="weui-switch-cp__input" bindchange="switchBoxChange" />
+						<view class="weui-switch-cp__box"></view>
+					</label>
+				</view>
 			</view>
 		</view>
-	</view>
 	</view>
 	<!-- 看看是否有订单信息 -->
 	<view wx:if="{{orderList.length > 0}}" class="scroll">
@@ -92,22 +92,22 @@
 				</view> -->
 				<!-- 竖向 -->
 				<view class="weui-form-preview__bd  weui-flex" style="text-align: center; border-bottom: unset; padding: 10px;">
-						<view class="weui-form-preview__item  weui-flex__item">
-							<label class="weui-form-preview__label"  style="float: none;margin-right:unset;">用框</label>
-							<text class="weui-form-preview__value">{{item.applyBox}} 个</text>
-						</view>
-						<view class="weui-form-preview__item weui-flex__item">
-							<label class="weui-form-preview__label"  style="float: none;margin-right:unset;">退框</label>
-							<text class="weui-form-preview__value">{{item.retreatBox}} 个</text>
-						</view>
-						<view class="weui-form-preview__item weui-flex__item" >
-							<label class="weui-form-preview__label"  style="float: none;margin-right:unset;">总重量</label>
-							<text class="weui-form-preview__value">{{item.totalWeight}} KG</text>
-						</view>
-						<view class="weui-form-preview__item weui-flex__item">
-							<label class="weui-form-preview__label"  style="float: none;margin-right:unset;">总价钱</label>
-							<text class="weui-form-preview__value" style="color:red;font-weight: bolder;">￥{{item.totalPrice}}</text>
-						</view>
+					<view class="weui-form-preview__item  weui-flex__item">
+						<label class="weui-form-preview__label" style="float: none;margin-right:unset;">用框</label>
+						<text class="weui-form-preview__value">{{item.applyBox}} 个</text>
+					</view>
+					<view class="weui-form-preview__item weui-flex__item">
+						<label class="weui-form-preview__label" style="float: none;margin-right:unset;">退框</label>
+						<text class="weui-form-preview__value">{{item.retreatBox}} 个</text>
+					</view>
+					<view class="weui-form-preview__item weui-flex__item">
+						<label class="weui-form-preview__label" style="float: none;margin-right:unset;">总重量</label>
+						<text class="weui-form-preview__value">{{item.totalWeight}} KG</text>
+					</view>
+					<view class="weui-form-preview__item weui-flex__item">
+						<label class="weui-form-preview__label" style="float: none;margin-right:unset;">总价钱</label>
+						<text class="weui-form-preview__value" style="color:red;font-weight: bolder;">￥{{item.totalPrice}}</text>
+					</view>
 				</view>
 				<view class="weui-form-preview__ft" wx:if="{{item.status == '待付款'}}">
 					<a wx:if="{{currentTab == 0 && !item.isNotice}}" class="weui-form-preview__btn weui-form-preview__btn_default"
@@ -123,8 +123,8 @@
 				</view>
 			</view>
 			<view wx:if="{{!hasNextPage}}" class="weui-loadmore weui-loadmore_line">
-			<text class="weui-loadmore__tips">暂无更多数据</text>
-		</view> 
+				<text class="weui-loadmore__tips">暂无更多数据</text>
+			</view>
 		</scroll-view>
 	</view>
 	<!--  没有订单的显示页面 -->

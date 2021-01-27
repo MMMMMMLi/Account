@@ -1,12 +1,13 @@
-<view class="page">
+<view class="container">
+	<!-- 顶部栏 -->
 	<view class="swiper-tab">
 		<view class="tab-item {{currentTab == item.status ? 'on' : ''}}" wx:for="{{statusType}}" wx:key="index"
 			data-current="{{item.status}}" bindtap="swichNav">
 			{{item.label}}
 		</view>
 	</view>
-	<view wx:if="{{orderList.length > 0}}">
-		<scroll-view scroll-y>
+	<view wx:if="{{orderList.length > 0}}" class="scroll">
+		<scroll-view class="center" scroll-y="true" bindscrolltolower="bindscrolltolower">
 			<view class="weui-form-preview" wx:for="{{orderList}}" wx:key="index">
 				<view class="weui-form-preview__ft">
 					<view class="weui-form-preview__btn">{{item.createDate}}</view>
@@ -65,13 +66,15 @@
 					</view>
 				</view>
 			</view>
+			<view wx:if="{{!hasNextPage}}" class="weui-loadmore weui-loadmore_line">
+				<text class="weui-loadmore__tips">暂无更多数据</text>
+			</view>
 		</scroll-view>
-		<view wx:if="{{!hasNextPage}}" class="weui-loadmore weui-loadmore_line" style="margin-bottom:3em;">
-			<text class="weui-loadmore__tips">暂无更多数据</text>
-		</view>
 	</view>
 	<view wx:else class="no-order">
 		<image src="/images/no-order.png" class="no-order-img"></image>
 		<view class="text">暂无订单</view>
 	</view>
+	<!-- 一个空view为了补充tab栏 -->
+	<view class="bottom"></view>
 </view>

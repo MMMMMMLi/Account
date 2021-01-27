@@ -1,5 +1,6 @@
-<view class="page" style="position: relative;">
-	<view class="{{ inputVal.length > 0 ? 'mask' : '' }}">
+<view class="container" style="position: relative;">
+	<!-- 搜索框 -->
+	<view class="search-tab {{ inputVal.length > 0 ? 'mask' : '' }}">
 		<view class="weui-search-bar {{inputShowed ? 'weui-search-bar_focusing' : ''}}" id="searchBar">
 			<form class="weui-search-bar__form">
 				<label class="weui-search-bar__label" bindtap="showInput">
@@ -8,7 +9,8 @@
 				</label>
 				<view class="weui-search-bar__box">
 					<i class="weui-icon-search"></i>
-					<input type="text" class="weui-search-bar__input" confirm-type="search" placeholder="支持输入姓名/拼音/手机号；至多展示20位" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" />
+					<input type="text" class="weui-search-bar__input" confirm-type="search" placeholder="支持输入姓名/拼音/手机号；至多展示20位"
+						value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" />
 					<span class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" bindtap="clearInput"></span>
 				</view>
 			</form>
@@ -16,11 +18,14 @@
 		</view>
 		<view wx:if="{{inputVal.length > 0}}">
 			<view class="weui-cells searchbar-result" wx:if="{{inputUserInfo.length > 0}}">
-				<view class="weui-cell weui-cell_active weui-cell_access" wx:for="{{inputUserInfo}}" wx:key="id" data-info="{{item}}" bindtap="searchClick">
+				<view class="weui-cell weui-cell_active weui-cell_access" wx:for="{{inputUserInfo}}" wx:key="id"
+					data-info="{{item}}" bindtap="searchClick">
 					<view class="weui-cell__bd weui-cell_primary">
 						<view class="weui-media-box__info__meta" style="width:3em">{{item.userName}}</view>
-						<view class="weui-media-box__info__meta weui-media-box__info__meta_extra" style="width:3em">{{item.userNameCode}}</view>
-						<view class="weui-media-box__info__meta weui-media-box__info__meta_extra" style="width:3em">{{item.phoneNumber}}</view>
+						<view class="weui-media-box__info__meta weui-media-box__info__meta_extra" style="width:3em">
+							{{item.userNameCode}}</view>
+						<view class="weui-media-box__info__meta weui-media-box__info__meta_extra" style="width:3em">
+							{{item.phoneNumber}}</view>
 					</view>
 				</view>
 			</view>
@@ -33,9 +38,18 @@
 			</view>
 		</view>
 	</view>
-	<scroll-view scroll-y style="margin-bottom:42px">
-		<my-addOrder wx:for="{{orderList}}" wx:key="orderListId" orderInfo="{{item}}" id="my-addOrder{{item.orderListId}}" bind:deleteOrderInfo="deleteOrderInfo" categoryArray="{{categoryArray}}" sizeArray="{{sizeArray}}" />
-	</scroll-view>
+
+	<!-- 中间添加的订单信息 -->
+	<view class="scroll">
+		<scroll-view scroll-y="true" class="center" >
+			<my-addOrder wx:for="{{orderList}}" wx:key="orderListId" orderInfo="{{item}}" id="my-addOrder{{item.orderListId}}"
+				bind:deleteOrderInfo="deleteOrderInfo" categoryArray="{{categoryArray}}" sizeArray="{{sizeArray}}" />
+		</scroll-view>
+	</view>
+
+	<!-- 一个空view为了补充tab栏 -->
+	<view class="bottom"></view>
+
 	<view class="fadeIn {{hideToast ? 'fadeOut' : ''}}" wx:if="{{toast}}">
 		<view class="weui-mask_transparent"></view>
 		<view class="weui-toast">

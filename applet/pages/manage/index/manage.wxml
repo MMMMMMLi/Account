@@ -102,17 +102,17 @@
 	<view class="space"></view>
 	<!-- <navigator url=""></navigator> -->
 	<view class="menu-item">
-		<view class="l">功能暂定</view>
+		<view class="l">功能待定</view>
 		<image class="next" src="/images/icon/next.png"></image>
 	</view>
 	<view class="line"></view>
 	<view class="menu-item">
-		<view class="l">功能暂定</view>
+		<view class="l">功能待定</view>
 		<image class="next" src="/images/icon/next.png"></image>
 	</view>
 	<view class="line"></view>
 	<view class="menu-item">
-		<view class="l">功能暂定</view>
+		<view class="l">功能待定</view>
 		<image class="next" src="/images/icon/next.png"></image>
 	</view>
 

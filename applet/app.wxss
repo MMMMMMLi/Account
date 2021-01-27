@@ -3110,7 +3110,7 @@ a.weui-media-box:active {
   position: relative;
   top: -.9em;
   padding: 0 .55em;
-  background-color: var(--weui-BG-0);
+  background-color: #F2f2f2;
   color: var(--weui-FG-1)
 }
 

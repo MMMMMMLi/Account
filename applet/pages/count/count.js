@@ -293,7 +293,7 @@ Page({
     }
   },
   // 获取数据
-  getData(status, showLoading, cleanFlag) {
+  async getData(status, showLoading, cleanFlag) {
     let that = this;
     if (showLoading) {
       wx.showLoading({
@@ -303,40 +303,39 @@ Page({
     let oldOrderList = that.data.orderList ? that.data.orderList : [];
     if (cleanFlag) {
       this.setData({
-        page:0
+        page: 0
       })
       oldOrderList = [];
     }
     // 根据传入的状态码，去后台获取订单列表
-    REQUEST.request('order/getOrderList', 'POST', {
+    let res = await REQUEST.request('order/getOrderList', 'POST', {
       token: wx.getStorageSync('token'),
       status,
       page: that.data.page,
       size: that.data.size,
       filterList: JSON.stringify(that.data.filterFalg ? that.data.filterCriteria : [])
-    }).then(res => {
-      if (res.data.code === 20000) {
-        that.setData({
-          orderList: oldOrderList.concat(res.data.data),
-          page: res.data.pageInfo.nextPage,
-          hasNextPage: res.data.pageInfo.hasNextPage
-        })
-      } else {
-        // 校验Token失败，等待1S之后重新拉取数据
-        if (res.data.code === 40002) {
-          setTimeout(() => {
-            if (wx.getStorageSync('token')) {
-              that.getData(that.data.currentTab, showLoading, cleanFlag);
-            }
-          }, 1000)
-          return;
-        }
-        wx.showModal({
-          content: res.data.msg,
-          showCancel: false
-        })
-      }
     })
+    if (res.data.code === 20000) {
+      that.setData({
+        orderList: oldOrderList.concat(res.data.data),
+        page: res.data.pageInfo.nextPage,
+        hasNextPage: res.data.pageInfo.hasNextPage
+      })
+    } else {
+      // 校验Token失败，等待1S之后重新拉取数据
+      if (res.data.code === 40002) {
+        setTimeout(() => {
+          if (wx.getStorageSync('token')) {
+            that.getData(that.data.currentTab, showLoading, cleanFlag);
+          }
+        }, 1000)
+        return;
+      }
+      wx.showModal({
+        content: res.data.msg,
+        showCancel: false
+      })
+    }
     if (showLoading) {
       wx.hideLoading();
     }
@@ -430,7 +429,7 @@ Page({
   bindscrolltolower: function () {
     // 页面上拉触底事件的处理函数
     if (this.data.hasNextPage) {
-      this.getData(this.data.currentTab, false);
+      this.getData(this.data.currentTab, true);
     }
   },
 })

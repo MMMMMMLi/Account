@@ -1,16 +1,20 @@
 /* 主要内容样式 */
 .container {
   width: 100%;
-  height: auto;
+  height: 100%;
   background-color: #F2f2f2;
+  display: flex;
+  flex-direction: column;
 }
 
+/* 时间切换框 */
 .swiper-tab {
   display: flex;
   flex-direction: row;
   line-height: 80rpx;
   background-color: #ffffff;
-  margin-bottom: 10px;
+  text-align: center;
+  height: 90rpx;
 }
 
 .tab-item {
@@ -27,6 +31,24 @@
   border-bottom: 6rpx solid #e64340;
 }
 
+/* 中间滚动 */
+.scroll {
+  margin-top: 10px;
+  flex: 1;
+  overflow: scroll;
+}
+
+.center {
+  text-align: center;
+  height: 100%;
+}
+
+/* 为了填充tab-bar的高度 */
+.bottom {
+  height: 48px;
+}
+
+/* 没有订单的信息 */
 .no-order {
   width: 100%;
   position: absolute;

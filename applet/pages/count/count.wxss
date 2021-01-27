@@ -83,17 +83,6 @@
   text-align: center
 }
 
-
-
-/* 暂无数据样式 */
-.weui-loadmore_line .weui-loadmore__tips {
-  position: relative;
-  top: -.9em;
-  padding: 0 .55em;
-  background-color: #F2f2f2;
-  color: var(--weui-FG-1)
-}
-
 /* picker选择框样式 */
 .pickerView {
   flex: 0.5;

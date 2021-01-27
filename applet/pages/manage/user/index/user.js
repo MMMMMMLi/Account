@@ -173,7 +173,7 @@ Page({
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
+  bindscrolltolower: function () {
     // 页面上拉触底事件的处理函数
     if (this.data.hasNextPage) {
       this.getUserList(this.data.searchType, this.data.searchValue);
