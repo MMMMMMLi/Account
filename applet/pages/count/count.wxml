@@ -1,13 +1,14 @@
 <import src="/template/orderInfo/orderInfo.wxml" />
 
-<view class="page">
+<view class="container">
 	<view class="swiper-tab">
 		<view class="tab-item {{currentTab == item.status ? 'on' : ''}}" wx:for="{{statusType}}" wx:key="index"
 			data-current="{{item.status}}" bindtap="swichNav">
 			{{item.label}}
 		</view>
 	</view>
-	<view class="weui-cells weui-cells_form">
+	<view class="search-tab">
+		<view class="weui-cells weui-cells_form" style="margin:0;">
 		<view class="weui-cell weui-cell_active weui-cell_switch">
 			<view class="weui-cell__bd" wx:if="{{!filterFalg}}">是否开启筛选</view>
 			<view class="weui-cell__bd" wx:else bindtap="openFilter">是否开启筛选</view>
@@ -19,9 +20,10 @@
 			</view>
 		</view>
 	</view>
-	<view wx:if="{{orderList.length > 0}}">
-		<scroll-view scroll-y>
-			<!-- <scroll-view scroll-y style="height: 880rpx;" bindscrolltolower="haha"> -->
+	</view>
+	<!-- 看看是否有订单信息 -->
+	<view wx:if="{{orderList.length > 0}}" class="scroll">
+		<scroll-view class="center" scroll-y="true" bindscrolltolower="bindscrolltolower">
 			<view class="weui-form-preview" wx:for="{{orderList}}" wx:key="index">
 				<view class="weui-form-preview__hd_count" bindtap="showOrderInfo" data-data="{{item}}">
 					<view class="weui-form-preview__item">
@@ -120,17 +122,19 @@
 						style="color:green">收款时间：{{item.collectionTime}}</a>
 				</view>
 			</view>
-		</scroll-view>
-		<view wx:if="{{!hasNextPage}}" class="weui-loadmore weui-loadmore_line" style="margin-bottom:3em;">
+			<view wx:if="{{!hasNextPage}}" class="weui-loadmore weui-loadmore_line">
 			<text class="weui-loadmore__tips">暂无更多数据</text>
 		</view> 
+		</scroll-view>
 	</view>
-
-	<!--  没有订单的显示i页面 -->
+	<!--  没有订单的显示页面 -->
 	<view wx:else class="no-order">
 		<image src="/images/no-order.png" class="no-order-img"></image>
 		<view class="text">暂无订单</view>
 	</view>
+
+	<!-- 一个空view为了补充tab栏 -->
+	<view class="bottom"></view>
 
 	<!-- 筛选的页面 -->
 	<view class="fadeIn" wx:if="{{needFilter}}">

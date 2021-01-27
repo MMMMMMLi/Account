@@ -3,16 +3,20 @@
 /* 主要内容样式 */
 .container {
   width: 100%;
-  height: auto;
+  height: 100%;
   background-color: #F2f2f2;
+  display: flex;
+  flex-direction: column;
 }
 
+/* 时间切换框 */
 .swiper-tab {
   display: flex;
   flex-direction: row;
   line-height: 80rpx;
   background-color: #ffffff;
-  margin-bottom: 10px;
+  text-align: center;
+  height: 90rpx;
 }
 
 .tab-item {
@@ -42,6 +46,31 @@
   background-color: #F2f2f2;
 }
 
+/* 筛选选择器 */
+.search-tab {
+  background-color: #ffffff;
+  /* height: 60rpx; */
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* 中间滚动 */
+.scroll {
+  flex: 1;
+  overflow: scroll;
+}
+
+.center {
+  text-align: center;
+  height: 100%;
+}
+
+/* 为了填充tab-bar的高度 */
+.bottom {
+  height: 48px;
+}
+
+/* 没有订单信息 */
 .no-order-img {
   width: 81rpx;
   height: 96rpx;
@@ -52,6 +81,29 @@
   font-size: 28rpx;
   color: #999999;
   text-align: center
+}
+
+
+
+/* 暂无数据样式 */
+.weui-loadmore_line .weui-loadmore__tips {
+  position: relative;
+  top: -.9em;
+  padding: 0 .55em;
+  background-color: #F2f2f2;
+  color: var(--weui-FG-1)
+}
+
+/* picker选择框样式 */
+.pickerView {
+  flex: 0.5;
+  padding: 0;
+  display: flex;
+  padding-left: 16px;
+  position: relative;
+  align-items: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
 }
 
 .weui-form-preview__hd_count {
@@ -157,16 +209,4 @@ button.weui-form-preview__btn {
 .weui-form-preview__btn_primary {
   font-weight: bolder;
   color: var(--weui-LINK)
-}
-
-/* picker选择框样式 */
-.pickerView {
-  flex: 0.5;
-  padding: 0;
-  display: flex;
-  padding-left: 16px;
-  position: relative;
-  align-items: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
 }

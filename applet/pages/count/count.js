@@ -427,13 +427,7 @@ Page({
   /**
    * 页面上拉触底事件的处理函数
    */
-  haha: function () {
-    // 页面上拉触底事件的处理函数
-    if (this.data.hasNextPage) {
-      this.getData(this.data.currentTab, false);
-    }
-  },
-  onReachBottom: function () {
+  bindscrolltolower: function () {
     // 页面上拉触底事件的处理函数
     if (this.data.hasNextPage) {
       this.getData(this.data.currentTab, false);
