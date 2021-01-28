@@ -55,10 +55,7 @@ public interface OrderInfoRepostory {
     List<OrderInfoDO> selectAllOrderList(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, @Param("filterList") List<HashMap> filterList);
 
     @Update("update " + SysConstant.ORDER_INFO_TABLE_NAME + " set collectionTime = #{now},status = 1  where id = #{orderId}")
-    void confirmCollection(@Param("orderId") Integer orderId, @Param("now") LocalDateTime now);
-
-    @Select("select count(*) from " + SysConstant.ORDER_INFO_TABLE_NAME + " where id = #{orderId}")
-    Integer getOrderInfoCountByOrderId(@Param("orderId") Integer orderInfoId);
+    void confirmCollection(@Param("orderId") Long orderId, @Param("now") LocalDateTime now);
 
     @Delete("delete " + SysConstant.ORDER_INFO_TABLE_NAME +
             "," + SysConstant.ORDER_INFO_DEATIL_TABLE_NAME +

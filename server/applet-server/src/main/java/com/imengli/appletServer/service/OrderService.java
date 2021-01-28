@@ -276,7 +276,7 @@ public class OrderService {
      * @param orderId
      * @return
      */
-    public ResultDTO confirmCollection(String token, Integer orderId) {
+    public ResultDTO confirmCollection(String token, Long orderId) {
         // 校验token
         WechatUserDO wechatUserDO = redisUtil.getWechatAuthEntity(token);
         // 根据信息完善度返回

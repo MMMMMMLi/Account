@@ -45,6 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -104,8 +105,9 @@ public class UserService {
         // 判断是否异常
         if (wechatAuthDO != null) {
             // 获取对应的用户信息
-            WechatUserDO wechatUserDOByOpenId = wechatUserRepostory.getUserEntityByOpenId(wechatAuthDO.getOpenId());
-            if (wechatUserDOByOpenId != null) {
+            Optional<WechatUserDO> wechatUserDOByOpenIdOptional = Optional.ofNullable(wechatUserRepostory.getUserEntityByOpenId(wechatAuthDO.getOpenId()));
+            if (wechatUserDOByOpenIdOptional.isPresent()) {
+                WechatUserDO wechatUserDOByOpenId = wechatUserDOByOpenIdOptional.get();
                 String userId = wechatUserDOByOpenId.getUserId();
                 if (StringUtils.isBlank(userId)) {
                     // 生成用户ID

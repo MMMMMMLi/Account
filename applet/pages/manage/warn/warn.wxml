@@ -11,16 +11,16 @@
 	<view class="page__bd">
 		<scroll-view scroll-y>
 			<view wx:for="{{userList}}" wx:key="id" class="weui-cells weui-cells_after-title">
-				<navigator class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+				<view class="weui-cell weui-cell_access" hover-class="weui-cell_active">
 					<view class="weui-cell__hd">
 						<image src="{{item.avatarUrl}}" style="margin-right: 16px;vertical-align: middle;width:20px; height: 20px;"></image>
 					</view>
 					<view class="weui-cell__bd">{{item.userName}}</view>
 					<view id="testNotPc" class="weui-cell__fts">未付：{{item.countDay}}笔，欠款：￥{{item.totalPrice}}</view>
-				</navigator>
+				</view>
 			</view>
 			<view wx:if="{{!hasNextPage}}" class="weui-loadmore weui-loadmore_line">
-			<text class="weui-loadmore__tips">暂无更多数据</text>
+			<text class="weui-loadmore__tips" style="background-color:var(--weui-BG-0)">暂无更多数据</text>
 		</view>
 		</scroll-view>
 	</view>

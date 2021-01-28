@@ -64,7 +64,7 @@ public class OrderController {
 
     @RequestMapping("/confirmCollection")
     public ResultDTO confirmCollection(@RequestParam String token,
-                                       @RequestParam Integer orderId) {
+                                       @RequestParam Long orderId) {
         return orderService.confirmCollection(token, orderId);
     }
 
