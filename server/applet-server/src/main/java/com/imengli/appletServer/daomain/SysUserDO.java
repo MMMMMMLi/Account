@@ -104,6 +104,10 @@ public class SysUserDO {
     }
 
     public SysUserDO(String id, String nickName, String avatarUrl, int gender, String country, String province, String city, LocalDateTime createTime, LocalDateTime updateTime) {
+        this(id,nickName,avatarUrl,gender,country,province,city,createTime,updateTime,0);
+    }
+
+    public SysUserDO(String id, String nickName, String avatarUrl, int gender, String country, String province, String city, LocalDateTime createTime, LocalDateTime updateTime,Integer subMsgNum ) {
         this.id = id;
         this.nickName = nickName;
         this.avatarUrl = avatarUrl;
@@ -113,6 +117,7 @@ public class SysUserDO {
         this.city = city;
         this.createTime = createTime;
         this.updateTime = updateTime;
+        this.subMsgNum = subMsgNum;
     }
 
 }

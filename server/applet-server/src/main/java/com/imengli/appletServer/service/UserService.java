@@ -111,7 +111,7 @@ public class UserService {
                     // 生成用户ID
                     String userID = String.valueOf(snowflakeIdWorker.nextId());
                     LocalDateTime now = LocalDateTime.now();
-                    SysUserDO sysUserDO = new SysUserDO(userID, nickName, avatarUrl, gender, country, province, city, now, now);
+                    SysUserDO sysUserDO = new SysUserDO(userID, nickName, avatarUrl, gender, country, province, city, now, now, 0);
                     // 关联
                     wechatUserDOByOpenId.setUserId(userID);
                     // 保存
