@@ -9,12 +9,10 @@ Page({
     hasUserInfo: false,
     needUpdateUserInfo: false,
 
-    balance: 0.00, //可用余额
-    freeze: 0, //冻结金额
-    score: 0, //可用积分
+    orderSize: 0, //总订单数
+    paid: 0, // 已支付订单
+    unPaid: 0, // 未支付订单
     subMsgNum: 0, // 剩余可推送次数
-    score_sign_continuous: 0,
-    rechargeOpen: false, // 是否开启充值[预存]功能
   },
   onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
@@ -46,8 +44,28 @@ Page({
       // 如果已经登陆了话,获取一些基本信息.
       if (isLogined) {
         _this.getUserApiInfo();
+        _this.getOrderInfo();
       }
     })
+  },
+  // 获取一些统计信息
+  async getOrderInfo() {
+    let res = await REQUEST.request('order/getMyOrderList', 'POST', {
+      token: wx.getStorageSync('token'),
+      status:999,
+      page: 1,
+      size: 999
+    });
+    if(res.data.code === 20000) {
+      let orderList = res.data.data;
+      if(orderList) {
+        this.setData({
+          orderSize: orderList.length, //总订单数
+          paid: orderList.filter(order => order.status == '已付款').length, // 已支付订单
+          unPaid: orderList.filter(order => order.status == '待付款').length, // 未支付订单
+        });
+      }
+    }
   },
   // 获取用户信息
   getUserApiInfo: function () {
@@ -111,6 +129,7 @@ Page({
       }
     })
   },
+  // 关于我们
   aboutUs: function () {
     wx.showModal({
       title: '关于我们',
@@ -118,6 +137,7 @@ Page({
       showCancel: false
     })
   },
+  // 联系我们
   callUs() {
     wx.makePhoneCall({
       phoneNumber: '13791921198',

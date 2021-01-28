@@ -20,17 +20,17 @@
 			bindtap="goLogin">立即登录</button>
 	</view>
 	<view class="asset">
-		<view class='item' bindtap='goAsset'>
-			<view>{{balance}}</view>
-			<view>余额</view>
+		<view class='item'>
+			<view>{{orderSize}}</view>
+			<view>总订单数</view>
 		</view>
-		<view class='item right' bindtap='goAsset'>
-			<view>{{freeze}}</view>
-			<view>冻结</view>
+		<view class='item right' style="color:green;">
+			<view>{{paid}}</view>
+			<view>已支付</view>
 		</view>
-		<view class='item right' bindtap='goScore'>
-			<view>{{score}}</view>
-			<view>积分</view>
+		<view class='item right' style="color:red;">
+			<view>{{unPaid}}</view>
+			<view>未支付</view>
 		</view>
 		<view class='item right' bindtap="addMsgNum">
 			<view>{{apiUserInfoMap.subMsgNum}}</view>
@@ -55,7 +55,7 @@
 	<view class="line"></view>
 	<navigator url="/pages/asset/index">
 		<view class="menu-item">
-			<view class="l">资金明细</view>
+			<view class="l">功能待定</view>
 			<image class="next" src="/images/icon/next.png"></image>
 		</view>
 	</navigator>
