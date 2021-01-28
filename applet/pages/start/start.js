@@ -57,7 +57,7 @@ Page({
       }
       if(role) {
         // 保存Tab栏变量值
-        if (!wx.getStorageSync('viewName')) {
+        if (wx.getStorageSync('viewName') != role.name) {
           wx.setStorageSync('viewName', role.name);
         }
       }
