@@ -43,12 +43,15 @@ public class MineInsertProvider {
     public String insertOrderInfoDetail(@Param("orders") List<OrderInfoDetailDO> orders) {
         return new SQL() {{
             INSERT_INTO(SysConstant.ORDER_INFO_DEATIL_TABLE_NAME);
-            INTO_COLUMNS("orderId", "categoryValue", "sizeValue", "gross", "tare", "unitPrice", "totalPrice");
+            INTO_COLUMNS("id","orderId", "categoryValue", "sizeValue", "gross", "tare", "unitPrice", "totalPrice");
             StringBuilder sb = new StringBuilder();
             for (int i = 0, len = orders.size(); i < len; i++) {
                 if (i > 0) {
                     sb.append(") , (");
                 }
+                sb.append("#{orders[");
+                sb.append(i);
+                sb.append("].id}, ");
                 sb.append("#{orders[");
                 sb.append(i);
                 sb.append("].orderId}, ");

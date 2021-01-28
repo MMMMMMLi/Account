@@ -43,9 +43,9 @@ import java.util.List;
 @Mapper
 public interface OrderInfoRepostory {
 
-    @Insert("INSERT INTO " + SysConstant.ORDER_INFO_TABLE_NAME + " (userId,createBy,createDate,updateDate,applyBox,retreatBox,totalPrice,totalWeight) " +
-            "VALUES (#{orderInfo.userId},#{orderInfo.createBy},#{orderInfo.createDate},#{orderInfo.updateDate},#{orderInfo.applyBox},#{orderInfo.retreatBox},#{orderInfo.totalPrice},#{orderInfo.totalWeight})")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
+    @Insert("INSERT INTO " + SysConstant.ORDER_INFO_TABLE_NAME + " (id,userId,createBy,createDate,updateDate,applyBox,retreatBox,totalPrice,totalWeight) " +
+            "VALUES (#{orderInfo.id},#{orderInfo.userId},#{orderInfo.createBy},#{orderInfo.createDate},#{orderInfo.updateDate},#{orderInfo.applyBox},#{orderInfo.retreatBox},#{orderInfo.totalPrice},#{orderInfo.totalWeight})")
+    // @Options(useGeneratedKeys = true, keyProperty = "id")
     void save(@Param("orderInfo") OrderInfoDO orderInfo);
 
     @Select("select * from " + SysConstant.ORDER_INFO_TABLE_NAME + " where userId = #{userId} AND createDate BETWEEN #{startDate} AND #{endDate}")
@@ -65,7 +65,7 @@ public interface OrderInfoRepostory {
             " from " + SysConstant.ORDER_INFO_TABLE_NAME +
             " left join " + SysConstant.ORDER_INFO_DEATIL_TABLE_NAME + " on order_info.id =  order_info_detail.orderId " +
             "where order_info.id = #{orderId}")
-    void deleteOrderInfoAndOrderInfoDeatils(@Param("orderId") Integer orderInfoId);
+    void deleteOrderInfoAndOrderInfoDeatils(@Param("orderId") Long orderInfoId);
 
     @Update("update " + SysConstant.ORDER_INFO_TABLE_NAME + " set isNotice = 1 where id in (${orderIds}) ")
     void updateOrderNoticeFlag(@Param("orderIds") String orderIds);

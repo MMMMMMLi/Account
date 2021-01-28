@@ -41,12 +41,12 @@ public class OrderInfoDetailDO {
     /**
      * 订单详情主键
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 订单的Id
      */
-    private Integer orderId;
+    private Long orderId;
 
     /**
      * 品种

@@ -47,5 +47,5 @@ public interface OrderInfoDetailRepostory {
     Integer save(@Param("orders") List<OrderInfoDetailDO> orders);
 
     @Select("SELECT * FROM " + SysConstant.ORDER_INFO_DEATIL_TABLE_NAME + " WHERE orderId = #{orderId}")
-    List<OrderInfoDetailDO> select(@Param("orderId") Integer id);
+    List<OrderInfoDetailDO> select(@Param("orderId") Long id);
 }

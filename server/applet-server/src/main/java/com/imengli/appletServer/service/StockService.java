@@ -86,7 +86,7 @@ public class StockService {
      * @param operationUserId 操作用户
      */
     @Transactional(rollbackFor = Exception.class)
-    public void replaceStockInfo(Integer stockKey, String category, String size, StockTypeEnum type, Double number, String updateUserId, String operationUserId) {
+    public void replaceStockInfo(Integer stockKey, String category, String size, StockTypeEnum type, Double number, String updateUserId, String operationUserId,String orderId) {
         // 查询当前库存相关库存的数量
         StockInfoDO stockInfoDO = stockRepostory.getStockInfoByKeyAndCategory(stockKey, category);
         // 如果已经存在,则修改库存量
@@ -114,6 +114,7 @@ public class StockService {
         // 保存操作日志入库
         this.addStockInfoDetail(StockInfoDeatilDO.builder()
                 .userId(operationUserId)
+                .orderId(orderId)
                 .key(stockKey)
                 .category(category)
                 .size(size)
@@ -142,7 +143,7 @@ public class StockService {
             if (stockKey == 1) {
                 category = "";
             }
-            replaceStockInfo(stockKey, category, "", StockTypeEnum.ADD, number, wechatUserDO.getUserId(), wechatUserDO.getUserId());
+            replaceStockInfo(stockKey, category, "", StockTypeEnum.ADD, number, wechatUserDO.getUserId(), wechatUserDO.getUserId(),null);
             return new ResultDTO(ResultStatus.SUCCESS);
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);

@@ -41,6 +41,7 @@ import com.imengli.appletServer.daomain.WechatUserDO;
 import com.imengli.appletServer.dto.AddOrderFormInfoPOJO;
 import com.imengli.appletServer.dto.ResultDTO;
 import com.imengli.appletServer.utils.RedisUtil;
+import com.imengli.appletServer.utils.SnowflakeIdWorker;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,6 +90,9 @@ public class OrderService {
     @Resource
     private OrderInfoDetailRepostory orderInfoDetailRepostory;
 
+    @Autowired
+    private SnowflakeIdWorker snowflakeIdWorker;
+
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private final String TYPE = "paidStatus";
@@ -114,6 +118,7 @@ public class OrderService {
             SysUserDO userInfo = orderFormInfo.getUserInfo();
             // 创建订单
             OrderInfoDO orderInfoDO = OrderInfoDO.builder()
+                    .id(snowflakeIdWorker.nextId())
                     .userId(userInfo.getId())
                     .createBy(wecharUserDo.getUserId())
                     .createDate(orderFormInfo.getCreateDate() == null ?
@@ -135,6 +140,7 @@ public class OrderService {
                             && order.getTare() != null
                             && order.getUnitPrice() != null)
                     .map(order -> {
+                        order.setId(snowflakeIdWorker.nextId());
                         order.setOrderId(orderInfoDO.getId());
                         return order;
                     })
@@ -149,12 +155,12 @@ public class OrderService {
                         // 修改库存信息
                         stockService.replaceStockInfo(0, info.getCategoryValue(),
                                 info.getSizeValue(), StockTypeEnum.REDUCE, info.getGross() - info.getTare(),
-                                wecharUserDo.getUserId(), userInfo.getId());
+                                wecharUserDo.getUserId(), userInfo.getId(), String.valueOf(orderInfoDO.getId()));
                     });
             // 修改框子信息
             stockService.replaceStockInfo(1, "", null, StockTypeEnum.REDUCE,
                     Double.valueOf(orderFormInfo.getApplyBox() - orderFormInfo.getRetreatBox()),
-                    wecharUserDo.getUserId(), userInfo.getId());
+                    wecharUserDo.getUserId(), userInfo.getId(), String.valueOf(orderInfoDO.getId()));
 
             // 判断是否插入正常
             if (orders.size() == size) {
