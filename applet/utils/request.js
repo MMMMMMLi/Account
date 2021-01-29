@@ -2,8 +2,10 @@
 // const preUrl = 'http://localhost:11001/api/'
 // 本地测试单节点版本
 // const preUrl = 'http://localhost:11003/api/'
-// 远程调用版本
-const preUrl = 'https://imengli.com/api/'
+// 远程调用版本 - 开发版
+const preUrl = 'https://imengli.com/devApi/'
+// 远程调用版本 - 正式版
+// const preUrl = 'https://imengli.com/api/'
 let header = {
   'content-type': 'application/x-www-form-urlencoded',
   'token': ''

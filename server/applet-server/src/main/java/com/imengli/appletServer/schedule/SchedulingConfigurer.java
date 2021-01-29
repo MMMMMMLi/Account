@@ -43,7 +43,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -70,6 +72,9 @@ public class SchedulingConfigurer {
     @Value("${applet.wechatTokenKey}")
     private String wechatTokenKey;
 
+    @Value("${taskInfo.updateWechatAccessToken.flag}")
+    private Boolean updateWechatAccessTokenFlag;
+
     @Resource
     private OrderInfoRepostory orderInfoRepostory;
 
@@ -80,10 +85,9 @@ public class SchedulingConfigurer {
     private RedisUtil redisUtil;
 
     /**
-     * 每天的晚上18/19点01分01秒定时推送订单信息
-     * 19点的主要是为了给18点发送失败填窟窿的。
+     * 定时推送订单信息
      */
-    @Scheduled(cron = "1 1 18,19 * * ?")
+    @Scheduled(cron = "${taskInfo.subMessage.cron}")
     public void subMessage() {
         LOG.info(">>>>>> 开始执行消息推送。");
         // 获取今天的所有订单
@@ -122,36 +126,38 @@ public class SchedulingConfigurer {
     // 微信的Token值有效时间为7200S，两个小时，每次提前10S更新有效值。
     @Scheduled(fixedDelay = 7190 * 1000)
     public void updateWechatAccessToken() throws InterruptedException {
-        LOG.info(">>>>>> 开始更新微信Token。 ");
-        String sccessToken = null;
-        try {
-            sccessToken = HttpUtil.execLink(String.format(this.accessTokenUri, this.appID, this.appSecret));
-        } catch (IOException e) {
-            LOG.error(">>>>>> 获取微信Token失败，一分钟之后重新执行。");
-            TimeUnit.MINUTES.sleep(1L);
-            this.updateWechatAccessToken();
-        }
-        if (StringUtils.isNotBlank(sccessToken)) {
-            LOG.info(">>>>>> 获取微信Token成功，开始更新Redis。 ");
-        }
-        // 格式化返回信息
-        Map<String, Object> retureInfo = JSON.parseObject(sccessToken, Map.class);
-        // 判断是否包含操作信息
-        if (retureInfo.containsKey("errcode")) {
-            LOG.info(">>>>>> 更新微信Token失败，原因为：{}，一分钟之后重新执行。", retureInfo.get("errmsg"));
-            TimeUnit.MINUTES.sleep(1L);
-            this.updateWechatAccessToken();
-        } else {
-            // 存入Redis中。
-            boolean set = redisUtil.set(this.wechatTokenKey,
-                    String.valueOf(retureInfo.get("access_token")),
-                    Long.valueOf(String.valueOf(retureInfo.get("expires_in"))) / 60 / 60);
-            if (set && redisUtil.contains(this.wechatTokenKey)) {
-                LOG.info(">>>>>> 更新微信Token成功。");
+        // 使用配置文件来校验执行不执行
+        if (updateWechatAccessTokenFlag) {
+            LOG.info(">>>>>> 开始更新微信Token。 ");
+            String sccessToken = null;
+            try {
+                sccessToken = HttpUtil.execLink(String.format(this.accessTokenUri, this.appID, this.appSecret));
+            } catch (IOException e) {
+                LOG.error(">>>>>> 获取微信Token失败，一分钟之后重新执行。");
+                TimeUnit.MINUTES.sleep(1L);
+                this.updateWechatAccessToken();
+            }
+            if (StringUtils.isNotBlank(sccessToken)) {
+                LOG.info(">>>>>> 获取微信Token成功，开始更新Redis。 ");
+            }
+            // 格式化返回信息
+            Map<String, Object> retureInfo = JSON.parseObject(sccessToken, Map.class);
+            // 判断是否包含操作信息
+            if (retureInfo.containsKey("errcode")) {
+                LOG.info(">>>>>> 更新微信Token失败，原因为：{}，一分钟之后重新执行。", retureInfo.get("errmsg"));
+                TimeUnit.MINUTES.sleep(1L);
+                this.updateWechatAccessToken();
             } else {
-                LOG.info(">>>>>> 更新微信Token失败。");
+                // 存入Redis中。
+                boolean set = redisUtil.set(this.wechatTokenKey,
+                        String.valueOf(retureInfo.get("access_token")),
+                        Long.valueOf(String.valueOf(retureInfo.get("expires_in"))) / 60 / 60);
+                if (set && redisUtil.contains(this.wechatTokenKey)) {
+                    LOG.info(">>>>>> 更新微信Token成功。");
+                } else {
+                    LOG.info(">>>>>> 更新微信Token失败。");
+                }
             }
         }
-
     }
 }
