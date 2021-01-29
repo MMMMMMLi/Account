@@ -188,7 +188,7 @@ public class WechatAuthService {
                         result.put("page", page);
                         // miniprogram_state
                         // TODO 正式上线之后需要注释掉，默认就是正式版
-                        result.put("miniprogram_state", "trial");
+                        // result.put("miniprogram_state", "trial");
                         // data
                         Map<String, Map> data = new HashMap<>();
                         // 下单时间
