@@ -48,8 +48,9 @@ public class UserController {
      * @return 用户状态
      */
     @RequestMapping("/authUserInfo")
-    public ResultDTO authUserInfo(@RequestParam String token) {
-        return userService.authUserInfo(token);
+    public ResultDTO authUserInfo(@RequestParam String token,
+                                  @RequestParam(value = "updateFlag", required = false, defaultValue = "false") Boolean updateFlag) {
+        return userService.authUserInfo(token, updateFlag);
     }
 
     /**
@@ -171,6 +172,6 @@ public class UserController {
                                          @RequestParam String userName,
                                          @RequestParam String phoneNum,
                                          @RequestParam String avatarUrl) {
-        return userService.addTempUserByApplet(token, userName, phoneNum,avatarUrl);
+        return userService.addTempUserByApplet(token, userName, phoneNum, avatarUrl);
     }
 }

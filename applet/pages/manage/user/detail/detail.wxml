@@ -43,7 +43,7 @@
 			</view>
 			<view class="weui-cell weui-cell_active weui-cell_disabled">
 				<view class="weui-cell__hd">
-					<label class="weui-label">更新日期</label>
+					<label class="weui-label">最近登陆</label>
 				</view>
 				<view class="weui-cell__bd">
 					<input class="weui-input" value="{{updateTime}}" disabled />

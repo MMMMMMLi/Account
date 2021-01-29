@@ -74,7 +74,7 @@ public class UserService {
         return wechatAuthDO;
     }
 
-    public ResultDTO authUserInfo(String token) {
+    public ResultDTO authUserInfo(String token, Boolean updateFlag) {
         WechatAuthDO wechatAuthDO = this.getWechatAuthEntity(token);
         // 判断是否异常
         if (wechatAuthDO != null) {
@@ -87,6 +87,9 @@ public class UserService {
                     return new ResultDTO(ResultStatus.ERROR_UN_AUTHORIZED);
                 } else {
                     SysUserDO info = sysUserRepostory.getUserInfoByUserId(wechatUserDOByOpenId.getUserId());
+                    if(updateFlag) {
+                        sysUserRepostory.update(SysUserDO.builder().id(info.getId()).lastLoginTime(LocalDateTime.now()).build());
+                    }
                     if (StringUtils.isAnyBlank(info.getAddress(), info.getUserName(), info.getPhoneNumber())) {
                         return new ResultDTO(ResultStatus.ERROR_USERINFO, info);
                     }

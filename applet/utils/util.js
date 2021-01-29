@@ -165,7 +165,7 @@ const showModaling = (title, content, confirmText, cancelText, showCancel) => {
 }
 
 // 弹窗提示加载提示
-const showToasting = (title, icon, mask, duration) => {
+const showToasting = (title, icon, duration) => {
   return new Promise((resolve, reject) => {
     wx.showToast({
       title: title,

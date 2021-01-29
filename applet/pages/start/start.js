@@ -25,37 +25,38 @@ Page({
     // 获取Token
     APP.authLogin().then((res) => {
       UTIL.hideLoading();
-      this.getInfo();
+      this.getInfo(true);
     })
   },
   // 执行逻辑
-  async getInfo() {
+  async getInfo(updateFlag) {
     let token = wx.getStorageSync('token');
     const that = this;
     // 获取用户验证信息
     let res = await REQUEST.request('user/authUserInfo', 'POST', {
       token: token,
+      updateFlag: updateFlag
     })
-    if(res.data.code === 40002 ) {
+    if (res.data.code === 40002) {
       let total = this.data.total;
       this.setData({
         total: total + 1
       })
-      if(total <= 10) {
-        this.getInfo();
-      }else {
+      if (total <= 10) {
+        this.getInfo(false);
+      } else {
         UTIL.showLoading('系统异常请稍候');
       }
     }
     let userInfo = res.data.data || [];
     let role = userInfo.role || '';
-    if (userInfo ) {
+    if (userInfo) {
       // 校验当前用户是否失效
-      if(userInfo.state === 0) {
-        await UTIL.showModaling("登陆失败","当前用户已被冻结，请联系管理员！",null,null,false);
+      if (userInfo.state === 0) {
+        await UTIL.showModaling("登陆失败", "当前用户已被冻结，请联系管理员！", null, null, false);
         return;
       }
-      if(role) {
+      if (role) {
         // 保存Tab栏变量值
         if (!wx.getStorageSync('viewNameFlag') || wx.getStorageSync('viewNameFlag') != role.name) {
           wx.setStorageSync('viewName', role.name);
@@ -126,27 +127,17 @@ Page({
         });
       } else {
         // 登录错误
-        wx.showModal({
-          title: '无法登录',
-          content: "服务器错误，请重启!",
-          showCancel: false
-        })
+        UTIL.showModaling('无法登陆', '服务器错误，请重启!', null, null, false);
         return;
       }
     } else {
-      wx.showToast({
-        title: '当前无网络',
-        icon: 'none',
-      })
+      UTIL.showToasting('当前无网络', 'none');
     }
   },
   // 点击图片的提示
-  imgClick() {
+  async imgClick() {
     if (this.data.swiperCurrent + 1 != this.data.swiperMaxNumber) {
-      wx.showToast({
-        title: '左滑进入',
-        icon: 'none',
-      })
+      await UTIL.showToasting('左滑进入', 'none');
     }
   }
 });

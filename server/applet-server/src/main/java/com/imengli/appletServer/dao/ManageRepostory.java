@@ -104,7 +104,7 @@ public interface ManageRepostory {
             "   su.address, " +
             "   IF(su.state = 0 ,true, false) as isFrozen, " +
             "   CASE su.gender WHEN '1' THEN '男' WHEN '2' THEN '女' END AS gender, " +
-            "   DATE_FORMAT(su.updateTime, '%Y-%m-%d %H:%i:%s') AS updateTime," +
+            "   DATE_FORMAT(su.lastLoginTime, '%Y-%m-%d %H:%i:%s') AS updateTime," +
             " 	DATE_FORMAT(oi.createDate, '%Y-%m-%d') AS createDate, " +
             " 	DATE_FORMAT(oi.createDate, '%H:%i:%s') AS createTime, " +
             " 	oi.applyBox, " +

@@ -58,8 +58,8 @@ public class MineUpdateProvider {
             if (sysUserDO.getUpdateTime() != null) {
                 SET("updateTime= #{sysUserDO.updateTime}");
             }
-            if (sysUserDO.getLastLoginTimeStamp() != null) {
-                SET("lastLoginTimeStamp= #{sysUserDO.lastLoginTimeStamp}");
+            if (sysUserDO.getLastLoginTime() != null) {
+                SET("lastLoginTime= #{sysUserDO.lastLoginTime}");
             }
             if (sysUserDO.getSubMsgNum() != null) {
                 SET("subMsgNum= #{sysUserDO.subMsgNum}");

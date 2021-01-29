@@ -80,7 +80,7 @@ public class SysUserDO {
     private LocalDateTime updateTime;
 
     // 最后一次登陆时间
-    private Long lastLoginTimeStamp;
+    private LocalDateTime lastLoginTime;
 
     // 用户消息通知的次数
     private Integer subMsgNum;
