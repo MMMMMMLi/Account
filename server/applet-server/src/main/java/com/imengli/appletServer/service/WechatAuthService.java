@@ -210,7 +210,7 @@ public class WechatAuthService {
                         data.put("thing6", thing6);
                         // 采购数量
                         Map<String, Object> thing7 = new HashMap<>();
-                        thing7.put("value", String.format("%s斤，待付：%s元"
+                        thing7.put("value", String.format("%s公斤，待付：%s元"
                                 , orderList.parallelStream().map(OrderInfoDO::getTotalWeight).reduce((o1, o2) -> o1 + o2).get()
                                 , orderList.parallelStream().map(OrderInfoDO::getTotalPrice).reduce((o1, o2) -> o1 + o2).get()));
                         data.put("thing7", thing7);
