@@ -59,6 +59,16 @@ public class OrderInfoDetailDO {
     private String sizeValue;
 
     /**
+     * 当前订单项用框数量
+     */
+    private Integer detailApplyBox;
+
+    /**
+     * 框子重量
+     */
+    private Double boxTare;
+
+    /**
      * 毛重
      */
     private Double gross;

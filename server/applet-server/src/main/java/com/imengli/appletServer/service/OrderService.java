@@ -128,7 +128,7 @@ public class OrderService {
                     .retreatBox(orderFormInfo.getRetreatBox())
                     .totalPrice(orderFormInfo.getTotalPrice())
                     .totalWeight(orderFormInfo.getOrders().parallelStream()
-                            .map(order -> order.getGross() - order.getTare())
+                            .map(order -> order.getGross() - order.getTare() - order.getBoxTare())
                             .reduce((k, v) -> k + v).get())
                     .build();
             // 入库
@@ -154,7 +154,7 @@ public class OrderService {
                     .forEach(info -> {
                         // 修改库存信息
                         stockService.replaceStockInfo(0, info.getCategoryValue(),
-                                info.getSizeValue(), StockTypeEnum.REDUCE, info.getGross() - info.getTare(),
+                                info.getSizeValue(), StockTypeEnum.REDUCE, info.getGross() - info.getTare() - info.getBoxTare(),
                                 wecharUserDo.getUserId(), userInfo.getId(), String.valueOf(orderInfoDO.getId()));
                     });
             // 修改框子信息

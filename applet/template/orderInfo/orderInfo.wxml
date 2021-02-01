@@ -12,13 +12,19 @@
               <text class="weui-form-preview__value">{{item.categoryValue}}</text>
             </view>
             <view class="weui-form-preview__item">
-              <text class="weui-form-preview__value">{{item.sizeValue}}</text>
+              <text class="weui-form-preview__value">{{item.detailApplyBox}}{{index == 0 ? '':'框'}}</text>
             </view>
             <view class="weui-form-preview__item">
-              <text class="weui-form-preview__value">{{index == 0 ? item.gross:item.gross-item.tare}}{{index == 0 ? '':'KG'}}</text>
+              <text class="weui-form-preview__value">{{item.gross}}{{index == 0 ? '':'KG'}}</text>
             </view>
             <view class="weui-form-preview__item">
-              <text class="weui-form-preview__value">{{item.unitPrice}}/斤</text>
+              <text class="weui-form-preview__value">{{item.tare}}{{index == 0 ? '':'KG'}}</text>
+            </view>
+            <view class="weui-form-preview__item">
+              <text class="weui-form-preview__value">{{item.boxTare}}{{index == 0 ? '':'KG'}}</text>
+            </view>
+            <view class="weui-form-preview__item">
+              <text class="weui-form-preview__value">{{item.unitPrice}}{{index == 0 ? '':'/斤'}}</text>
             </view>
             <view class="weui-form-preview__item">
               <text class="weui-form-preview__value" style="color:red">{{index == 0 ? '':'￥'}}{{item.totalPrice}}</text>

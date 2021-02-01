@@ -35,6 +35,26 @@
 							<text class="weui-form-preview__value">{{item.tare}} KG</text>
 						</view>
 					</view>
+					<view style="display: flex;">
+						<view class="weui-form-preview__item" style="flex:0.5;">
+							<label class="weui-form-preview__label">数量：</label>
+							<text class="weui-form-preview__value">{{item.detailApplyBox}} 框</text>
+						</view>
+						<view class="weui-form-preview__item" style="flex:0.5;">
+							<label class="weui-form-preview__label">框重：</label>
+							<text class="weui-form-preview__value">{{item.boxTare}} KG</text>
+						</view>
+					</view>
+					<view style="display: flex;">
+						<view class="weui-form-preview__item" style="flex:0.5;">
+							<label class="weui-form-preview__label">单价：</label>
+							<text class="weui-form-preview__value">{{item.unitPrice}}/斤</text>
+						</view>
+						<view class="weui-form-preview__item" style="flex:0.5;">
+							<label class="weui-form-preview__label">总价：</label>
+							<text class="weui-form-preview__value" style="color:red;">￥{{item.totalPrice}}</text>
+						</view>
+					</view>
 				</view>
 				<view class="weui-form-preview__bd">
 					<view style="display: flex;">
@@ -43,18 +63,8 @@
 							<text class="weui-form-preview__value">{{item.applyBox}} 个</text>
 						</view>
 						<view class="weui-form-preview__item" style="flex:0.5;">
-							<label class="weui-form-preview__label">框重：</label>
-							<text class="weui-form-preview__value">20 KG/个</text>
-						</view>
-					</view>
-					<view style="display: flex;">
-						<view class="weui-form-preview__item" style="flex:0.5;">
 							<label class="weui-form-preview__label">退框：</label>
 							<text class="weui-form-preview__value">{{item.retreatBox}} 个</text>
-						</view>
-						<view class="weui-form-preview__item" style="flex:0.5;">
-							<label class="weui-form-preview__label">总重量：</label>
-							<text class="weui-form-preview__value">{{item.totalWeight}} KG</text>
 						</view>
 					</view>
 				</view>

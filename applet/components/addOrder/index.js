@@ -54,6 +54,17 @@ Component({
       const orderInfo = this.properties.orderInfo;
       const index = e.currentTarget.dataset.index;
       const type = e.currentTarget.dataset.type;
+       // 框数 输入框失去焦点
+       if (type == 'detailApplyBox') {
+         let number = e.detail.value;
+        orderInfo.orders[index].detailApplyBox = number;
+        orderInfo.orders[index].boxTare = number * 2;
+        // 迭代订单信息，自动生成用框数量
+        orderInfo.applyBox = orderInfo.orders.map(order => order.detailApplyBox).reduce((total, num) => Number(total) + Number(num));
+        this.setData({
+          orderInfo,
+        })
+      }
       // 毛重 输入框失去焦点
       if (type == 'gross') {
         orderInfo.orders[index].gross = e.detail.value;
@@ -94,10 +105,11 @@ Component({
       // 判断三个条件是否都存在，存在的话，则生成总价。
       if (thisOrder.hasOwnProperty('gross') && thisOrder.hasOwnProperty('tare') && thisOrder.hasOwnProperty('unitPrice')) {
         // 计算当前订单项的金额
-        orderInfo.orders[index].totalPrice = thisOrder.unitPrice * (thisOrder.gross - thisOrder.tare) * 2;
+        orderInfo.orders[index].totalPrice = Math.floor(thisOrder.unitPrice * (thisOrder.gross - thisOrder.tare - (thisOrder.boxTare ? thisOrder.boxTare : 0)) * 2);
         // 计算所有订单项的金额
-        orderInfo.totalPrice = orderInfo.orders.map(order => order.totalPrice).reduce((total, num) => total + num) +
+        let totalPrice = orderInfo.orders.map(order => order.totalPrice).reduce((total, num) => total + num) +
           (((orderInfo.applyBox ? orderInfo.applyBox : 0) - (orderInfo.retreatBox ? orderInfo.retreatBox : 0)) * this.data.boxPrice);
+          orderInfo.totalPrice = Math.floor(totalPrice);
         this.setData({
           orderInfo,
         })

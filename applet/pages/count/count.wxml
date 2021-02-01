@@ -58,6 +58,16 @@
 					</view>
 					<view style="display: flex;">
 						<view class="weui-form-preview__item" style="flex:0.5;">
+							<label class="weui-form-preview__label">数量：</label>
+							<text class="weui-form-preview__value">{{item.detailApplyBox}} 框</text>
+						</view>
+						<view class="weui-form-preview__item" style="flex:0.5;">
+							<label class="weui-form-preview__label">框重：</label>
+							<text class="weui-form-preview__value">{{item.boxTare}} KG</text>
+						</view>
+					</view>
+					<view style="display: flex;">
+						<view class="weui-form-preview__item" style="flex:0.5;">
 							<label class="weui-form-preview__label">单价：</label>
 							<text class="weui-form-preview__value">{{item.unitPrice}}/斤</text>
 						</view>
@@ -114,7 +124,7 @@
 						data-index="{{item}}" bindtap="sendMsg">发送消息</a>
 					<a class="weui-form-preview__btn weui-form-preview__btn_warn" data-index="{{item}}"
 						bindtap="updateOrderInfo">修改订单</a>
-					<a class="weui-form-preview__btn weui-form-preview__btn_primary" data-index="{{item.orderInfoId}}"
+					<a class="weui-form-preview__btn weui-form-preview__btn_primary" data-index="{{item.orderListId}}"
 						bindtap="confirmCollection">确认收款</a>
 				</view>
 				<view class="weui-form-preview__ft" wx:else>

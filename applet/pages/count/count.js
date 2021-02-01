@@ -172,9 +172,12 @@ Page({
       showOrderInfo.orders.unshift({
         categoryValue: "品种",
         sizeValue: "大小",
+        detailApplyBox: "数量",
+        gross: "毛重",
+        tare: "皮重",
+        boxTare: "框重",
         unitPrice: "单价",
         totalPrice: "总价",
-        gross: "重量"
       })
     }
     this.setData({
