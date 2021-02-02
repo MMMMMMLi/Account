@@ -405,7 +405,7 @@ Page({
   onHide() {
     setTimeout(() => {
       this.hideAsync();
-    }, 1000)
+    }, 100)
   },
   hideAsync() {
     let that = this;

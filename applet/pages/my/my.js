@@ -29,10 +29,6 @@ Page({
     }
     // 执行操作
     const _this = this
-    this.setData({
-      // TODO: 暂时不知道这个有什么用?
-      version: CONFIG.version,
-    })
 
     // 校验用户是否登陆
     AUTH.checkHasLogined().then(isLogined => {

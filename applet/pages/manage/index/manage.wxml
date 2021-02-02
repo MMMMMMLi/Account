@@ -102,8 +102,8 @@
 	<view class="space"></view>
 	<!-- <navigator url=""></navigator> -->
 	<view class="menu-item">
-		<view class="l">功能待定</view>
-		<image class="next" src="/images/icon/next.png"></image>
+		<view class="l">当前版本</view>
+		<view class="r">{{version}}</view>
 	</view>
 	<view class="line"></view>
 	<view class="menu-item">
@@ -120,7 +120,7 @@
 	<view class="space" style="height: 45rpx;"></view>
 	<view class="weui-form__extra-area" style="background: #F4F5F9;">
 		<view class="weui-footer">
-			<view class="weui-footer__text">Copyright © 2019-2020 兴隆薯业</view>
+			<view class="weui-footer__text">Copyright © 2020-2021 兴隆薯业</view>
 		</view>
 	</view>
 </view>
