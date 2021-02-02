@@ -97,7 +97,7 @@ App({
 
   },
   globalData: {
-    // 校验是否登陆
+    // 校验网络是否正常
     isConnected: true,
     // 是否需要更新用户信息
     needUpdateUserInfo: false,

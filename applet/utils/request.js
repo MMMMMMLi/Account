@@ -1,11 +1,5 @@
-// 本地测试微服务版
-// const preUrl = 'http://localhost:11001/api/'
-// 本地测试单节点版本
-// const preUrl = 'http://localhost:11003/api/'
-// 远程调用版本 - 开发版
-const preUrl = 'https://imengli.com/devApi/'
-// 远程调用版本 - 正式版
-// const preUrl = 'https://imengli.com/api/'
+const CONFIG = require('../config');
+
 let header = {
   'content-type': 'application/x-www-form-urlencoded',
   'token': ''
@@ -29,7 +23,7 @@ function request(url, method, data, headerInfo) {
   }
   let promise = new Promise((resolve, reject) => {
     wx.request({
-      url: preUrl + url,
+      url: CONFIG.preUrl + url,
       method: method,
       data: data,
       header: (headerInfo ? headerInfo : header),
