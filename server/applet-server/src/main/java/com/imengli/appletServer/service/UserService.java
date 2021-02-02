@@ -87,7 +87,7 @@ public class UserService {
                     return new ResultDTO(ResultStatus.ERROR_UN_AUTHORIZED);
                 } else {
                     SysUserDO info = sysUserRepostory.getUserInfoByUserId(wechatUserDOByOpenId.getUserId());
-                    if (!updateFlag) {
+                    if (updateFlag) {
                         sysUserRepostory.update(SysUserDO.builder().id(info.getId()).lastLoginTime(LocalDateTime.now()).build());
                     }
                     if (StringUtils.isAnyBlank(info.getAddress(), info.getUserName(), info.getPhoneNumber())) {

@@ -49,7 +49,7 @@ public class UserController {
      */
     @RequestMapping("/authUserInfo")
     public ResultDTO authUserInfo(@RequestParam String token,
-                                  @RequestParam(value = "updateFlag", required = false, defaultValue = "true") Boolean updateFlag) {
+                                  @RequestParam(value = "updateFlag", required = false, defaultValue = "false") Boolean updateFlag) {
         return userService.authUserInfo(token, updateFlag);
     }
 
