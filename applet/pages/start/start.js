@@ -67,9 +67,16 @@ Page({
     // if (app_show_pic_version && app_show_pic_version == CONFIG.version) {
     if (!userInfo.banner && app_show_pic_version && userInfo) {
       // 如果用户已经看过了,则不需要再看了。
-      wx.switchTab({
-        url: role.entryPage,
-      });
+      if (res.data.code == 40003 || res.data.code == 40004) {
+        // 假如当前用户是第一次使用小程序，则用户信息应该不完善，则跳转到个人信息页
+        wx.switchTab({
+          url: '/pages/my/my',
+        })
+      } else {
+        wx.switchTab({
+          url: role.entryPage,
+        });
+      }
     } else {
       REQUEST.request('applet/getBanners', 'POST', {}).then(bannerRes => {
         if (bannerRes.data.code == 20001) {
@@ -114,7 +121,7 @@ Page({
           url: role.entryPage,
         });
       } else if (serverData.code == 40003 || serverData.code == 40004) {
-       // 2021.02.02更新，由小程序版本控制，修改为数据库控制字段控制
+        // 2021.02.02更新，由小程序版本控制，修改为数据库控制字段控制
         wx.setStorage({
           key: 'app_show_pic_version',
           data: CONFIG.version
