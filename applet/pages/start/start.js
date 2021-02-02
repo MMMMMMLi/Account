@@ -21,7 +21,7 @@ Page({
     // 获取Token
     APP.authLogin().then((res) => {
       UTIL.hideLoading();
-      this.getInfo(true);
+      this.getInfo(false);
     })
   },
   // 执行逻辑
@@ -39,7 +39,7 @@ Page({
         total: total + 1
       })
       if (total <= 10) {
-        this.getInfo(false);
+        this.getInfo(true);
       } else {
         UTIL.showLoading('系统异常请稍候');
       }
@@ -64,7 +64,7 @@ Page({
     // 2021.02.02更新，由小程序版本控制，修改为数据库控制字段控制
     // const app_show_pic_version = wx.getStorageSync('app_show_pic_version');
     // if (app_show_pic_version && app_show_pic_version == CONFIG.version) {
-    if (!userInfo.banner) {
+    if (userInfo.banner) {
       // 如果用户已经看过了,则不需要再看了。
       wx.switchTab({
         url: role.entryPage,
