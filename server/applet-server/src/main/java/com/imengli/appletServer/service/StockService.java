@@ -86,16 +86,16 @@ public class StockService {
      * @param operationUserId 操作用户
      */
     @Transactional(rollbackFor = Exception.class)
-    public void replaceStockInfo(Integer stockKey, String category, String size, StockTypeEnum type, Double number, String updateUserId, String operationUserId,String orderId) {
+    public void replaceStockInfo(Integer stockKey, String category, String size, StockTypeEnum type, Double number, String updateUserId, String operationUserId, String orderId) {
         // 查询当前库存相关库存的数量
         StockInfoDO stockInfoDO = stockRepostory.getStockInfoByKeyAndCategory(stockKey, category);
         // 如果已经存在,则修改库存量
         Double stockNumber = number;
         if (stockInfoDO != null) {
-            if(type == StockTypeEnum.ADD) {
+            if (type == StockTypeEnum.ADD) {
                 stockNumber += stockInfoDO.getNumber();
             }
-            if(type == StockTypeEnum.REDUCE) {
+            if (type == StockTypeEnum.REDUCE) {
                 stockNumber = stockInfoDO.getNumber() - stockNumber;
             }
         }
@@ -143,7 +143,7 @@ public class StockService {
             if (stockKey == 1) {
                 category = "";
             }
-            replaceStockInfo(stockKey, category, "", StockTypeEnum.ADD, number, wechatUserDO.getUserId(), wechatUserDO.getUserId(),null);
+            replaceStockInfo(stockKey, category, "", StockTypeEnum.ADD, number, wechatUserDO.getUserId(), wechatUserDO.getUserId(), null);
             return new ResultDTO(ResultStatus.SUCCESS);
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
@@ -174,7 +174,11 @@ public class StockService {
             // 库存信息
             result.put("stockInfo", stockInfoDOList);
             // 汇总信息
-            result.put("stockSum", stockInfoDOList.parallelStream().map(info -> info.getNumber()).reduce((o1, o2) -> o1 + o2).get());
+            Double stockSum = 0.0D;
+            if (stockInfoDOList.size() > 0) {
+                stockSum = stockInfoDOList.parallelStream().map(info -> info.getNumber()).reduce((o1, o2) -> o1 + o2).get();
+            }
+            result.put("stockSum", stockSum);
             // 操作详情
             result.put("stockInfoDeatil", pageInfo.getList());
 
