@@ -74,6 +74,9 @@ public class WechatAuthService {
     @Value("${applet.wechatTokenKey}")
     private String wechatTokenKey;
 
+    @Value("${applet.miniprogram_state}")
+    private String miniprogramState;
+
     @Resource
     private WechatUserRepostory wechatUserRepostory;
 
@@ -187,8 +190,7 @@ public class WechatAuthService {
                         // page 跳转页面
                         result.put("page", page);
                         // miniprogram_state
-                        // TODO 正式上线之后需要注释掉，默认就是正式版
-                        result.put("miniprogram_state", "trial");
+                        result.put("miniprogram_state", miniprogramState);
                         // data
                         Map<String, Map> data = new HashMap<>();
                         // 下单时间
