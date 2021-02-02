@@ -116,10 +116,11 @@ public class UserController {
      */
     @RequestMapping("/updateUserInfo")
     public ResultDTO updateUserInfo(@RequestParam String token,
-                                    @RequestParam String address,
-                                    @RequestParam String name,
-                                    @RequestParam String phone) {
-        return userService.updateUserInfo(token, address, name, phone);
+                                    @RequestParam(value = "address", required = false) String address,
+                                    @RequestParam(value = "name", required = false) String name,
+                                    @RequestParam(value = "phone", required = false) String phone,
+                                    @RequestParam(value = "banner", required = false, defaultValue = "false") Boolean banner) {
+        return userService.updateUserInfo(token, address, name, phone, banner);
 
     }
 

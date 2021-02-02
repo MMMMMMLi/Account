@@ -1,12 +1,8 @@
 // 获取静态配置文件
-const CONFIG = require('../../config');
 const REQUEST = require('../../utils/request');
 const AUTH = require('../../utils/auth');
 const UTIL = require('../../utils/util');
 const APP = getApp();
-
-//获取应用实例
-var app = getApp();
 
 Page({
   data: {
@@ -65,9 +61,11 @@ Page({
       }
     }
     // 获取用户观看开头图片的版本
-    const app_show_pic_version = wx.getStorageSync('app_show_pic_version');
-    if (app_show_pic_version && app_show_pic_version == CONFIG.version) {
-      // 当前版本如果用户已经看过了,则不需要再看了。
+    // 2021.02.02更新，由小程序版本控制，修改为数据库控制字段控制
+    // const app_show_pic_version = wx.getStorageSync('app_show_pic_version');
+    // if (app_show_pic_version && app_show_pic_version == CONFIG.version) {
+    if (!userInfo.banner) {
+      // 如果用户已经看过了,则不需要再看了。
       wx.switchTab({
         url: role.entryPage,
       });
@@ -96,24 +94,30 @@ Page({
   // 点击进入小程序按钮触发
   goToIndex: async function (e) {
     // 校验网络是否正常
-    if (app.globalData.isConnected) {
+    if (APP.globalData.isConnected) {
       let serverData = this.data.serverData;
       let userInfo = serverData.data || [];
       let role = userInfo.role || '';
+      // 将当前用户的banner状态改为已观看。
+      REQUEST.request('user/updateUserInfo', 'POST', {
+        token: wx.getStorageSync('token')
+      });
       if (serverData.code == 20005) {
-        wx.setStorage({
-          key: 'app_show_pic_version',
-          data: CONFIG.version
-        })
+        // 2021.02.02更新，由小程序版本控制，修改为数据库控制字段控制
+        // wx.setStorage({
+        //   key: 'app_show_pic_version',
+        //   data: CONFIG.version
+        // })
         // 如果用户信息全换 ，则直接跳转页面即可。
         wx.switchTab({
           url: role.entryPage,
         });
       } else if (serverData.code == 40003 || serverData.code == 40004) {
-        wx.setStorage({
-          key: 'app_show_pic_version',
-          data: CONFIG.version
-        })
+       // 2021.02.02更新，由小程序版本控制，修改为数据库控制字段控制
+        // wx.setStorage({
+        //   key: 'app_show_pic_version',
+        //   data: CONFIG.version
+        // })
         // 假如当前用户是第一次使用小程序，则用户信息应该不完善，则跳转到个人信息页
         wx.switchTab({
           url: '/pages/my/my',

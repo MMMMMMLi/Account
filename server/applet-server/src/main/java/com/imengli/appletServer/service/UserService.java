@@ -87,7 +87,7 @@ public class UserService {
                     return new ResultDTO(ResultStatus.ERROR_UN_AUTHORIZED);
                 } else {
                     SysUserDO info = sysUserRepostory.getUserInfoByUserId(wechatUserDOByOpenId.getUserId());
-                    if(updateFlag) {
+                    if (updateFlag) {
                         sysUserRepostory.update(SysUserDO.builder().id(info.getId()).lastLoginTime(LocalDateTime.now()).build());
                     }
                     if (StringUtils.isAnyBlank(info.getAddress(), info.getUserName(), info.getPhoneNumber())) {
@@ -154,7 +154,7 @@ public class UserService {
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }
 
-    public ResultDTO updateUserInfo(String token, String address, String name, String phone) {
+    public ResultDTO updateUserInfo(String token, String address, String name, String phone, Boolean banner) {
         // 校验Token
         WechatAuthDO wechatAuthDO = this.getWechatAuthEntity(token);
         // 判断是否异常
@@ -162,7 +162,24 @@ public class UserService {
             WechatUserDO userEntityByOpenId = wechatUserRepostory.getUserEntityByOpenId(wechatAuthDO.getOpenId());
             if (userEntityByOpenId != null) {
                 // 更新
-                sysUserRepostory.update(new SysUserDO(userEntityByOpenId.getUserId(), name, PinyinUtil.ToFirstChar(name), phone, address, LocalDateTime.now()));
+                SysUserDO sysUserDO;
+                if (StringUtils.isNoneBlank(address, name, phone)) {
+                    sysUserDO = SysUserDO.builder()
+                            .id(userEntityByOpenId.getUserId())
+                            .userName(name)
+                            .userNameCode(PinyinUtil.ToFirstChar(name))
+                            .phoneNumber(phone)
+                            .address(address)
+                            .updateTime(LocalDateTime.now())
+                            .build();
+                } else {
+                    sysUserDO = SysUserDO.builder()
+                            .id(userEntityByOpenId.getUserId())
+                            .updateTime(LocalDateTime.now())
+                            .banner(banner)
+                            .build();
+                }
+                sysUserRepostory.update(sysUserDO);
                 return new ResultDTO(ResultStatus.SUCCESS_UPDATE_USERINFO);
             }
         }
@@ -209,7 +226,7 @@ public class UserService {
         if (wechatAuthDO != null) {
             // 首先判断当前添加的测试用户是否已经存在
             // 判断条件是名字是否存在或者手机号是否存在
-            if(sysUserRepostory.getUserInfoBySearch(userName, 1).size() <= 0
+            if (sysUserRepostory.getUserInfoBySearch(userName, 1).size() <= 0
                     && sysUserRepostory.getUserInfoBySearch(phoneNum, 1).size() <= 0) {
                 // 如果都不存在,则添加
                 sysUserRepostory.saveTempUser(SysUserDO.builder()
@@ -222,7 +239,7 @@ public class UserService {
                         .isTemp(Boolean.TRUE)
                         .build());
                 return new ResultDTO(ResultStatus.SUCCESS);
-            }else {
+            } else {
                 return new ResultDTO(ResultStatus.EXISTED);
             }
         }

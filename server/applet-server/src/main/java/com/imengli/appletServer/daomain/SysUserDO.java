@@ -94,18 +94,8 @@ public class SysUserDO {
     // 是否是测试用户
     private Boolean isTemp;
 
-    public SysUserDO(String id, String userName, String userNameCode, String phoneNumber, String address, LocalDateTime updateTime) {
-        this.id = id;
-        this.userName = userName;
-        this.userNameCode = userNameCode;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-        this.updateTime = updateTime;
-    }
-
-    public SysUserDO(String id, String nickName, String avatarUrl, int gender, String country, String province, String city, LocalDateTime createTime, LocalDateTime updateTime) {
-        this(id,nickName,avatarUrl,gender,country,province,city,createTime,updateTime,0);
-    }
+    // 是否需要观看开始banner
+    private Boolean banner;
 
     public SysUserDO(String id, String nickName, String avatarUrl, int gender, String country, String province, String city, LocalDateTime createTime, LocalDateTime updateTime,Integer subMsgNum ) {
         this.id = id;

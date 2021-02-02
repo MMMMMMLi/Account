@@ -67,6 +67,9 @@ public class MineUpdateProvider {
             if (sysUserDO.getState() != null) {
                 SET("state = #{sysUserDO.state}");
             }
+            if (sysUserDO.getBanner() != null) {
+                SET("banner = #{sysUserDO.banner}");
+            }
             WHERE("id = #{sysUserDO.id}" );
         }}.toString();
 
