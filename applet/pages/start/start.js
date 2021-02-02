@@ -1,4 +1,5 @@
 // 获取静态配置文件
+const CONFIG = require('../../config.js');
 const REQUEST = require('../../utils/request');
 const AUTH = require('../../utils/auth');
 const UTIL = require('../../utils/util');
@@ -21,7 +22,7 @@ Page({
     // 获取Token
     APP.authLogin().then((res) => {
       UTIL.hideLoading();
-      this.getInfo(false);
+      this.getInfo(true);
     })
   },
   // 执行逻辑
@@ -39,12 +40,12 @@ Page({
         total: total + 1
       })
       if (total <= 10) {
-        this.getInfo(true);
+        this.getInfo(false);
       } else {
         UTIL.showLoading('系统异常请稍候');
       }
     }
-    let userInfo = res.data.data || [];
+    let userInfo = res.data.data || '';
     let role = userInfo.role || '';
     if (userInfo) {
       // 校验当前用户是否失效
@@ -64,7 +65,7 @@ Page({
     // 2021.02.02更新，由小程序版本控制，修改为数据库控制字段控制
     const app_show_pic_version = wx.getStorageSync('app_show_pic_version');
     // if (app_show_pic_version && app_show_pic_version == CONFIG.version) {
-    if (!userInfo.banner && app_show_pic_version) {
+    if (!userInfo.banner && app_show_pic_version && userInfo) {
       // 如果用户已经看过了,则不需要再看了。
       wx.switchTab({
         url: role.entryPage,

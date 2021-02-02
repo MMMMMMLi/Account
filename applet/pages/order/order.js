@@ -28,7 +28,8 @@ Page({
     page: 0,
     size: 5,
     hasNextPage: false,
-    oldOrderList: []
+    oldOrderList: [],
+    nextPage: 0
   },
   // 按钮切换的操作。
   swichNav: function (e) {
@@ -61,7 +62,7 @@ Page({
       page: that.data.page,
       size: that.data.size
     }).then(res => {
-      if (res.data.code === 20000) {
+      if (res.data.code === 20000 && res.data.data) {
         that.setData({
           orderList: oldOrderList.concat(res.data.data),
           page: res.data.pageInfo.nextPage,
@@ -75,12 +76,12 @@ Page({
               that.getData(that.data.currentTab, true);
             }
           }, 1000)
+          wx.showModal({
+            content: res.data.msg,
+            showCancel: false
+          })
           return;
         }
-        wx.showModal({
-          content: res.data.msg,
-          showCancel: false
-        })
       }
     })
     if (showLoading) {
