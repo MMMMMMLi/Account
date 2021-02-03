@@ -113,10 +113,20 @@ input {
   align-items: center;
 }
 
+.menu-item .leftImage {
+  margin-right: 10px;
+  vertical-align: middle;
+  width: 20px;
+  height: 20px;
+}
+
 .menu-item .l {
   font-size: 34rpx;
   color: #333;
   line-height: 104rpx;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
 }
 
 .menu-item .r {

@@ -102,16 +102,19 @@
 	<view class="space"></view>
 	<!-- <navigator url=""></navigator> -->
 	<view class="menu-item">
+		<image src="/images/my/7.png" class="leftImage"></image>
 		<view class="l">当前版本</view>
 		<view class="r">{{version}}</view>
 	</view>
 	<view class="line"></view>
 	<view class="menu-item">
+		<image src="/images/my/8.png" class="leftImage"></image>
 		<view class="l">功能待定</view>
 		<image class="next" src="/images/icon/next.png"></image>
 	</view>
 	<view class="line"></view>
 	<view class="menu-item">
+		<image src="/images/my/9.png" class="leftImage"></image>
 		<view class="l">功能待定</view>
 		<image class="next" src="/images/icon/next.png"></image>
 	</view>
