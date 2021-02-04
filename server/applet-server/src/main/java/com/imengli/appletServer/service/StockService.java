@@ -57,7 +57,7 @@ import java.util.Map;
 @Service
 public class StockService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(StockService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StockService.class);
 
     @Resource
     private StockRepostory stockRepostory;

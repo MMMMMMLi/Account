@@ -59,7 +59,7 @@ import java.util.stream.Collectors;
 @Service
 public class ManageService {
 
-    private final static Logger log = LoggerFactory.getLogger(ManageService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(ManageService.class);
 
     @Autowired
     private RedisUtil redisUtil;

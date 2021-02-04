@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
 @Service
 public class WechatAuthService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(WechatAuthService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(WechatAuthService.class);
 
     @Value("${applet.appID}")
     private String appID;
@@ -115,7 +115,7 @@ public class WechatAuthService {
         try {
             openid = HttpUtil.execLink(authUrl);
         } catch (IOException e) {
-            LOG.error(e.getMessage());
+            LOGGER.error(e.getMessage());
             return new ResultDTO(ResultStatus.ERROR_GET_OPEN_ID);
         }
         // 格式化为User对象
@@ -161,7 +161,7 @@ public class WechatAuthService {
      * @param orderInfoDOS
      */
     public Integer sendMsgToWechat(List<OrderInfoDO> orderInfoDOS) {
-        LOG.info(">>>>>> 开始推送订单消息。");
+        LOGGER.info(">>>>>> 开始推送订单消息。");
         // 获取系统在微信端的Token
         String nowWechatToken = redisUtil.get(wechatTokenKey);
         // 构建推送请求的url
@@ -233,7 +233,7 @@ public class WechatAuthService {
                         Map httpResult = JSON.parseObject(HttpUtil.sendRequest(url, result, HttpMethod.POST), Map.class);
                         String errmsg = String.valueOf(httpResult.get("errmsg"));
                         if ("ok".equals(errmsg)) {
-                            LOG.info(">>>>>> 发送成功！");
+                            LOGGER.info(">>>>>> 发送成功！");
                             // 发送成功之后更新用户表
                             // 更新
                             sysUserRepostory.update(
@@ -242,11 +242,11 @@ public class WechatAuthService {
                                             .subMsgNum(sysUserRepostory.getUserInfoByUserId(userId).getSubMsgNum() - 1)
                                             .build());
                         } else {
-                            LOG.info(">>>>>> 发送失败！,{}", errmsg);
+                            LOGGER.info(">>>>>> 发送失败！,{}", errmsg);
                             errorUserIds.add(userId);
                         }
                     } else {
-                        LOG.info(">>>>>> 发送失败！当前用户为手动添加用户，无法推送。");
+                        LOGGER.info(">>>>>> 发送失败！当前用户为手动添加用户，无法推送。");
                         errorUserIds.add(userId);
                     }
                 });

@@ -76,14 +76,12 @@
 		<view class="r">13791921198</view>
 	</view>
 	<view class="space"></view>
-	<navigator url="/pages/userInfo/userInfo">
-		<view class="menu-item">
-			<image src="/images/my/6.png" class="leftImage"></image>
-			<view class="l">意见反馈</view>
-			<image class="next" src="/images/icon/next.png"></image>
-		</view>
-	</navigator>
-
+	<view class="menu-item">
+		<button open-type='feedback' style="text-align:left;width:100%;background-color:#FFFFFF;padding:0px;font-weight:unset;">
+			<image class="weui-btn_cell__icon" src="/images/my/6.png" style="width: 20px;height:20px;margin-right:5px;"></image>
+			意见反馈
+		</button>
+	</view>
 	<view class="line"></view>
 	<view class="space" style="margin-bottom:30px"></view>
 	<view class="weui-footer weui-footer_fixed-bottom" style="">

@@ -67,7 +67,7 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService {
 
-    private final static Logger LOG = LoggerFactory.getLogger(OrderService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(OrderService.class);
 
     @Autowired
     private RedisUtil redisUtil;
@@ -336,7 +336,7 @@ public class OrderService {
         try {
             wechatAuthService.sendMsgToWechat(userOrders);
         } catch (Exception e) {
-            LOG.error(">>>>>> 消息推送失败，Msg：{}", e.getMessage());
+            LOGGER.error(">>>>>> 消息推送失败，Msg：{}", e.getMessage());
             return new ResultDTO(ResultStatus.ERROR.code(), "消息推送失败！");
         }
         return new ResultDTO(ResultStatus.SUCCESS.code(), "消息推送成功！");

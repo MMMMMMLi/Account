@@ -50,7 +50,7 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private final static Logger log = LoggerFactory.getLogger(UserService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     private RedisUtil redisUtil;
