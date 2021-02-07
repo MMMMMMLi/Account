@@ -54,66 +54,54 @@ Component({
       const orderInfo = this.properties.orderInfo;
       const index = e.currentTarget.dataset.index;
       const type = e.currentTarget.dataset.type;
-       // 框数 输入框失去焦点
-       if (type == 'detailApplyBox') {
-         let number = e.detail.value;
+      // 框数 输入框失去焦点
+      if (type == 'detailApplyBox') {
+        let number = e.detail.value;
         orderInfo.orders[index].detailApplyBox = number;
-        orderInfo.orders[index].boxTare = number * 2;
         // 迭代订单信息，自动生成用框数量
         orderInfo.applyBox = orderInfo.orders.map(order => order.detailApplyBox).reduce((total, num) => Number(total) + Number(num));
-        this.setData({
-          orderInfo,
-        })
       }
       // 毛重 输入框失去焦点
       if (type == 'gross') {
         orderInfo.orders[index].gross = e.detail.value;
-        this.setData({
-          orderInfo,
-        })
       }
       // 皮重 输入框失去焦点
       if (type == 'tare') {
         orderInfo.orders[index].tare = e.detail.value;
-        this.setData({
-          orderInfo,
-        })
       }
       // 单价 输入框失去焦点
       if (type == 'unitPrice') {
         orderInfo.orders[index].unitPrice = e.detail.value;
-        this.setData({
-          orderInfo,
-        })
       }
       // 用框 输入框失去焦点
       if (type == 'applyBox') {
         orderInfo.applyBox = e.detail.value;
-        this.setData({
-          orderInfo,
-        })
       }
       // 退框 输入框失去焦点
       if (type == 'retreatBox') {
         orderInfo.retreatBox = e.detail.value;
-        this.setData({
-          orderInfo,
-        })
       }
       let thisOrder = orderInfo.orders[index];
-      // console.log(thisOrder);
-      // 判断三个条件是否都存在，存在的话，则生成总价。
-      if (thisOrder.hasOwnProperty('gross') && thisOrder.hasOwnProperty('tare') && thisOrder.hasOwnProperty('unitPrice')) {
-        // 计算当前订单项的金额
-        orderInfo.orders[index].totalPrice = Math.floor(thisOrder.unitPrice * (thisOrder.gross - thisOrder.tare - (thisOrder.boxTare ? thisOrder.boxTare : 0)) * 2);
-        // 计算所有订单项的金额
-        let totalPrice = orderInfo.orders.map(order => order.totalPrice).reduce((total, num) => total + num) +
-          (((orderInfo.applyBox ? orderInfo.applyBox : 0) - (orderInfo.retreatBox ? orderInfo.retreatBox : 0)) * this.data.boxPrice);
+      // 判断条件是否存在，存在的话，则生成总价。
+      if (thisOrder.hasOwnProperty('gross') && thisOrder.hasOwnProperty('tare')) {
+        // 判断框数是否存在
+        if (thisOrder.hasOwnProperty('detailApplyBox')) {
+          // 如果存在,则生成净重
+          orderInfo.orders[index].suttle = Number(thisOrder.gross - thisOrder.tare - (Number(thisOrder.detailApplyBox) * 2)) * 2;
+        }
+        // 判断单价是否存在
+        if (thisOrder.hasOwnProperty('unitPrice')) {
+          // 计算当前订单项的金额
+          orderInfo.orders[index].totalPrice = Math.floor(thisOrder.unitPrice * thisOrder.suttle);
+          // 计算所有订单项的金额
+          let totalPrice = orderInfo.orders.map(order => order.totalPrice).reduce((total, num) => total + num) +
+            (((orderInfo.applyBox ? orderInfo.applyBox : 0) - (orderInfo.retreatBox ? orderInfo.retreatBox : 0)) * this.data.boxPrice);
           orderInfo.totalPrice = Math.floor(totalPrice);
-        this.setData({
-          orderInfo,
-        })
+        }
       }
+      this.setData({
+        orderInfo,
+      })
     },
     // 框子输入框输入结束
     overInputBox(e) {
@@ -173,7 +161,7 @@ Component({
       const orderInfo = this.properties.orderInfo;
       orderInfo.token = wx.getStorageSync('token');
       // 校验
-      if ( !orderInfo.applyBox  || !orderInfo.retreatBox ) {
+      if (!orderInfo.applyBox || !orderInfo.retreatBox) {
         wx.showModal({
           title: '提示',
           content: '请输入正确的用框和退框数量！',
@@ -192,7 +180,7 @@ Component({
           if (res.confirm) {
             // 修改一下品种和规格的中文字段
             orderInfo.orders = orderInfo.orders.map(order => {
-              order.categoryValue = that.data.categoryArray[order.categoryValue]; 
+              order.categoryValue = that.data.categoryArray[order.categoryValue];
               order.sizeValue = that.data.sizeArray[order.sizeValue];
               return order;
             });

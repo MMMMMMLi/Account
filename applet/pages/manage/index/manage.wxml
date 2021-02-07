@@ -13,7 +13,7 @@
 			<view>今日订单数</view>
 		</view>
 		<view class='item right'>
-			<view style="color: {{orders > 50 ? 'red' : orders > 0 ? 'DeepSkyBlue' : 'black'}};">{{totalWeight}} KG</view>
+			<view style="color: {{orders > 50 ? 'red' : orders > 0 ? 'DeepSkyBlue' : 'black'}};">{{totalWeight / 2}} KG</view>
 			<view>今日交易量</view>
 		</view>
 		<view class='item right'>

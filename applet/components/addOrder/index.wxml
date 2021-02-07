@@ -34,24 +34,6 @@
 			<h4 style="padding:0;display: flex;margin-bottom: 16px;">
 				<view class="pickerView">
 					<view class="weui-cell__hd">
-						<label class="weui-label" style="width: 4em">框数 ：</label>
-					</view>
-					<view class="weui-cell__bd">
-						<input class="weui-input" type="number" placeholder="框数/个" placeholder-class="weui-input__placeholder" data-index="{{index}}" data-type="detailApplyBox" value="{{item.detailApplyBox}}" bindblur="overInput" />
-					</view>
-				</view>
-				<view class="pickerView">
-					<view class="weui-cell__hd">
-						<label class="weui-label" style="width: 4em">框重 ：</label>
-					</view>
-					<view class="weui-cell__bd">
-						<input class="weui-input" type="digit" placeholder="2KG/个" disabled="true"  placeholder-class="weui-input__placeholder" data-index="{{index}}" data-type="boxTare" value="{{item.boxTare}}" />
-					</view>
-				</view>
-			</h4>
-			<h4 style="padding:0;display: flex;margin-bottom: 16px;">
-				<view class="pickerView">
-					<view class="weui-cell__hd">
 						<label class="weui-label" style="width: 4em">毛重 ：</label>
 					</view>
 					<view class="weui-cell__bd">
@@ -64,6 +46,24 @@
 					</view>
 					<view class="weui-cell__bd">
 						<input class="weui-input" type="digit" placeholder="皮重/KG" placeholder-class="weui-input__placeholder" data-index="{{index}}" data-type="tare" value="{{item.tare}}" bindblur="overInput" />
+					</view>
+				</view>
+			</h4>
+			<h4 style="padding:0;display: flex;margin-bottom: 16px;">
+				<view class="pickerView">
+					<view class="weui-cell__hd">
+						<label class="weui-label" style="width: 4em">框数 ：</label>
+					</view>
+					<view class="weui-cell__bd">
+						<input class="weui-input" type="number" placeholder="框数/个" placeholder-class="weui-input__placeholder" data-index="{{index}}" data-type="detailApplyBox" value="{{item.detailApplyBox}}" bindblur="overInput" />
+					</view>
+				</view>
+				<view class="pickerView">
+					<view class="weui-cell__hd">
+						<label class="weui-label" style="width: 4em">净重 ：</label>
+					</view>
+					<view class="weui-cell__bd">
+						<input class="weui-input" type="digit" placeholder="净重/斤" disabled="true"  placeholder-class="weui-input__placeholder" data-index="{{index}}" value="{{item.suttle}}" />
 					</view>
 				</view>
 			</h4>

@@ -41,8 +41,8 @@
 							<text class="weui-form-preview__value">{{item.detailApplyBox}} 框</text>
 						</view>
 						<view class="weui-form-preview__item" style="flex:0.5;">
-							<label class="weui-form-preview__label">框重：</label>
-							<text class="weui-form-preview__value">{{item.boxTare}} KG</text>
+							<label class="weui-form-preview__label">净重：</label>
+							<text class="weui-form-preview__value">{{item.suttle}} 斤</text>
 						</view>
 					</view>
 					<view style="display: flex;">
