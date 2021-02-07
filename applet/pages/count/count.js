@@ -168,6 +168,7 @@ Page({
   // 每个订单的详情信息
   showOrderInfo(e) {
     let showOrderInfo = e.currentTarget.dataset.data;
+    showOrderInfo.showDate = showOrderInfo.createDate.substring(5,10).replace('-','月');
     if ((showOrderInfo.orders).length < 4) {
       showOrderInfo.orders.unshift({
         categoryValue: "品种",
@@ -175,7 +176,7 @@ Page({
         detailApplyBox: "数量",
         gross: "毛重",
         tare: "皮重",
-        boxTare: "框重",
+        suttle: "净重",
         unitPrice: "单价",
         totalPrice: "总价",
       })

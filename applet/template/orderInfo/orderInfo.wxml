@@ -2,7 +2,7 @@
   <view class="apifmLogin" hidden="{{!showOrderInfo}}">
     <view class="s-b">
       <view class="s-l-b">
-        <text>订单详情</text>
+        <text>{{item.userInfo.userName}}-{{item.showDate}}-订单详情</text>
       </view>
       <!--   -->
       <view class="s-t-b">
@@ -21,7 +21,7 @@
               <text class="weui-form-preview__value">{{item.tare}}{{index == 0 ? '':'KG'}}</text>
             </view>
             <view class="weui-form-preview__item">
-              <text class="weui-form-preview__value">{{item.boxTare}}{{index == 0 ? '':'KG'}}</text>
+              <text class="weui-form-preview__value">{{item.suttle}}{{index == 0 ? '':'斤'}}</text>
             </view>
             <view class="weui-form-preview__item">
               <text class="weui-form-preview__value">{{item.unitPrice}}{{index == 0 ? '':'/斤'}}</text>
@@ -42,7 +42,7 @@
           </view>
           <view class="weui-form-preview__item weui-flex__item" >
             <label class="weui-form-preview__label" style="float: none;margin-right:unset;">总重量</label>
-            <text class="weui-form-preview__value">{{item.totalWeight}}KG</text>
+            <text class="weui-form-preview__value">{{item.totalWeight}}斤</text>
           </view>
           <view class="weui-form-preview__item weui-flex__item">
             <label class="weui-form-preview__label"  style="float: none;margin-right:unset;">总价钱</label>
