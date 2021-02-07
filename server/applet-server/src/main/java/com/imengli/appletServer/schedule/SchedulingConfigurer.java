@@ -93,7 +93,7 @@ public class SchedulingConfigurer {
         // 获取今天的所有订单
         List<OrderInfoDO> orderInfoDOS = orderInfoRepostory.selectAllOrderList(
                 LocalDateTime.of(LocalDate.now(), LocalTime.MIN), LocalDateTime.of(LocalDate.now(), LocalTime.MAX), new ArrayList<>());
-        LOG.info(">>>>>> 今天需要推送：{}条消息。", orderInfoDOS.parallelStream()
+        LOG.info(">>>>>> 今天需要推送：{}个用户消息。", orderInfoDOS.parallelStream()
                 // 过滤已经发送过的订单信息
                 .filter(info -> !info.getIsNotice())
                 // TODO 是否需要过滤掉收费的订单？

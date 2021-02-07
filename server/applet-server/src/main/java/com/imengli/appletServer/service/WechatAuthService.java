@@ -250,7 +250,7 @@ public class WechatAuthService {
                         errorUserIds.add(userId);
                     }
                 });
-        List<Long> updateOrderId = orderInfoDOS.parallelStream()
+        List<String> updateOrderId = orderInfoDOS.parallelStream()
                 // 过滤掉发送失败的用户订单信息
                 .filter(info -> !errorUserIds.contains(info.getUserId()))
                 .map(info -> info.getId())

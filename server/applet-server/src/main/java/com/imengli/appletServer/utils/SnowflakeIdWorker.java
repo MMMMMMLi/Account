@@ -152,6 +152,15 @@ public class SnowflakeIdWorker {
     }
 
     /**
+     * 获得下一个ID (该方法是线程安全的) String类型
+     *
+     * @return SnowflakeId
+     */
+    public synchronized String nextStringId() {
+        return String.valueOf(this.nextId());
+    }
+
+    /**
      * 阻塞到下一个毫秒，直到获得新的时间戳
      *
      * @param lastTimestamp 上次生成ID的时间截

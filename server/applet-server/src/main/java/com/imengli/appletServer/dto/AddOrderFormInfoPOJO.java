@@ -56,7 +56,7 @@ public class AddOrderFormInfoPOJO implements Serializable {
     /**
      * 订单Id。
      */
-    private Long orderInfoId;
+    private String orderInfoId;
 
     /**
      * 当前操作的用户Token

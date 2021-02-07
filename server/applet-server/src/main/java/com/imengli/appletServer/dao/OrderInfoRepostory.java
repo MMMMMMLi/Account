@@ -62,7 +62,7 @@ public interface OrderInfoRepostory {
             " from " + SysConstant.ORDER_INFO_TABLE_NAME +
             " left join " + SysConstant.ORDER_INFO_DEATIL_TABLE_NAME + " on order_info.id =  order_info_detail.orderId " +
             "where order_info.id = #{orderId}")
-    void deleteOrderInfoAndOrderInfoDeatils(@Param("orderId") Long orderInfoId);
+    void deleteOrderInfoAndOrderInfoDeatils(@Param("orderId") String orderInfoId);
 
     @Update("update " + SysConstant.ORDER_INFO_TABLE_NAME + " set isNotice = 1 where id in (${orderIds}) ")
     void updateOrderNoticeFlag(@Param("orderIds") String orderIds);

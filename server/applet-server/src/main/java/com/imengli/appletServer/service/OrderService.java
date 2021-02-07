@@ -118,7 +118,7 @@ public class OrderService {
             SysUserDO userInfo = orderFormInfo.getUserInfo();
             // 创建订单
             OrderInfoDO orderInfoDO = OrderInfoDO.builder()
-                    .id(snowflakeIdWorker.nextId())
+                    .id(snowflakeIdWorker.nextStringId())
                     .userId(userInfo.getId())
                     .createBy(wecharUserDo.getUserId())
                     .createDate(orderFormInfo.getCreateDate() == null ?
@@ -128,7 +128,7 @@ public class OrderService {
                     .retreatBox(orderFormInfo.getRetreatBox())
                     .totalPrice(orderFormInfo.getTotalPrice())
                     .totalWeight(orderFormInfo.getOrders().parallelStream()
-                            .map(order -> order.getGross() - order.getTare() - order.getBoxTare())
+                            .map(order -> order.getSuttle())
                             .reduce((k, v) -> k + v).get())
                     .build();
             // 入库
@@ -140,7 +140,7 @@ public class OrderService {
                             && order.getTare() != null
                             && order.getUnitPrice() != null)
                     .map(order -> {
-                        order.setId(snowflakeIdWorker.nextId());
+                        order.setId(snowflakeIdWorker.nextStringId());
                         order.setOrderId(orderInfoDO.getId());
                         return order;
                     })
@@ -154,7 +154,7 @@ public class OrderService {
                     .forEach(info -> {
                         // 修改库存信息
                         stockService.replaceStockInfo(0, info.getCategoryValue(),
-                                info.getSizeValue(), StockTypeEnum.REDUCE, info.getGross() - info.getTare() - info.getBoxTare(),
+                                info.getSizeValue(), StockTypeEnum.REDUCE, info.getSuttle(),
                                 wecharUserDo.getUserId(), userInfo.getId(), String.valueOf(orderInfoDO.getId()));
                     });
             // 修改框子信息
@@ -248,7 +248,7 @@ public class OrderService {
                             .map(orderInfoDO ->
                                     AddOrderFormInfoPOJO.builder()
                                             .orderInfoId(orderInfoDO.getId())
-                                            .orderListId(orderInfoDO.getId().toString())
+                                            .orderListId(orderInfoDO.getId())
                                             .userInfo(sysUserRepostory.getUserInfoByUserId(orderInfoDO.getUserId()))
                                             .totalPrice(orderInfoDO.getTotalPrice())
                                             .totalWeight(orderInfoDO.getTotalWeight())

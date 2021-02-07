@@ -47,7 +47,7 @@ public class OrderInfoDO {
     /**
      * 订单id
      */
-    private Long id;
+    private String id;
 
     /**
      * 用户ID

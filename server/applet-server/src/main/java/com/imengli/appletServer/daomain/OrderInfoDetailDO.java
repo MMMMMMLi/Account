@@ -41,12 +41,12 @@ public class OrderInfoDetailDO {
     /**
      * 订单详情主键
      */
-    private Long id;
+    private String id;
 
     /**
      * 订单的Id
      */
-    private Long orderId;
+    private String orderId;
 
     /**
      * 品种
@@ -64,9 +64,9 @@ public class OrderInfoDetailDO {
     private Integer detailApplyBox;
 
     /**
-     * 框子重量
+     * 净重
      */
-    private Double boxTare;
+    private Double suttle;
 
     /**
      * 毛重

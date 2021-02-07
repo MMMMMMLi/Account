@@ -114,7 +114,7 @@ public class UserService {
                 String userId = wechatUserDOByOpenId.getUserId();
                 if (StringUtils.isBlank(userId)) {
                     // 生成用户ID
-                    String userID = String.valueOf(snowflakeIdWorker.nextId());
+                    String userID = snowflakeIdWorker.nextStringId();
                     LocalDateTime now = LocalDateTime.now();
                     SysUserDO sysUserDO = new SysUserDO(userID, nickName, avatarUrl, gender, country, province, city, now, now, 0);
                     // 关联
@@ -230,7 +230,7 @@ public class UserService {
                     && sysUserRepostory.getUserInfoBySearch(phoneNum, 1).size() <= 0) {
                 // 如果都不存在,则添加
                 sysUserRepostory.saveTempUser(SysUserDO.builder()
-                        .id(String.valueOf(snowflakeIdWorker.nextId()))
+                        .id(snowflakeIdWorker.nextStringId())
                         .userName(userName)
                         .userNameCode(PinyinUtil.ToFirstChar(userName))
                         .phoneNumber(phoneNum)
