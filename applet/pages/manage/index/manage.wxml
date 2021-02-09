@@ -29,28 +29,30 @@
 	<view class="space"></view>
 	<!-- 九宫格 -->
 	<view class="weui-grids">
-		<navigator url="/pages/manage/report/day/day">
+		<navigator url="/pages/manage/user/add/userAdd">
 			<view class="weui-grid">
-				<view class="weui-grid__icon" style="height: 37px;">
-					<image src="/images/icon/a1.png" alt></image>
+				<view class="weui-grid__icon">
+					<image src="/images/icon/c1.png" alt></image>
 				</view>
-				<view class="weui-grid__label">每日报告</view>
+				<view class="weui-grid__label">添加客户</view>
 			</view>
 		</navigator>
-		<!-- <navigator url="/pages/manage/report/week/week"> -->
+		<navigator url="/pages/manage/statistics/statistics">
 		<view class="weui-grid">
-			<view class="weui-grid__icon" style="height: 37px;">
-				<image src="/images/icon/a2.png" alt></image>
+			<view class="weui-grid__icon">
+				<image src="/images/icon/a2_new.png" alt></image>
 			</view>
-			<view class="weui-grid__label">每周报告</view>
+			<view class="weui-grid__label">订单统计</view>
 		</view>
-		<!-- </navigator> -->
-		<view class="weui-grid" bindtap="test">
-			<view class="weui-grid__icon" style="height: 37px;">
-				<image src="/images/icon/a3.png" alt></image>
+	</navigator>
+		<navigator url="/pages/manage/warn/warn">
+			<view class="weui-grid">
+				<view class="weui-grid__icon">
+					<image src="/images/icon/c3.png" alt></image>
+				</view>
+				<view class="weui-grid__label">警告信息</view>
 			</view>
-			<view class="weui-grid__label">每月报告</view>
-		</view>
+		</navigator>
 		<navigator url="/pages/manage/user/index/user">
 			<view class="weui-grid">
 				<view class="weui-grid__icon">
@@ -75,32 +77,39 @@
 				<view class="weui-grid__label">库存管理</view>
 			</view>
 		</navigator>
-		<navigator url="/pages/manage/user/add/userAdd">
+		<navigator url="/pages/manage/report/day/day">
 			<view class="weui-grid">
-				<view class="weui-grid__icon">
-					<image src="/images/icon/c1.png" alt></image>
+				<view class="weui-grid__icon" style="height: 37px;">
+					<image src="/images/icon/a1.png" alt></image>
 				</view>
-				<view class="weui-grid__label">添加客户</view>
+				<view class="weui-grid__label">每日报告</view>
 			</view>
 		</navigator>
-		<view class="weui-grid" bindtap="switchView">
-			<view class="weui-grid__icon">
-				<image src="/images/icon/c2.png" alt></image>
+		<!-- <navigator url="/pages/manage/report/week/week"> -->
+		<view class="weui-grid">
+			<view class="weui-grid__icon" style="height: 37px;">
+				<image src="/images/icon/a2.png" alt></image>
 			</view>
-			<view class="weui-grid__label">切换视图</view>
+			<view class="weui-grid__label">每周报告</view>
 		</view>
-		<navigator url="/pages/manage/warn/warn">
-			<view class="weui-grid">
-				<view class="weui-grid__icon">
-					<image src="/images/icon/c3.png" alt></image>
-				</view>
-				<view class="weui-grid__label">警告信息</view>
+		<!-- </navigator> -->
+		<view class="weui-grid" bindtap="test">
+			<view class="weui-grid__icon" style="height: 37px;">
+				<image src="/images/icon/a3.png" alt></image>
 			</view>
-		</navigator>
+			<view class="weui-grid__label">每月报告</view>
+		</view>
 	</view>
 	<!-- 其余 -->
 	<view class="space"></view>
 	<!-- <navigator url=""></navigator> -->
+	<view class="menu-item" bindtap="switchView">
+		<image src="/images/icon/c2.png" class="leftImage"></image>
+		<view class="l">切换视图</view>
+		<image class="next" src="/images/icon/next.png"></image>
+	</view>
+	<view class="line"></view>
+	<view class="space"></view>
 	<view class="menu-item">
 		<image src="/images/my/7.png" class="leftImage"></image>
 		<view class="l">当前版本</view>

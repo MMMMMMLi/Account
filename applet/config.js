@@ -1,5 +1,5 @@
 module.exports = {
-  version: "v2021.03",
+  version: "v2021.04",
   // 本地测试微服务版
   // preUrl: 'http://localhost:11001/api/'
   // 本地测试单节点版本

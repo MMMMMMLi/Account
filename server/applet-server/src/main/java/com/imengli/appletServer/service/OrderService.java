@@ -134,6 +134,7 @@ public class OrderService {
             // 入库
             orderInfoRepostory.save(orderInfoDO);
             // 订单详情信息,去除空订单信息和完善订单ID。
+            LocalDateTime now = LocalDateTime.now();
             List<OrderInfoDetailDO> orders = orderFormInfo.getOrders()
                     .parallelStream()
                     .filter(order -> order.getGross() != null
@@ -142,6 +143,7 @@ public class OrderService {
                     .map(order -> {
                         order.setId(snowflakeIdWorker.nextStringId());
                         order.setOrderId(orderInfoDO.getId());
+                        order.setCreateDate(now);
                         return order;
                     })
                     .collect(Collectors.toList());

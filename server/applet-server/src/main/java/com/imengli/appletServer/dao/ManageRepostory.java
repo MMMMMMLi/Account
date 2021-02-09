@@ -156,8 +156,22 @@ public interface ManageRepostory {
 
     @Update(" UPDATE " + SysConstant.ORDER_INFO_TABLE_NAME +
             " oi LEFT JOIN " + SysConstant.STOCK_INFO_DEATIL_TABLE_NAME + " sid ON oi.userId = sid.userId " +
-            " LEFT JOIN "+SysConstant.USER_TABLE_NAME+" su ON su.id = oi.userId "+
+            " LEFT JOIN " + SysConstant.USER_TABLE_NAME + " su ON su.id = oi.userId " +
             " SET oi.userId = #{mergeUserId}, sid.userId = #{mergeUserId}, su.state = 0 " +
             " WHERE oi.userId = #{userId}")
     void mergeInfoByUserId(@Param("userId") String userId, @Param("mergeUserId") String mergeUserId);
+
+    @Select(" SELECT " +
+            "  DATE(createDate) AS dateTime, " +
+            "  categoryValue, " +
+            "  SUM(suttle) AS totalWeight, " +
+            "  SUM(totalPrice) AS totalPrice " +
+            " FROM " + SysConstant.ORDER_INFO_DEATIL_TABLE_NAME +
+            " GROUP BY " +
+            "  DATE(createDate), " +
+            "  categoryValue " +
+            " ORDER BY " +
+            "  dateTime DESC, " +
+            "  categoryValue DESC ")
+    List<Map<String, String>> getStatisticsList();
 }

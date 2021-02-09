@@ -170,4 +170,19 @@ public class ManageController {
                                  @RequestParam(value = "value", required = false) Integer value) {
         return manageService.getWarnList(token, page, size, value);
     }
+
+    // ----------------------------------------订单统计----------------------------------------------------
+
+    /**
+     * 获取订单统计信息
+     *
+     * @param token
+     * @return
+     */
+    @RequestMapping("/getStatisticsList")
+    public ResultDTO getStatisticsList(@RequestParam String token,
+                                 @RequestParam Integer page,
+                                 @RequestParam Integer size) {
+        return manageService.getStatisticsList(token, page, size);
+    }
 }

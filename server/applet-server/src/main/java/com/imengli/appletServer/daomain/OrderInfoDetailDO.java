@@ -29,6 +29,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 /**
  * 订单信息
  */
@@ -87,5 +89,10 @@ public class OrderInfoDetailDO {
      * 总价
      */
     private Double totalPrice;
+
+    /**
+     * 生成时间
+     */
+    private LocalDateTime createDate;
 
 }

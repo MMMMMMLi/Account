@@ -471,4 +471,24 @@ public class ManageService {
         }
         return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
     }
+
+    /**
+     * 获取订单统计信息
+     * @param token
+     * @param page
+     * @param size
+     * @return
+     */
+    public ResultDTO getStatisticsList(String token, Integer page, Integer size) {
+        // 校验token
+        WechatUserDO wechatUserDO = redisUtil.getWechatAuthEntity(token);
+        // 根据信息完善度返回
+        if (wechatUserDO != null) {
+           PageHelper.startPage(page,size);
+           List<Map<String,String>> statisticsList = manageRepostory.getStatisticsList();
+           PageInfo<Map<String,String>> pageInfo = PageInfo.of(statisticsList);
+           return new ResultDTO(ResultStatus.SUCCESS,pageInfo);
+        }
+        return new ResultDTO(ResultStatus.ERROR_AUTH_TOKEN);
+    }
 }

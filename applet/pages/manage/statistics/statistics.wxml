@@ -1,0 +1,20 @@
+<view class="container">
+  <!-- <view class="weui-cells__title" style="color: black;font-weight:bolder;font-size: 18px;">用户订单信息</view> -->
+  <view class="scroll">
+    <scroll-view scroll-y="true" style="height: 100%;" bindscrolltolower="bindscrolltolower">
+      <view wx:for="{{detailsMap}}" wx:key="index" wx:for-index="key" wx:for-item="value">
+        <view class="weui-cells__title" style="font-weight:bolder;">{{key}}</view>
+        <view wx:for="{{value}}" wx:key="index" class="weui-cells weui-cells_after-title">
+          <view class="weui-cell">
+            <view class="weui-cell__bd" style="flex:1">{{item.categoryValue}} </view>
+            <view class="weui-cell__ft" style="flex:1;color:green;"> {{item.totalWeight}}斤 </view>
+            <view class="weui-cell__ft" style="flex:1;color:red;"> ￥{{item.totalPrice}} </view>
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{!hasNextPage}}" class="weui-loadmore weui-loadmore_line">
+        <text class="weui-loadmore__tips">暂无更多数据</text>
+      </view>
+    </scroll-view>
+  </view>
+</view>
