@@ -27,40 +27,55 @@ Page({
   },
   // 执行逻辑
   async getInfo(updateFlag) {
-    let token = wx.getStorageSync('token');
-    const that = this;
-    // 获取用户验证信息
-    let res = await REQUEST.request('user/authUserInfo', 'POST', {
-      token: token,
-      updateFlag: updateFlag
-    })
-    if (res.data.code === 40002) {
-      let total = this.data.total;
-      this.setData({
-        total: total + 1
+    if (APP.globalData.isConnected) {
+      let token = wx.getStorageSync('token');
+      const that = this;
+      // 获取用户验证信息
+      let res = await REQUEST.request('user/authUserInfo', 'POST', {
+        token: token,
+        updateFlag: updateFlag
       })
-      if (total <= 10) {
-        this.getInfo(false);
-      } else {
-        UTIL.showLoading('系统异常请稍候');
-      }
-    }
-    let userInfo = res.data.data || '';
-    let role = userInfo.role || '';
-    if (userInfo) {
-      // 校验当前用户是否失效
-      if (userInfo.state === 0) {
-        await UTIL.showModaling("登陆失败", "当前用户已被冻结，请联系管理员！", null, null, false);
-        return;
-      }
-      if (role) {
-        // 保存Tab栏变量值
-        if (!wx.getStorageSync('viewNameFlag') || wx.getStorageSync('viewNameFlag') != role.name) {
-          wx.setStorageSync('viewName', role.name);
-          wx.setStorageSync('viewNameFlag', role.name);
+      if (res.data.code === 40002) {
+        let total = this.data.total;
+        this.setData({
+          total: total + 1
+        })
+        if (total <= 10) {
+          this.getInfo(false);
+        } else {
+          UTIL.showLoading('系统异常请稍候');
         }
       }
+      let userInfo = res.data.data || '';
+      let role = userInfo.role || '';
+      if (userInfo) {
+        // 校验当前用户是否失效
+        if (userInfo.state === 0) {
+          await UTIL.showModaling("登陆失败", "当前用户已被冻结，请联系管理员！", null, null, false);
+          return;
+        }
+        if (role) {
+          // 保存Tab栏变量值
+          if (!wx.getStorageSync('viewNameFlag') || wx.getStorageSync('viewNameFlag') != role.name) {
+            wx.setStorageSync('viewName', role.name);
+            wx.setStorageSync('viewNameFlag', role.name);
+          }
+        }
+      }
+      if (res.data.code == 40003 || res.data.code == 40004) {
+        // 假如当前用户是第一次使用小程序，则用户信息应该不完善，则跳转到个人信息页
+        wx.switchTab({
+          url: '/pages/my/my',
+        })
+      } else {
+        wx.switchTab({
+          url: role.entryPage || '/pages/my/my',
+        });
+      }
+    } else {
+      UTIL.showToasting('当前无网络', 'none');
     }
+    /**  开头图片功能暂且省略 By：2021.02.09 Weijia Jiang
     // 获取用户观看开头图片的版本
     // 2021.02.02更新，由小程序版本控制，修改为数据库控制字段控制
     const app_show_pic_version = wx.getStorageSync('app_show_pic_version');
@@ -81,7 +96,7 @@ Page({
       REQUEST.request('applet/getBanners', 'POST', {}).then(bannerRes => {
         if (bannerRes.data.code == 20001) {
           wx.switchTab({
-            url: role.entryPage,
+            url: role.entryPage || '/pages/my/my',
           });
         } else {
           that.setData({
@@ -92,6 +107,7 @@ Page({
         }
       })
     }
+    */
   },
   // 图片切换触发的操作
   swiperchange: function (e) {
