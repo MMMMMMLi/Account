@@ -16,8 +16,7 @@
     "pages/manage/stock/index/stock",
     "custom-tab-bar/index",
     "pages/manage/warn/warn",
-    "pages/manage/user/add/userAdd",
-    "pages/manage/statistics/statistics"
+    "pages/manage/user/add/userAdd"
   ],
   "window": {
     "navigationBarBackgroundColor": "#fff",
