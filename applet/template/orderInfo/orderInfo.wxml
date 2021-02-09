@@ -41,8 +41,8 @@
             <text class="weui-form-preview__value">{{item.retreatBox}}个</text>
           </view>
           <view class="weui-form-preview__item weui-flex__item" >
-            <label class="weui-form-preview__label" style="float: none;margin-right:unset;">总重量</label>
-            <text class="weui-form-preview__value">{{item.totalWeight}}斤</text>
+            <label class="weui-form-preview__label" style="float: none;margin-right:unset;">框钱</label>
+            <text class="weui-form-preview__value" style="color:red;">{{item.boxFlag}}{{item.boxMoney}}元</text>
           </view>
           <view class="weui-form-preview__item weui-flex__item">
             <label class="weui-form-preview__label"  style="float: none;margin-right:unset;">总价钱</label>

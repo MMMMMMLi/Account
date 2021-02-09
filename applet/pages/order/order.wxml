@@ -52,11 +52,25 @@
 						</view>
 						<view class="weui-form-preview__item" style="flex:0.5;">
 							<label class="weui-form-preview__label">总价：</label>
-							<text class="weui-form-preview__value" style="color:red;">￥{{item.totalPrice}}</text>
+							<text class="weui-form-preview__value" style="color:{{item.status == '待付款' ? 'red':'green'}};">￥{{item.totalPrice}}</text>
 						</view>
 					</view>
 				</view>
-				<view class="weui-form-preview__bd">
+				<view class="weui-form-preview__bd  weui-flex" style="text-align: center;padding: 10px;">
+					<view class="weui-form-preview__item  weui-flex__item">
+						<label class="weui-form-preview__label" style="float: none;margin-right:unset;">用框</label>
+						<text class="weui-form-preview__value">{{item.applyBox}} 个</text>
+					</view>
+					<view class="weui-form-preview__item weui-flex__item">
+						<label class="weui-form-preview__label" style="float: none;margin-right:unset;">退框</label>
+						<text class="weui-form-preview__value">{{item.retreatBox}} 个</text>
+					</view>
+					<view class="weui-form-preview__item weui-flex__item">
+						<label class="weui-form-preview__label" style="float: none;margin-right:unset;">框钱</label>
+						<text class="weui-form-preview__value">{{item.boxFlag}}{{item.boxMoney}}元</text>
+					</view>
+				</view>
+				<!-- <view class="weui-form-preview__bd">
 					<view style="display: flex;">
 						<view class="weui-form-preview__item" style="flex:0.5;">
 							<label class="weui-form-preview__label">用框：</label>
@@ -67,7 +81,7 @@
 							<text class="weui-form-preview__value">{{item.retreatBox}} 个</text>
 						</view>
 					</view>
-				</view>
+				</view> -->
 				<view class="weui-form-preview__hd">
 					<view class="weui-form-preview__item">
 						<label class="weui-form-preview__label">付款金额</label>

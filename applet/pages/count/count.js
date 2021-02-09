@@ -320,8 +320,13 @@ Page({
       filterList: JSON.stringify(that.data.filterFalg ? that.data.filterCriteria : [])
     })
     if (res.data.code === 20000) {
+      let awaitList = res.data.data;
+      awaitList.forEach(info => {
+        info.boxFlag = info.applyBox - info.retreatBox > 0 ? '押':'退'; 
+        info.boxMoney = Math.abs((info.applyBox - info.retreatBox) * 30);
+      });
       that.setData({
-        orderList: oldOrderList.concat(res.data.data),
+        orderList: oldOrderList.concat(awaitList),
         page: res.data.pageInfo.nextPage,
         hasNextPage: res.data.pageInfo.hasNextPage
       })

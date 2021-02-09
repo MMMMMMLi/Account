@@ -62,9 +62,14 @@ Page({
       page: that.data.page,
       size: that.data.size
     }).then(res => {
-      if (res.data.code === 20000 && res.data.data) {
+      let awaitList = res.data.data;
+      if (res.data.code === 20000 && awaitList) {
+        awaitList.forEach(info => {
+          info.boxFlag = info.applyBox - info.retreatBox > 0 ? '押':'退'; 
+          info.boxMoney = Math.abs((info.applyBox - info.retreatBox) * 30);
+        });
         that.setData({
-          orderList: oldOrderList.concat(res.data.data),
+          orderList: oldOrderList.concat(awaitList),
           page: res.data.pageInfo.nextPage,
           hasNextPage: res.data.pageInfo.hasNextPage
         })
