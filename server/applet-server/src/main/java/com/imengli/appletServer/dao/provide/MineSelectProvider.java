@@ -128,7 +128,7 @@ public class MineSelectProvider {
         }
         sb.append(" GROUP BY su.id ");
         if (searchMap.containsKey("order")) {
-            sb.append(" ORDER BY " + searchMap.get("order") + " DESC");
+            sb.append(" ORDER BY " + searchMap.get("order") + " DESC, su.userName DESC");
         }
 
         return sb.toString();
