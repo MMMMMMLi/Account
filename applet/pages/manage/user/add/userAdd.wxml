@@ -15,7 +15,7 @@
 						<view class="weui-cell weui-cell_active">
 							<view class="weui-cell__hd"><label class="weui-label">客户姓名</label></view>
 							<view class="weui-cell__bd weui-flex">
-								<input class="weui-input" maxlength="4" placeholder="客户姓名" name="name"
+								<input class="weui-input" maxlength="8" placeholder="客户姓名" name="name"
 									placeholder-class="weui-input__placeholder" />
 								<!-- <view wx:if="{{showClearBtn}}" class="weui-btn_reset weui-btn_icon weui-btn_input-clear"
 									bindtap="onClear">

@@ -9,11 +9,11 @@
 }
 
 .apifmLogin .s-b {
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
-  height: auto;
+  height: 100%;
   background-color: #fff;
-  margin-top: 30%;
+  /* margin-top: 30%; */
   border-radius: 10rpx;
   padding-bottom: 10px;
 }
@@ -49,6 +49,7 @@
   font-size: 30rpx;
   background-color: #04be01;
   color: #fff;
+  margin-top: 60px;
 }
 
 /* .weui-form-preview:before{

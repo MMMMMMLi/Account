@@ -29,8 +29,8 @@
 					<view class="weui-form-preview__item">
 						<label
 							class="{{item.status == '待付款' ? 'weui-form-preview__label_unpaid' : 'weui-form-preview__label_paid'}}">{{item.userInfo.userName}}</label>
-						<label
-							class="weui-media-box__info__meta_extra {{item.status == '待付款' ? 'weui-form-preview__label_unpaid' : 'weui-form-preview__label_paid'}}">{{item.userInfo.phoneNumber}}</label>
+						<!-- <label
+							class="weui-media-box__info__meta_extra {{item.status == '待付款' ? 'weui-form-preview__label_unpaid' : 'weui-form-preview__label_paid'}}">{{item.userInfo.phoneNumber}}</label> -->
 						<label
 							class="weui-media-box__info__meta_extra {{item.status == '待付款' ? 'weui-form-preview__label_unpaid' : 'weui-form-preview__label_paid'}}">{{item.createDate}}</label>
 					</view>

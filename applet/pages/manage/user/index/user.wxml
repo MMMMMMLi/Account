@@ -23,8 +23,8 @@
 			data-value="money" bindtap="clickButton">总金额</a>
 		<a class="weui-btn weui-btn_mini {{clickButton == 'orders' ? 'weui-btn_primary':' weui-btn_default'}}"
 			data-value="orders" bindtap="clickButton">总订单</a>
-		<a class="weui-btn weui-btn_mini {{clickButton == 'phoneNumber' ? 'weui-btn_primary':' weui-btn_default'}}"
-			data-value="phoneNumber" bindtap="clickButton">手机号</a>
+		<!-- <a class="weui-btn weui-btn_mini {{clickButton == 'phoneNumber' ? 'weui-btn_primary':' weui-btn_default'}}"
+			data-value="phoneNumber" bindtap="clickButton">手机号</a> -->
 		<a class="weui-btn weui-btn_mini {{clickButton == 'isTemp' ? 'weui-btn_primary':' weui-btn_warn'}}"
 			data-value="isTemp" bindtap="clickButton">临时</a>
 		<a class="weui-btn weui-btn_mini {{clickButton == 'isFrozen' ? 'weui-btn_primary':' weui-btn_warn'}}"

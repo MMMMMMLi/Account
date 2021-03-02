@@ -132,7 +132,7 @@ Component({
       const orderInfo = this.properties.orderInfo;
       orderInfo.orders.push({
         categoryValue: 1,
-        sizeValue: 1
+        sizeValue: 0
       })
       this.setData({
         orderInfo,

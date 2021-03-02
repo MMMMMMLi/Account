@@ -353,8 +353,26 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    // 设置用户截屏的监听函数
+    var that = this;
+    wx.onUserCaptureScreen(function (res) {
+      that.setData({
+        showOrderInfoFlag: false,
+        showOrderInfo: []
+      })
+    })
+    // 设置一些数据
     this.setData({
-      filterPicker: [{
+      filterPicker: [
+        {
+          key: '姓名',
+          value: 'user.userName,user.userNameCode'
+        },
+        {
+          key: '手机号',
+          value: 'user.phoneNumber'
+        },
+        {
           key: '订单状态',
           value: 'order.status'
         },
@@ -374,14 +392,6 @@ Page({
         //   key: '订单总重量',
         //   value: 'order.totalWeight'
         // },
-        {
-          key: '姓名',
-          value: 'user.userName,user.userNameCode'
-        },
-        {
-          key: '手机号',
-          value: 'user.phoneNumber'
-        },
       ],
       firstFilterPickerValue: 0,
       secondtFilterPickerValue: 1,
